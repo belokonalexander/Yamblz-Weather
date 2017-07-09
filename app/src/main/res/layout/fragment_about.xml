@@ -8,7 +8,10 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:autoLink="web"
-        android:text="Автор изображения в боковом меню www.behance.net/gallery/18526001/Material-Wallpaper"
+        android:text="Приложение Погода для первого этапа проекта Яндекс.Мобилизация 2017
+
+Автор изображения в боковом меню www.behance.net/gallery/18526001/Material-Wallpaper
+Иконка приложения - roundicons с www.flaticon.com"
         android:textAppearance="?android:textAppearanceMedium" />
 
 </ScrollView>
