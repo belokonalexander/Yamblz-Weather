@@ -13,6 +13,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import yamblz.voltek.com.weather.R;
 import yamblz.voltek.com.weather.presentation.base.BaseActivity;
+import yamblz.voltek.com.weather.presentation.ui.about.AboutFragment;
+import yamblz.voltek.com.weather.presentation.ui.forecast.ForecastFragment;
+import yamblz.voltek.com.weather.presentation.ui.settings.SettingsFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +40,10 @@ public class MainActivity extends BaseActivity
         toggle.syncState();
 
         navView.setNavigationItemSelectedListener(this);
+
+        if (savedInstanceState == null) {
+            replaceFragment(ForecastFragment.newInstance(), R.id.fragment_container);
+        }
     }
 
     @Override
@@ -54,13 +61,13 @@ public class MainActivity extends BaseActivity
 
         switch (id) {
             case R.id.nav_forecast:
-                //
+                replaceFragment(ForecastFragment.newInstance(), R.id.fragment_container);
                 break;
             case R.id.nav_settings:
-                //
+                replaceFragment(SettingsFragment.newInstance(), R.id.fragment_container);
                 break;
             case R.id.nav_about:
-                //
+                replaceFragment(AboutFragment.newInstance(), R.id.fragment_container);
                 break;
         }
 
