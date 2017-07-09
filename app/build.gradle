@@ -21,6 +21,8 @@ android {
 
 ext {
     supportLibVersion = '25.3.1'
+
+    butterknifeVersion = '8.7.0'
 }
 
 dependencies {
@@ -33,7 +35,12 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 
+    // Support lib
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-v4:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
+
+    // Butterknife
+    compile "com.jakewharton:butterknife:$butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 }
