@@ -1,4 +1,4 @@
-package yamblz.voltek.com.weather.presentation.base;
+package com.yamblz.voltek.weather.presentation.base;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;

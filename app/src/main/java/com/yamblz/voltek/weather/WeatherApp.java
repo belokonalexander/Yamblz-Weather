@@ -1,4 +1,4 @@
-package yamblz.voltek.com.weather;
+package com.yamblz.voltek.weather;
 
 import android.app.Application;
 

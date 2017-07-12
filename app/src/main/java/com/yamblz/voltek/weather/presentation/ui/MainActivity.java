@@ -1,4 +1,4 @@
-package yamblz.voltek.com.weather.presentation.ui;
+package com.yamblz.voltek.weather.presentation.ui;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -10,13 +10,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.yamblz.voltek.weather.R;
+import com.yamblz.voltek.weather.presentation.base.BaseActivity;
+import com.yamblz.voltek.weather.presentation.ui.about.AboutFragment;
+import com.yamblz.voltek.weather.presentation.ui.forecast.ForecastFragment;
+import com.yamblz.voltek.weather.presentation.ui.settings.SettingsFragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import yamblz.voltek.com.weather.R;
-import yamblz.voltek.com.weather.presentation.base.BaseActivity;
-import yamblz.voltek.com.weather.presentation.ui.about.AboutFragment;
-import yamblz.voltek.com.weather.presentation.ui.forecast.ForecastFragment;
-import yamblz.voltek.com.weather.presentation.ui.settings.SettingsFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
