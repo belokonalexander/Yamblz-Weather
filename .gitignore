@@ -36,7 +36,10 @@ captures/
 .idea/
 
 # Keystore files
-# *.jks
+*.jks
+
+# Keystore properties
+keystore.properties
 
 .DS_Store
 *.hprof
