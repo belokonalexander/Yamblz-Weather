@@ -1,6 +1,7 @@
 package yamblz.voltek.com.weather.presentation.ui;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,10 +21,15 @@ import yamblz.voltek.com.weather.presentation.ui.settings.SettingsFragment;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    @IdRes
+    private static final int FRAGMENT_CONTAINER = R.id.fragment_container;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +37,17 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.nav_open, R.string.nav_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
-            replaceFragment(ForecastFragment.newInstance(), R.id.fragment_container);
+            replaceFragment(ForecastFragment.newInstance(), FRAGMENT_CONTAINER);
         }
     }
 
@@ -61,13 +66,13 @@ public class MainActivity extends BaseActivity
 
         switch (id) {
             case R.id.nav_forecast:
-                replaceFragment(ForecastFragment.newInstance(), R.id.fragment_container);
+                replaceFragment(ForecastFragment.newInstance(), FRAGMENT_CONTAINER);
                 break;
             case R.id.nav_settings:
-                replaceFragment(SettingsFragment.newInstance(), R.id.fragment_container);
+                replaceFragment(SettingsFragment.newInstance(), FRAGMENT_CONTAINER);
                 break;
             case R.id.nav_about:
-                replaceFragment(AboutFragment.newInstance(), R.id.fragment_container);
+                replaceFragment(AboutFragment.newInstance(), FRAGMENT_CONTAINER);
                 break;
         }
 

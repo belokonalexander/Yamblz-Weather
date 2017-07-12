@@ -15,4 +15,9 @@
     <string name="nav_settings">Настройки</string>
     <string name="nav_about">О приложении</string>
 
+    <string name="about_content">Приложение Погода для первого этапа проекта Яндекс.Мобилизация 2017
+
+Автор изображения в боковом меню www.behance.net/gallery/18526001/Material-Wallpaper
+Иконка приложения - roundicons с www.flaticon.com</string>
+
 </resources>
