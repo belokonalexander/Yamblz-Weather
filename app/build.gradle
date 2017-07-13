@@ -57,6 +57,7 @@ ext {
 
     butterknifeVersion = '8.7.0'
     retrofitVersion = '2.3.0'
+    rxJavaVersion = '2.1.1'
 
     leakCanaryVersion = '1.5.1'
 }
@@ -88,4 +89,7 @@ dependencies {
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-moshi:${retrofitVersion}"
+
+    // Rx
+    compile "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
 }
