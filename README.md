@@ -7,6 +7,8 @@
 ![Screenshot](https://raw.githubusercontent.com/IvanAntsiferov/Yamblz-Weather/master/docs/images/Screenshot3.png)
 
 ## Сборка проекта
+Приложение использует [OpenWeatherMap API](https://openweathermap.org/api) для получения данных. Запишите свой ключ в `secret.properties` как переменную `ApiKey`.
+
 Для того, чтобы собрать release конфигурацию, нужно создать файл `keystore.properties` в корневой папке проекта с переменными `storeFile`, `storePassword`, `keyAlias`, `keyPassword` содержащими информацию о KeyStore.
 
 ## Используемые библиотеки

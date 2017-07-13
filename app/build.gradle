@@ -4,6 +4,10 @@ def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
+def secretPropertiesFile = rootProject.file("secret.properties")
+def secretProperties = new Properties()
+secretProperties.load(new FileInputStream(secretPropertiesFile))
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
@@ -28,6 +32,10 @@ android {
     }
 
     buildTypes {
+
+        buildTypes.each {
+            it.buildConfigField 'String', 'ApiKey', secretProperties['ApiKey']
+        }
 
         release {
             minifyEnabled true

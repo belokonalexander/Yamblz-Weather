@@ -41,6 +41,9 @@ captures/
 # Keystore properties
 keystore.properties
 
+# File with API key's
+secret.properties
+
 .DS_Store
 *.hprof
 
