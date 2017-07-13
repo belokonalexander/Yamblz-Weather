@@ -56,6 +56,7 @@ ext {
     supportLibVersion = '25.3.1'
 
     butterknifeVersion = '8.7.0'
+    retrofitVersion = '2.3.0'
 
     leakCanaryVersion = '1.5.1'
 }
@@ -70,6 +71,11 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 
+    // Leak Canary
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+
     // Support lib
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-v4:$supportLibVersion"
@@ -79,8 +85,7 @@ dependencies {
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
-    // Leak Canary
-    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    // Retrofit
+    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-moshi:${retrofitVersion}"
 }
