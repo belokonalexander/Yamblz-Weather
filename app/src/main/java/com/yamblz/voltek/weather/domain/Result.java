@@ -1,26 +1,26 @@
 package com.yamblz.voltek.weather.domain;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 public class Result<T> {
 
-    private String message;
-    private T data;
+    @Nullable
+    private String message = null;
+    @Nullable
+    private T data = null;
 
-    public Result() {
-        this.message = null;
-        this.data = null;
-    }
+    public Result() {}
 
-    public Result(T data) {
-        this.message = null;
+    public Result(@NonNull T data) {
         this.data = data;
     }
 
-    public Result(String message) {
+    public Result(@NonNull String message) {
         this.message = message;
-        this.data = null;
     }
 
-    public Result(String message, T data) {
+    public Result(@NonNull String message, @NonNull T data) {
         this.message = message;
         this.data = data;
     }
