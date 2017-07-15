@@ -11,26 +11,16 @@ import com.yamblz.voltek.weather.domain.exception.RequestFailedException;
 
 import java.io.IOException;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class WeatherAPIDelegate implements Provider.API.Weather {
 
     private Context context;
     private WeatherAPI api;
 
-    public WeatherAPIDelegate(Context context) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("какой-то юрл")
-                .addConverterFactory(MoshiConverterFactory.create())
-                .client(new OkHttpClient())
-                .build();
-
-        api = retrofit.create(WeatherAPI.class);
-
+    public WeatherAPIDelegate(Context context, WeatherAPI api) {
         this.context = context;
+        this.api = api;
     }
 
     @Override

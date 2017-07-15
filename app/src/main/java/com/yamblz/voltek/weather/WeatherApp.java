@@ -14,5 +14,7 @@ public class WeatherApp extends Application {
             return;
         }
         LeakCanary.install(this);
+
+        Injector.init(this);
     }
 }
