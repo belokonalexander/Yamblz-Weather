@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -52,6 +53,11 @@ android {
             minifyEnabled false
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 ext {
@@ -60,6 +66,7 @@ ext {
     butterknifeVersion = '8.7.0'
     retrofitVersion = '2.3.0'
     rxJavaVersion = '2.1.1'
+    rxAndroidVersion = '2.0.1'
     hawkVersion = '2.0.1'
 
     leakCanaryVersion = '1.5.1'
@@ -95,6 +102,7 @@ dependencies {
 
     // Rx
     compile "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
+    compile "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
 
     // Storage
     compile "com.orhanobut:hawk:${hawkVersion}"
