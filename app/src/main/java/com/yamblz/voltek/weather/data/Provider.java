@@ -1,43 +1,28 @@
 package com.yamblz.voltek.weather.data;
 
-/**
- * Набор интерфейсов для доступа к данным
- */
+import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
+import com.yamblz.voltek.weather.domain.exception.NoConnectionException;
+import com.yamblz.voltek.weather.domain.exception.RequestFailedException;
+
 public final class Provider {
 
     private Provider() {}
 
-    /**
-     * Содержит интерфейсы для доступа к данным через API
-     */
     public static class API {
 
         private API() {}
 
         public interface Weather {
 
-            //
-        }
-
-        public interface Forecast {
-
-            //
+            WeatherUIModel getCurrent() throws NoConnectionException, RequestFailedException;
         }
     }
 
-    /**
-     * Содержит интерфейсы для доступа к локальному хранилищу
-     */
     public static class Storage {
 
         private Storage() {}
 
         public interface Weather {
-
-            //
-        }
-
-        public interface Forecast {
 
             //
         }
