@@ -2,6 +2,7 @@ package com.yamblz.voltek.weather;
 
 import android.app.Application;
 
+import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
 
 public class WeatherApp extends Application {
@@ -14,6 +15,8 @@ public class WeatherApp extends Application {
             return;
         }
         LeakCanary.install(this);
+
+        Hawk.init(this);
 
         Injector.init(this);
     }

@@ -60,6 +60,7 @@ ext {
     butterknifeVersion = '8.7.0'
     retrofitVersion = '2.3.0'
     rxJavaVersion = '2.1.1'
+    hawkVersion = '2.0.1'
 
     leakCanaryVersion = '1.5.1'
 }
@@ -94,4 +95,7 @@ dependencies {
 
     // Rx
     compile "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
+
+    // Storage
+    compile "com.orhanobut:hawk:${hawkVersion}"
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import com.yamblz.voltek.weather.data.Provider;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPIDelegate;
+import com.yamblz.voltek.weather.data.storage.WeatherStorage;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -32,5 +33,9 @@ public final class Injector {
 
     public static Provider.API.Weather weatherApi() {
         return new WeatherAPIDelegate(context, retrofit.create(WeatherAPI.class));
+    }
+
+    public static Provider.Storage.Weather weatherStorage() {
+        return new WeatherStorage();
     }
 }
