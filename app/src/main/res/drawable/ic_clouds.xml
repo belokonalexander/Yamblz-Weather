@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/weather_icon_size"
+    android:height="@dimen/weather_icon_size"
+    android:viewportHeight="512.008"
+    android:viewportWidth="512.008">
+
+    <path
+        android:fillColor="#629FD6"
+        android:pathData="M417.4,228.3h-7.6c-7.5,-31.7 -36.1,-55.5 -70.3,-55.5c-8.3,0 -16.7,1.8 -23.7,4.2c-16.7,-47.5 -62,-81.6 -115.4,-81.6c-67.6,0 -122.5,54.5 -122.5,121.8c0,4.2 0.2,8.4 0.6,12.6C34.1,237.4 0,276.1 0,322.5c0,51.8 42.6,94.2 94.6,94.2H417.4c52,0 94.6,-42.4 94.6,-94.2C512,270.7 469.5,228.3 417.4,228.3z" />
+
+</vector>

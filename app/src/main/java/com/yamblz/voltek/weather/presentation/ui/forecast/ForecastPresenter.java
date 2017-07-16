@@ -6,6 +6,8 @@ import com.yamblz.voltek.weather.domain.Parameter;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.domain.interactor.CurrentWeatherInteractor;
 
+import timber.log.Timber;
+
 public class ForecastPresenter {
 
     public interface View {
@@ -21,6 +23,8 @@ public class ForecastPresenter {
         public Throwable error = null;
         @Nullable
         public WeatherUIModel data = null;
+        @Nullable
+        public String message = null;
 
         public boolean isLoading = false;
     }
@@ -31,10 +35,9 @@ public class ForecastPresenter {
     private CurrentWeatherInteractor interactor;
 
     public ForecastPresenter(View view, CurrentWeatherInteractor interactor) {
-        attach(view);
         this.model = new Model();
         this.interactor = interactor;
-
+        attach(view);
         loadWeather(false);
     }
 
@@ -42,6 +45,7 @@ public class ForecastPresenter {
     public void attach(View view) {
         this.view = view;
         view.attachInputListeners();
+        render();
     }
 
     public void detach() {
@@ -73,9 +77,11 @@ public class ForecastPresenter {
                 param,
                 result -> {
                     model.data = result.getData();
-                    render();
+                    model.message = result.getMessage();
                 },
                 error -> {
+                    Timber.e(error);
+
                     model.isLoading = false;
                     model.error = error;
                     render();

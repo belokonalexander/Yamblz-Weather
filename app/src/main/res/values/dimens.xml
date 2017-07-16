@@ -3,4 +3,6 @@
     <dimen name="nav_header_padding">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
 
+    <dimen name="weather_icon_size">96dp</dimen>
+
 </resources>

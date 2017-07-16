@@ -5,6 +5,13 @@ public final class ApiConst {
     public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
 
     public static final String API_KEY = "appid";
+    public static final String LANGUAGE = "lang";
+
+    public static final String UNITS = "units";
+
+    public static final String UNITS_METRIC = "metric";
+    public static final String UNITS_IMPERIAL = "imperial";
+
     public static final String CITY_NAME = "q";
     public static final String CITY_ID = "id";
     public static final String LATITUDE = "lat";

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
 
     <string name="app_name">Погода</string>
 
@@ -15,9 +15,18 @@
     <string name="nav_settings">Настройки</string>
     <string name="nav_about">О приложении</string>
 
+    <!-- Weather -->
+    <string name="wthr_temperature"><xliff:g id="value">%d</xliff:g>°</string>
+    <string name="wthr_humidity">Влажность <xliff:g id="value">%d</xliff:g>%%</string>
+
+    <!-- Error's -->
+    <string name="er_unknown">Произошла неизвестная ошибка.</string>
+    <string name="er_no_connection">Отсутсвует интернет соединение.</string>
+    <string name="er_request_failed">Сервер не отвечает.</string>
+
     <string name="about_content">Приложение Погода для первого этапа проекта Яндекс.Мобилизация 2017
 
-Автор изображения в боковом меню www.behance.net/gallery/18526001/Material-Wallpaper
-Иконка приложения - roundicons с www.flaticon.com</string>
+    Автор изображения в боковом меню www.behance.net/gallery/18526001/Material-Wallpaper
+    Иконка приложения, иконки погоды - roundicons с www.flaticon.com</string>
 
 </resources>
