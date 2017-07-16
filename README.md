@@ -13,3 +13,10 @@
 
 ## Используемые библиотеки
 * [ButterKnife](https://github.com/JakeWharton/butterknife)
+* [LeakCanary](https://github.com/square/leakcanary)
+* [Retrofit](https://github.com/square/retrofit)
+* [RxJava](https://github.com/ReactiveX/RxJava)
+* [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+* [Hawk](https://github.com/orhanobut/hawk)
+* [Timber](https://github.com/JakeWharton/timber)
+* [AndroidJob](https://github.com/evernote/android-job)
