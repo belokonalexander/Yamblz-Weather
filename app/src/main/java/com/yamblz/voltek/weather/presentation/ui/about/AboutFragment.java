@@ -12,12 +12,7 @@ import com.yamblz.voltek.weather.presentation.base.BaseFragment;
 public class AboutFragment extends BaseFragment {
 
     public static AboutFragment newInstance() {
-
-        Bundle args = new Bundle();
-
-        AboutFragment fragment = new AboutFragment();
-        fragment.setArguments(args);
-        return fragment;
+        return new AboutFragment();
     }
 
     @Nullable

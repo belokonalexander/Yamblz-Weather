@@ -8,7 +8,7 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     private Unbinder unbinder;
 

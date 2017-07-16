@@ -68,6 +68,7 @@ ext {
     rxJavaVersion = '2.1.1'
     rxAndroidVersion = '2.0.1'
     hawkVersion = '2.0.1'
+    timberVersion = '4.5.1'
 
     leakCanaryVersion = '1.5.1'
 }
@@ -96,9 +97,10 @@ dependencies {
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
-    // Retrofit
+    // Networking
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-moshi:${retrofitVersion}"
+    compile "com.squareup.okhttp3:logging-interceptor:3.7.0"
 
     // Rx
     compile "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
@@ -106,4 +108,7 @@ dependencies {
 
     // Storage
     compile "com.orhanobut:hawk:${hawkVersion}"
+
+    // Logging
+    compile "com.jakewharton.timber:timber:${timberVersion}"
 }

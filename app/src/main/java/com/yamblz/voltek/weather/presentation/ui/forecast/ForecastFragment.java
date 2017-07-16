@@ -2,23 +2,27 @@ package com.yamblz.voltek.weather.presentation.ui.forecast;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yamblz.voltek.weather.Injector;
 import com.yamblz.voltek.weather.R;
 import com.yamblz.voltek.weather.presentation.base.BaseFragment;
 
-public class ForecastFragment extends BaseFragment {
+import butterknife.BindView;
+
+public class ForecastFragment extends BaseFragment implements ForecastPresenter.View {
 
     public static ForecastFragment newInstance() {
-
-        Bundle args = new Bundle();
-
-        ForecastFragment fragment = new ForecastFragment();
-        fragment.setArguments(args);
-        return fragment;
+        return new ForecastFragment();
     }
+
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeContainer;
+
+    private ForecastPresenter presenter;
 
     @Nullable
     @Override
@@ -31,5 +35,33 @@ public class ForecastFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         getActivity().setTitle(R.string.title_forecast);
+
+        presenter = Injector.attachForecastPresenter(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        Injector.detachForecastPresenter();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (getActivity().isFinishing()) {
+            Injector.destroyForecastPresenter();
+        }
+    }
+
+    @Override
+    public void attachInputListeners() {
+        swipeContainer.setOnRefreshListener(() -> presenter.notifyRefresh());
+    }
+
+    @Override
+    public void render(ForecastPresenter.Model model) {
+        swipeContainer.setRefreshing(model.isLoading);
     }
 }

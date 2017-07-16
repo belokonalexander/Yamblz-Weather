@@ -5,6 +5,8 @@ import android.app.Application;
 import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
 
+import timber.log.Timber;
+
 public class WeatherApp extends Application {
 
     @Override public void onCreate() {
@@ -16,7 +18,8 @@ public class WeatherApp extends Application {
         }
         LeakCanary.install(this);
 
-        Hawk.init(this);
+        Hawk.init(this).build();
+        Timber.plant(new Timber.DebugTree());
 
         Injector.init(this);
     }

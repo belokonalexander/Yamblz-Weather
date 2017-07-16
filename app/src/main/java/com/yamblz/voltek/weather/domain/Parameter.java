@@ -12,19 +12,6 @@ public class Parameter<T> {
 
     public Parameter() {}
 
-    public Parameter(@NonNull T item) {
-        this.item = item;
-    }
-
-    public Parameter(@NonNull String flag) {
-        this.flag = flag;
-    }
-
-    public Parameter(@NonNull String flag, @NonNull T item) {
-        this.flag = flag;
-        this.item = item;
-    }
-
     @Nullable
     public String getFlag() {
         return flag;
@@ -33,5 +20,13 @@ public class Parameter<T> {
     @Nullable
     public T getItem() {
         return item;
+    }
+
+    public void setFlag(@NonNull String flag) {
+        this.flag = flag;
+    }
+
+    public void setItem(@NonNull T item) {
+        this.item = item;
     }
 }
