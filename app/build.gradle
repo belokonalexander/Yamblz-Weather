@@ -69,6 +69,7 @@ ext {
     rxAndroidVersion = '2.0.1'
     hawkVersion = '2.0.1'
     timberVersion = '4.5.1'
+    androidJobVersion = '1.1.11'
 
     leakCanaryVersion = '1.5.1'
 }
@@ -111,4 +112,7 @@ dependencies {
 
     // Logging
     compile "com.jakewharton.timber:timber:${timberVersion}"
+
+    // Background
+    compile "com.evernote:android-job:$androidJobVersion"
 }

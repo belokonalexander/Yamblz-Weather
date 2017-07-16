@@ -24,7 +24,6 @@ public class AboutFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         getActivity().setTitle(R.string.title_about);
     }
 }

@@ -19,14 +19,21 @@
     <string name="wthr_temperature"><xliff:g id="value">%d</xliff:g>°</string>
     <string name="wthr_humidity">Влажность <xliff:g id="value">%d</xliff:g>%%</string>
 
+    <!-- Settings -->
+    <string name="st_interval_prompt">Частота обновления погоды</string>
+    <string name="st_interval_1">1 час</string>
+    <string name="st_interval_2">3 часа</string>
+    <string name="st_interval_3">5 часов</string>
+
     <!-- Error's -->
     <string name="er_unknown">Произошла неизвестная ошибка.</string>
     <string name="er_no_connection">Отсутсвует интернет соединение.</string>
     <string name="er_request_failed">Сервер не отвечает.</string>
 
-    <string name="about_content">Приложение Погода для первого этапа проекта Яндекс.Мобилизация 2017
-
-    Автор изображения в боковом меню www.behance.net/gallery/18526001/Material-Wallpaper
-    Иконка приложения, иконки погоды - roundicons с www.flaticon.com</string>
+    <string name="about_content">
+        Приложение Погода для первого этапа проекта Яндекс.Мобилизация 2017
+        \n\nАвтор изображения в боковом меню www.behance.net/gallery/18526001/Material-Wallpaper
+        \n\nИконка приложения, иконки погоды - roundicons с www.flaticon.com
+    </string>
 
 </resources>

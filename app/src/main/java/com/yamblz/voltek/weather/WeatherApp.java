@@ -1,9 +1,15 @@
 package com.yamblz.voltek.weather;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
+import com.evernote.android.job.JobManager;
 import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
+import com.yamblz.voltek.weather.data.platform.UpdateCurrentWeatherJob;
+import com.yamblz.voltek.weather.data.platform.WeatherJobCreator;
+import com.yamblz.voltek.weather.presentation.ui.settings.SettingsFragment;
 
 import timber.log.Timber;
 
@@ -22,5 +28,10 @@ public class WeatherApp extends Application {
         Timber.plant(new Timber.DebugTree());
 
         Injector.init(this);
+
+        JobManager.create(this).addJobCreator(new WeatherJobCreator());
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        UpdateCurrentWeatherJob.schedulePeriodic(prefs.getInt(SettingsFragment.INTERVAL_KEY, 1));
     }
 }

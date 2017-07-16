@@ -55,7 +55,6 @@ public class ForecastFragment extends BaseFragment implements ForecastPresenter.
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         getActivity().setTitle(R.string.title_forecast);
 
         presenter = Injector.attachForecastPresenter(this);

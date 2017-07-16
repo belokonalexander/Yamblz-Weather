@@ -51,7 +51,7 @@ public final class Injector {
     // CurrentWeatherInteractor
     private static CurrentWeatherInteractor currentWeatherInteractor;
 
-    private static CurrentWeatherInteractor currentWeatherInteractor() {
+    public static CurrentWeatherInteractor currentWeatherInteractor() {
         if (currentWeatherInteractor == null) {
             currentWeatherInteractor = new CurrentWeatherInteractor(
                     Schedulers.io(),
