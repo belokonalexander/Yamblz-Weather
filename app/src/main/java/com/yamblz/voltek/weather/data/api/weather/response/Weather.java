@@ -1,11 +1,11 @@
-package com.yamblz.voltek.weather.data.api.weather;
+package com.yamblz.voltek.weather.data.api.weather.response;
 
 import com.squareup.moshi.Json;
 
 public class Weather {
 
     @Json(name = "id")
-    public Integer id;
+    public int id;
 
     @Json(name = "main")
     public String main;

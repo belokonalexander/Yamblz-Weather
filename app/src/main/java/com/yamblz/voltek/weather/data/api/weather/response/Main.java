@@ -1,21 +1,21 @@
-package com.yamblz.voltek.weather.data.api.weather;
+package com.yamblz.voltek.weather.data.api.weather.response;
 
 import com.squareup.moshi.Json;
 
 public class Main {
 
     @Json(name = "temp")
-    public Double temp;
+    public double temp;
 
     @Json(name = "humidity")
-    public Integer humidity;
+    public int humidity;
 
     @Json(name = "pressure")
-    public Integer pressure;
+    public int pressure;
 
     @Json(name = "temp_min")
-    public Double tempMin;
+    public int tempMin;
 
     @Json(name = "temp_max")
-    public Double tempMax;
+    public int tempMax;
 }

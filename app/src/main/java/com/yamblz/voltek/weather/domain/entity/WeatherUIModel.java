@@ -1,6 +1,6 @@
 package com.yamblz.voltek.weather.domain.entity;
 
-import com.yamblz.voltek.weather.data.api.weather.WeatherResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
 
 public class WeatherUIModel {
 

@@ -1,4 +1,4 @@
-package com.yamblz.voltek.weather.data.api.weather;
+package com.yamblz.voltek.weather.data.api.weather.response;
 
 import com.squareup.moshi.Json;
 
@@ -8,8 +8,8 @@ public class Sys {
     public String country;
 
     @Json(name = "sunrise")
-    public Integer sunrise;
+    public int sunrise;
 
     @Json(name = "sunset")
-    public Integer sunset;
+    public int sunset;
 }

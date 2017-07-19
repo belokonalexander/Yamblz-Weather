@@ -1,4 +1,4 @@
-package com.yamblz.voltek.weather.data.api.weather;
+package com.yamblz.voltek.weather.data.api.weather.response;
 
 import java.util.List;
 import com.squareup.moshi.Json;
@@ -27,14 +27,14 @@ public class WeatherResponseModel {
     public Clouds clouds;
 
     @Json(name = "dt")
-    public Integer dt;
+    public int dt;
 
     @Json(name = "id")
-    public Integer id;
+    public int id;
 
     @Json(name = "name")
     public String name;
 
     @Json(name = "cod")
-    public Integer cod;
+    public int cod;
 }

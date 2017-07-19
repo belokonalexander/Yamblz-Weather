@@ -7,9 +7,9 @@ import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.domain.exception.NoConnectionException;
 import com.yamblz.voltek.weather.domain.exception.RequestFailedException;
 
-public final class Provider {
+public final class DataProvider {
 
-    private Provider() {}
+    private DataProvider() {}
 
     public static class API {
 

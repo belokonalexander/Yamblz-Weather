@@ -1,6 +1,6 @@
 package com.yamblz.voltek.weather.domain.interactor;
 
-import com.yamblz.voltek.weather.data.Provider;
+import com.yamblz.voltek.weather.data.DataProvider;
 import com.yamblz.voltek.weather.domain.Interactor;
 import com.yamblz.voltek.weather.domain.Parameter;
 import com.yamblz.voltek.weather.domain.Result;
@@ -15,12 +15,12 @@ public class CurrentWeatherInteractor extends Interactor<Void, WeatherUIModel> {
 
     public static final String REFRESH = "REFRESH";
 
-    private Provider.API.Weather api;
-    private Provider.Storage.Weather storage;
+    private DataProvider.API.Weather api;
+    private DataProvider.Storage.Weather storage;
 
     public CurrentWeatherInteractor(
             Scheduler jobScheduler, Scheduler uiScheduler,
-            Provider.API.Weather api, Provider.Storage.Weather storage
+            DataProvider.API.Weather api, DataProvider.Storage.Weather storage
     ) {
         super(jobScheduler, uiScheduler);
         this.api = api;

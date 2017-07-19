@@ -1,6 +1,7 @@
 package com.yamblz.voltek.weather.data.api.weather;
 
 import com.yamblz.voltek.weather.data.api.ApiConst;
+import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
