@@ -14,4 +14,12 @@
         <item name="colorPrimary">@color/deep_purple_md200a</item>
     </style>
 
+    <style name="AppTextInputLayout" parent="Widget.Design.TextInputLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColorHint">@color/yellow_md700</item>
+        <item name="android:paddingTop">8dp</item>
+
+    </style>
+
 </resources>

@@ -8,9 +8,10 @@ import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPIDelegate;
 import com.yamblz.voltek.weather.data.storage.WeatherStorage;
 import com.yamblz.voltek.weather.domain.interactor.CurrentWeatherInteractor;
+import com.yamblz.voltek.weather.domain.interactor.SettingsCityInteractor;
 
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -18,7 +19,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public final class Injector {
 
-    private Injector() {}
+    private Injector() {
+    }
 
     @SuppressLint("StaticFieldLeak")
     private static Context context;
@@ -62,4 +64,19 @@ public final class Injector {
 
         return currentWeatherInteractor;
     }
+
+    public static SettingsCityInteractor settingsInteractor;
+
+    public static SettingsCityInteractor settingsInteractor() {
+        if (settingsInteractor == null) {
+            settingsInteractor = new SettingsCityInteractor(
+                    Schedulers.io(),
+                    AndroidSchedulers.mainThread()
+            );
+        }
+
+        return settingsInteractor;
+    }
+
+
 }

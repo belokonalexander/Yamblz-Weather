@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
+/*def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))*/
 
 def secretPropertiesFile = rootProject.file("secret.properties")
 def secretProperties = new Properties()
@@ -24,7 +24,7 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
-    signingConfigs {
+    /*signingConfigs {
 
         release {
             storeFile file(keystoreProperties['storeFile'])
@@ -32,7 +32,7 @@ android {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
         }
-    }
+    }*/
 
     buildTypes {
 
@@ -40,13 +40,13 @@ android {
             it.buildConfigField 'String', 'ApiKey', secretProperties['ApiKey']
         }
 
-        release {
+        /*release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             proguardFiles fileTree('proguard').asList().toArray()
             signingConfig signingConfigs.release
-        }
+        }*/
 
         debug {
             debuggable true
