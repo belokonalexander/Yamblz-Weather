@@ -5,7 +5,7 @@ import com.squareup.moshi.Json;
 public class Main {
 
     @Json(name = "temp")
-    public double temp;
+    public Double temp;
 
     @Json(name = "humidity")
     public int humidity;

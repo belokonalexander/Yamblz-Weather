@@ -5,7 +5,11 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 public abstract class BaseActivity extends AppCompatActivity {
+
+    protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

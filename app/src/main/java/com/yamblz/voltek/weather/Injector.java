@@ -8,7 +8,6 @@ import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPIDelegate;
 import com.yamblz.voltek.weather.data.storage.WeatherStorage;
 import com.yamblz.voltek.weather.domain.interactor.CurrentWeatherInteractor;
-import com.yamblz.voltek.weather.presentation.ui.forecast.ForecastPresenter;
 
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -62,25 +61,5 @@ public final class Injector {
         }
 
         return currentWeatherInteractor;
-    }
-
-    // Forecast presenter
-    private static ForecastPresenter forecastPresenter;
-
-    public static ForecastPresenter attachForecastPresenter(ForecastPresenter.View view) {
-        if (forecastPresenter == null)
-            forecastPresenter = new ForecastPresenter(view, currentWeatherInteractor());
-        else
-            forecastPresenter.attach(view);
-
-        return forecastPresenter;
-    }
-
-    public static void detachForecastPresenter() {
-        forecastPresenter.detach();
-    }
-
-    public static void destroyForecastPresenter() {
-        forecastPresenter =  null;
     }
 }

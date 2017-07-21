@@ -10,18 +10,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.PresenterType;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout;
 import com.yamblz.voltek.weather.Injector;
 import com.yamblz.voltek.weather.R;
+import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.presentation.base.BaseFragment;
 import com.yamblz.voltek.weather.utils.StringUtils;
 import com.yamblz.voltek.weather.utils.WeatherUtils;
 
 import butterknife.BindView;
+import io.reactivex.disposables.Disposable;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class ForecastFragment extends BaseFragment implements ForecastPresenter.View {
+public class ForecastFragment extends BaseFragment implements ForecastView {
+
+    public static final String TAG = "ForecastFragment";
 
     public static ForecastFragment newInstance() {
         return new ForecastFragment();
@@ -44,7 +52,14 @@ public class ForecastFragment extends BaseFragment implements ForecastPresenter.
     @BindView(R.id.tv_humidity)
     TextView humidityTv;
 
-    private ForecastPresenter presenter;
+    @InjectPresenter(type = PresenterType.LOCAL, tag = TAG)
+    ForecastPresenter presenter;
+
+    @ProvidePresenter(type = PresenterType.LOCAL, tag = TAG)
+    ForecastPresenter provideForecastPresenter() {
+        return new ForecastPresenter(Injector.currentWeatherInteractor());
+    }
+
 
     @Nullable
     @Override
@@ -56,49 +71,53 @@ public class ForecastFragment extends BaseFragment implements ForecastPresenter.
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(R.string.title_forecast);
-
-        presenter = Injector.attachForecastPresenter(this);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        Injector.detachForecastPresenter();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (getActivity().isFinishing()) {
-            Injector.destroyForecastPresenter();
-        }
     }
 
     @Override
     public void attachInputListeners() {
-        swipeContainer.setOnRefreshListener(() -> presenter.notifyRefresh());
+        Disposable refreshListener = RxSwipeRefreshLayout.refreshes(swipeContainer)
+                .subscribe(o -> presenter.notifyRefresh());
+
+        compositeDisposable.addAll(refreshListener);
     }
 
     @Override
-    public void render(ForecastPresenter.Model model) {
-        swipeContainer.setRefreshing(model.isLoading);
+    public void detachInputListeners() {
+        compositeDisposable.clear();
+    }
 
-        if (model.error != null) {
+    @Override
+    public void showLoading(boolean show) {
+        swipeContainer.setRefreshing(show);
+    }
+
+    @Override
+    public void showData(@Nullable WeatherUIModel weather) {
+        if (weather == null) {
             contentContainer.setVisibility(GONE);
+        } else {
+            weatherIconIm.setImageResource(WeatherUtils.getImageByCondition(weather.getConditionId()));
+            descriptionTv.setText(weather.getCondition());
+            temperatureTv.setText(getString(R.string.wthr_temperature, weather.getTemperature()));
+            humidityTv.setText(getString(R.string.wthr_humidity, weather.getHumidity()));
 
-            emptyStateTv.setText(getString(StringUtils.fromError(model.error)));
-            emptyStateTv.setVisibility(VISIBLE);
-        } else if (model.data != null) {
-            weatherIconIm.setImageResource(
-                    WeatherUtils.getImageByCondition(model.data.getConditionId()));
-            descriptionTv.setText(model.data.getCondition());
-            temperatureTv.setText(getString(R.string.wthr_temperature, model.data.getTemperature()));
-            humidityTv.setText(getString(R.string.wthr_humidity, model.data.getHumidity()));
-
-            emptyStateTv.setVisibility(GONE);
             contentContainer.setVisibility(VISIBLE);
+        }
+    }
+
+    @Override
+    public void showError(@Nullable Throwable error) {
+        if (error == null) {
+            emptyStateTv.setVisibility(GONE);
+        } else {
+            String message = getString(StringUtils.fromError(error));
+
+            if (contentContainer.getVisibility() == VISIBLE) {
+                toast(message);
+            } else {
+                emptyStateTv.setText(message);
+                emptyStateTv.setVisibility(VISIBLE);
+            }
         }
     }
 }
