@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
 
     <string name="app_name">Weather</string>
 
@@ -15,9 +15,25 @@
     <string name="nav_settings">Settings</string>
     <string name="nav_about">About</string>
 
-    <string name="about_content">Weather app for first stage of Yandex.Mobilization 2017
+    <!-- Weather -->
+    <string name="wthr_temperature"><xliff:g id="value">%d</xliff:g>°</string>
+    <string name="wthr_humidity">Humidity <xliff:g id="value">%d</xliff:g>%%</string>
 
-Nav drawer header picture - www.behance.net/gallery/18526001/Material-Wallpaper
-App icon - roundicons с www.flaticon.com</string>
+    <!-- Settings -->
+    <string name="st_interval_prompt">Frequency of weather update</string>
+    <string name="st_interval_1">1 hour</string>
+    <string name="st_interval_2">3 hours</string>
+    <string name="st_interval_3">5 hours</string>
+
+    <!-- Error's -->
+    <string name="er_unknown">Unknown error happened.</string>
+    <string name="er_no_connection">There is no internet connection.</string>
+    <string name="er_request_failed">Server is not responding.</string>
+
+    <string name="about_content">
+        Weather app for first stage of Yandex.Mobilization 2017
+        \n\nNav drawer header picture - www.behance.net/gallery/18526001/Material-Wallpaper
+        \n\nApp icon, weather icons - www.flaticon.com
+    </string>
 
 </resources>

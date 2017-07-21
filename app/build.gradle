@@ -1,20 +1,27 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+def secretPropertiesFile = rootProject.file("secret.properties")
+def secretProperties = new Properties()
+secretProperties.load(new FileInputStream(secretPropertiesFile))
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
 
     defaultConfig {
-        applicationId "yamblz.voltek.com.weather"
-        minSdkVersion 21
+        applicationId "com.yamblz.voltek.weather"
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -29,6 +36,10 @@ android {
 
     buildTypes {
 
+        buildTypes.each {
+            it.buildConfigField 'String', 'ApiKey', secretProperties['ApiKey']
+        }
+
         release {
             minifyEnabled true
             shrinkResources true
@@ -42,12 +53,27 @@ android {
             minifyEnabled false
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 ext {
     supportLibVersion = '25.3.1'
 
     butterknifeVersion = '8.7.0'
+    retrofitVersion = '2.3.0'
+    rxJavaVersion = '2.1.1'
+    rxAndroidVersion = '2.0.1'
+    rxbindingVersion = '2.0.0'
+    hawkVersion = '2.0.1'
+    timberVersion = '4.5.1'
+    androidJobVersion = '1.1.11'
+    moxyVersion = '1.5.1'
+
+    leakCanaryVersion = '1.5.1'
 }
 
 dependencies {
@@ -60,6 +86,11 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 
+    // Leak Canary
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+
     // Support lib
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-v4:$supportLibVersion"
@@ -68,4 +99,31 @@ dependencies {
     // Butterknife
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+
+    // Networking
+    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-moshi:${retrofitVersion}"
+    compile "com.squareup.okhttp3:logging-interceptor:3.7.0"
+
+    // Rx
+    compile "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
+    compile "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
+    compile "com.jakewharton.rxbinding2:rxbinding:${rxbindingVersion}"
+    compile "com.jakewharton.rxbinding2:rxbinding-design:${rxbindingVersion}"
+    compile "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:${rxbindingVersion}"
+    compile "com.jakewharton.rxbinding2:rxbinding-support-v4:${rxbindingVersion}"
+
+    // Storage
+    compile "com.orhanobut:hawk:${hawkVersion}"
+
+    // Logging
+    compile "com.jakewharton.timber:timber:${timberVersion}"
+
+    // Background
+    compile "com.evernote:android-job:$androidJobVersion"
+
+    // Moxy
+    compile "com.arello-mobile:moxy:${moxyVersion}"
+    compile "com.arello-mobile:moxy-app-compat:${moxyVersion}"
+    annotationProcessor "com.arello-mobile:moxy-compiler:${moxyVersion}"
 }
