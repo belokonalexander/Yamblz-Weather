@@ -2,10 +2,10 @@ package com.yamblz.voltek.weather.presentation.ui.forecast;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.yamblz.voltek.weather.domain.Parameter;
+import com.yamblz.voltek.weather.domain.exception.NoConnectionException;
+import com.yamblz.voltek.weather.domain.exception.RequestFailedException;
 import com.yamblz.voltek.weather.domain.interactor.CurrentWeatherInteractor;
 import com.yamblz.voltek.weather.presentation.base.BasePresenter;
-
-import timber.log.Timber;
 
 @InjectViewState
 public class ForecastPresenter extends BasePresenter<ForecastView> {
@@ -35,10 +35,12 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 param,
                 result -> getViewState().showData(result.getData()),
                 error -> {
-                    Timber.e(error);
-
-                    getViewState().showLoading(false);
-                    getViewState().showError(error);
+                    if (error instanceof NoConnectionException || error instanceof RequestFailedException) {
+                        getViewState().showLoading(false);
+                        getViewState().showError(error);
+                    } else {
+                        throw new Exception("Unhandled exception passed to ForecastPresenter", error);
+                    }
                 },
                 () -> getViewState().showLoading(false)
         );

@@ -25,7 +25,7 @@ public final class Injector {
 
     private static Retrofit retrofit;
 
-    static void init(Context context) {
+    public static void init(Context context) {
         Injector.context = context;
 
         retrofit = new Retrofit.Builder()
