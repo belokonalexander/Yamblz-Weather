@@ -5,17 +5,17 @@ import com.squareup.moshi.Json;
 public class Main {
 
     @Json(name = "temp")
-    public Double temp;
+    public double temp;
 
     @Json(name = "humidity")
-    public int humidity;
+    public double humidity;
 
     @Json(name = "pressure")
-    public int pressure;
+    public double pressure;
 
     @Json(name = "temp_min")
-    public int tempMin;
+    public double tempMin;
 
     @Json(name = "temp_max")
-    public int tempMax;
+    public double tempMax;
 }

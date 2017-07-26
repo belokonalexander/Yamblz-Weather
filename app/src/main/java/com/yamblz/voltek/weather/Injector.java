@@ -6,9 +6,17 @@ import android.content.Context;
 import com.yamblz.voltek.weather.data.api.ApiConst;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPIDelegate;
+import com.yamblz.voltek.weather.data.database.AppDatabaseHelper;
+import com.yamblz.voltek.weather.data.database.CityRepositoryStorage;
+import com.yamblz.voltek.weather.data.database.models.DaoMaster;
+import com.yamblz.voltek.weather.data.database.models.DaoSession;
 import com.yamblz.voltek.weather.data.storage.WeatherStorage;
+import com.yamblz.voltek.weather.domain.interactor.CurrentSettingsInteractor;
 import com.yamblz.voltek.weather.domain.interactor.CurrentWeatherInteractor;
-import com.yamblz.voltek.weather.domain.interactor.SettingsCityInteractor;
+import com.yamblz.voltek.weather.domain.interactor.SettingsCitySuggestionsInteractor;
+import com.yamblz.voltek.weather.domain.interactor.SettingsSetCityInteractor;
+
+import org.greenrobot.greendao.database.Database;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -27,6 +35,8 @@ public final class Injector {
 
     private static Retrofit retrofit;
 
+    private static DaoSession session;
+
     public static void init(Context context) {
         Injector.context = context;
 
@@ -35,6 +45,11 @@ public final class Injector {
                 .addConverterFactory(MoshiConverterFactory.create())
                 .client(provideHttpClient())
                 .build();
+
+        DaoMaster.DevOpenHelper helper = new AppDatabaseHelper(context, "weather.db", null);
+        Database db = helper.getWritableDb();
+        session = new DaoMaster(db).newSession();
+
     }
 
     private static OkHttpClient provideHttpClient() {
@@ -65,18 +80,47 @@ public final class Injector {
         return currentWeatherInteractor;
     }
 
-    public static SettingsCityInteractor settingsInteractor;
+    public static SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor;
 
-    public static SettingsCityInteractor settingsInteractor() {
-        if (settingsInteractor == null) {
-            settingsInteractor = new SettingsCityInteractor(
+    public static SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor() {
+        if (settingsCitySuggestionsInteractor == null) {
+            settingsCitySuggestionsInteractor = new SettingsCitySuggestionsInteractor(
                     Schedulers.io(),
-                    AndroidSchedulers.mainThread()
+                    AndroidSchedulers.mainThread(),
+                    new CityRepositoryStorage(session.getCityToIDModelDao())
             );
         }
 
-        return settingsInteractor;
+        return settingsCitySuggestionsInteractor;
     }
 
+    public static SettingsSetCityInteractor settingsSetCityInteractor;
 
+    public static SettingsSetCityInteractor settingsSetCityInteractor() {
+        if (settingsSetCityInteractor == null) {
+            settingsSetCityInteractor = new SettingsSetCityInteractor(
+                    Schedulers.io(),
+                    AndroidSchedulers.mainThread(),
+                    new WeatherAPIDelegate(context, retrofit.create(WeatherAPI.class)),
+                    new WeatherStorage(),
+                    new CityRepositoryStorage(session.getCityToIDModelDao())
+            );
+        }
+
+        return settingsSetCityInteractor;
+    }
+
+    public static CurrentSettingsInteractor currentSettingsInteractor;
+
+    public static CurrentSettingsInteractor currentSettingsInteractor() {
+        if (currentSettingsInteractor == null) {
+            currentSettingsInteractor = new CurrentSettingsInteractor(
+                    Schedulers.io(),
+                    AndroidSchedulers.mainThread(),
+                    new WeatherStorage()
+            );
+        }
+
+        return currentSettingsInteractor;
+    }
 }

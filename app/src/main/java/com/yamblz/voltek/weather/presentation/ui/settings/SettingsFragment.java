@@ -3,8 +3,8 @@ package com.yamblz.voltek.weather.presentation.ui.settings;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +13,22 @@ import android.widget.RadioGroup;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.PresenterType;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.jakewharton.rxbinding2.widget.RxAutoCompleteTextView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.yamblz.voltek.weather.Injector;
 import com.yamblz.voltek.weather.R;
+import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.data.platform.UpdateCurrentWeatherJob;
 import com.yamblz.voltek.weather.presentation.base.BaseFragment;
-import com.yamblz.voltek.weather.presentation.ui.views.AutoCompletableCustom;
+import com.yamblz.voltek.weather.presentation.ui.views.ClosableAutoCompleteTextView;
+import com.yamblz.voltek.weather.presentation.ui.views.SimpleArrayAdapter;
+import com.yamblz.voltek.weather.utils.StringUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 public class SettingsFragment extends BaseFragment implements SettingsView {
@@ -39,16 +45,17 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
     @ProvidePresenter(type = PresenterType.LOCAL, tag = TAG)
     SettingsPresenter provideSettingsPresenter() {
-        return new SettingsPresenter(Injector.settingsInteractor());
+        return new SettingsPresenter(Injector.settingsCitySuggestionsInteractor(), Injector.settingsSetCityInteractor(), Injector.currentSettingsInteractor());
     }
 
     @BindView(R.id.rg_intervals)
     RadioGroup groupIntervals;
 
     @BindView(R.id.city_name_settings_view)
-    AutoCompletableCustom autoCompleteTextView;
+    ClosableAutoCompleteTextView autoCompleteTextView;
 
     private SharedPreferences sharedPrefs;
+    private SimpleArrayAdapter<CityUIModel> arrayAdapter;
 
     @Nullable
     @Override
@@ -87,6 +94,8 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
                     break;
             }
         });
+
+        autoCompleteTextView.setOnKeyActionListener(() -> presenter.selectCity(autoCompleteTextView.getText().toString()));
     }
 
     private void changeUpdateInterval(int interval) {
@@ -96,11 +105,24 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
     @Override
     public void attachInputListeners() {
-        Disposable getCities = RxTextView.afterTextChangeEvents(autoCompleteTextView)
-                .skipInitialValue()
-                .subscribe(text -> presenter.findSuggestions(text.view().getText().toString()));
 
-        compositeDisposable.add(getCities);
+        Disposable getCities = RxTextView.afterTextChangeEvents(autoCompleteTextView)
+                .skip(1)
+                .debounce(400, TimeUnit.MILLISECONDS)
+                .filter(textViewAfterTextChangeEvent -> textViewAfterTextChangeEvent.view().isFocused())
+                .map(textViewAfterTextChangeEvent -> textViewAfterTextChangeEvent.view().getText().toString())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(text -> presenter.findSuggestions(text));
+
+
+        Disposable selectCities = RxAutoCompleteTextView.itemClickEvents(autoCompleteTextView)
+                .map(adapterViewItemClickEvent -> arrayAdapter.getItem(adapterViewItemClickEvent.position()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(city -> presenter.selectCity(city)
+                );
+
+
+        compositeDisposable.addAll(getCities, selectCities);
     }
 
     @Override
@@ -109,7 +131,34 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     @Override
-    public void showSuggestions(List<String> strings) {
-        Log.e("TAG", " ----> " + strings);
+    public void showSuggestions(List<CityUIModel> suggestions) {
+
+        if (arrayAdapter == null) {
+            arrayAdapter = new SimpleArrayAdapter<>(getContext(),
+                    android.R.layout.simple_dropdown_item_1line, suggestions);
+            autoCompleteTextView.setAdapter(arrayAdapter);
+        } else {
+            arrayAdapter.clear();
+            arrayAdapter.addAll(suggestions);
+        }
+
+        if (!autoCompleteTextView.isPopupShowing() && arrayAdapter.getCount() > 0)
+            if (autoCompleteTextView.isAttachedToWindow())
+                autoCompleteTextView.showDropDown();
+            else autoCompleteTextView.post(() -> autoCompleteTextView.showDropDown());
+    }
+
+
+
+    @Override
+    public void setCity(String cityName) {
+        autoCompleteTextView.setText(cityName);
+        autoCompleteTextView.clearFocus();
+    }
+
+
+    @Override
+    public void showError(@NonNull Throwable error) {
+        toast(getString(StringUtils.fromError(error)));
     }
 }

@@ -1,6 +1,7 @@
 package com.yamblz.voltek.weather.domain.interactor;
 
 import com.yamblz.voltek.weather.data.DataProvider;
+import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.Interactor;
 import com.yamblz.voltek.weather.domain.Parameter;
 import com.yamblz.voltek.weather.domain.Result;
@@ -31,9 +32,10 @@ public class CurrentWeatherInteractor extends Interactor<Void, WeatherUIModel> {
     protected Observable<Result<WeatherUIModel>> build(Parameter<Void> parameter) {
         return Observable.create(emitter -> {
             WeatherUIModel item = storage.getCurrent();
+            CityUIModel currentCity = storage.getSelectedCity();
             if (item == null || Objects.equals(parameter.getFlag(), REFRESH)) {
                 try {
-                    item = api.getCurrent();
+                    item = api.getCurrentByID(currentCity.id);
                     storage.putCurrent(item);
                     emitter.onNext(new Result<>(item));
                 } catch (Exception e) {

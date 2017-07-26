@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.evernote.android.job.JobManager;
+import com.facebook.stetho.Stetho;
 import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
 import com.yamblz.voltek.weather.data.platform.UpdateCurrentWeatherJob;
@@ -28,6 +29,8 @@ public class WeatherApp extends Application {
         Timber.plant(new Timber.DebugTree());
 
         Injector.init(this);
+
+        Stetho.initializeWithDefaults(this);
 
         JobManager.create(this).addJobCreator(new WeatherJobCreator());
 

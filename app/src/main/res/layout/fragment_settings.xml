@@ -52,13 +52,13 @@
 
         <android.support.design.widget.TextInputLayout style="@style/AppTextInputLayout">
 
-            <com.yamblz.voltek.weather.presentation.ui.views.AutoCompletableCustom
+            <com.yamblz.voltek.weather.presentation.ui.views.ClosableAutoCompleteTextView
                 android:id="@+id/city_name_settings_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/city_name_hint"
                 android:inputType="textNoSuggestions"
-                android:imeOptions="actionDone"
+                android:imeOptions="flagNoExtractUi"
                 />
 
         </android.support.design.widget.TextInputLayout>

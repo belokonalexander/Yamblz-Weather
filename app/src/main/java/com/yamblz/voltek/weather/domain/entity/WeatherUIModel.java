@@ -11,8 +11,8 @@ public class WeatherUIModel {
 
     public WeatherUIModel(WeatherResponseModel model) {
         condition = model.weather.get(0).description;
-        temperature = model.main.temp.intValue();
-        humidity = model.main.humidity;
+        temperature = (int) model.main.temp;
+        humidity = (int) model.main.humidity;
         conditionId = model.weather.get(0).id;
     }
 

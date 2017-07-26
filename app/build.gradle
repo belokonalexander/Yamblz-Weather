@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'org.greenrobot.greendao'
 
 /*def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -72,8 +73,14 @@ ext {
     timberVersion = '4.5.1'
     androidJobVersion = '1.1.11'
     moxyVersion = '1.5.1'
-
+    acdatVersion = '3.2.1'
     leakCanaryVersion = '1.5.1'
+    greendaoVersion = '3.2.2'
+    stethoVersion = '1.5.0'
+}
+
+greendao {
+    schemaVersion 6
 }
 
 dependencies {
@@ -126,4 +133,11 @@ dependencies {
     compile "com.arello-mobile:moxy:${moxyVersion}"
     compile "com.arello-mobile:moxy-app-compat:${moxyVersion}"
     annotationProcessor "com.arello-mobile:moxy-compiler:${moxyVersion}"
+
+    //greendao
+    compile "org.greenrobot:greendao:${greendaoVersion}"
+
+    //stetho
+    compile "com.facebook.stetho:stetho:${stethoVersion}"
+
 }

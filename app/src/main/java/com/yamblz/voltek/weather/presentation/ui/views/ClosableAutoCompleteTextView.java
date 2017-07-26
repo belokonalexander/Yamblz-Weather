@@ -8,24 +8,20 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
-/**
- * Created by Alexander on 21.07.2017.
- */
 
-public class AutoCompletableCustom extends AppCompatAutoCompleteTextView {
+public class ClosableAutoCompleteTextView extends AppCompatAutoCompleteTextView {
 
-
-    public AutoCompletableCustom(Context context) {
+    public ClosableAutoCompleteTextView(Context context) {
         super(context);
 
     }
 
-    public AutoCompletableCustom(Context context, AttributeSet attrs) {
+    public ClosableAutoCompleteTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
     }
 
-    public AutoCompletableCustom(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ClosableAutoCompleteTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
     }
@@ -48,13 +44,20 @@ public class AutoCompletableCustom extends AppCompatAutoCompleteTextView {
         imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
     }
 
+
+    @Override
+    public boolean enoughToFilter() {
+        return getText().length() > 0;
+    }
+
+
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
 
         if ((keyCode == KeyEvent.KEYCODE_BACK) &&
                 event.getAction() == KeyEvent.ACTION_UP) {
             if (onKeyActionListener != null)
-                onKeyCancelListener.onCanel();
+                onKeyActionListener.onAction();
             clearFocus();
             return false;
         }
@@ -64,21 +67,14 @@ public class AutoCompletableCustom extends AppCompatAutoCompleteTextView {
 
 
     OnKeyActionListener onKeyActionListener;
-    OnKeyCancelListener onKeyCancelListener;
 
     public void setOnKeyActionListener(OnKeyActionListener onKeyActionListener) {
         this.onKeyActionListener = onKeyActionListener;
-    }
-
-    public void setOnKeyCancelListener(OnKeyCancelListener onKeyCancelListener) {
-        this.onKeyCancelListener = onKeyCancelListener;
     }
 
     public interface OnKeyActionListener {
         void onAction();
     }
 
-    public interface OnKeyCancelListener {
-        void onCanel();
-    }
+
 }

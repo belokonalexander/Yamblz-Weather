@@ -1,6 +1,7 @@
 package com.yamblz.voltek.weather.presentation.base;
 
 import com.arellomobile.mvp.MvpPresenter;
+import com.yamblz.voltek.weather.domain.Result;
 
 public abstract class BasePresenter<V extends BaseView> extends MvpPresenter<V> {
 
@@ -15,4 +16,15 @@ public abstract class BasePresenter<V extends BaseView> extends MvpPresenter<V> 
         getViewState().detachInputListeners();
         super.detachView(view);
     }
+
+
+    final protected void onComplete() {
+        //dummy
+    }
+
+    final protected <T extends Result> void onNext(T parameter) {
+        //dummy
+    }
+
+
 }
