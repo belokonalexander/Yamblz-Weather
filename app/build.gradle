@@ -79,6 +79,7 @@ ext {
     leakCanaryVersion = '1.5.1'
     greendaoVersion = '3.2.2'
     stethoVersion = '1.5.0'
+    mockitoVersion = '2.7.22'
 }
 
 greendao {
@@ -141,5 +142,8 @@ dependencies {
 
     //stetho
     compile "com.facebook.stetho:stetho:${stethoVersion}"
+
+    //mockito for unit tests
+    testCompile "org.mockito:mockito-core:${mockitoVersion}"
 
 }
