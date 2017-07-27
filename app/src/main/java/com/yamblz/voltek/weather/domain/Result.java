@@ -10,7 +10,8 @@ public class Result<T> {
     @Nullable
     private T data = null;
 
-    public Result() {}
+    public Result() {
+    }
 
     public Result(@NonNull T data) {
         this.data = data;
@@ -25,10 +26,12 @@ public class Result<T> {
         this.data = data;
     }
 
+    @Nullable
     public String getMessage() {
         return message;
     }
 
+    @Nullable
     public T getData() {
         return data;
     }

@@ -80,7 +80,7 @@ public final class Injector {
         return currentWeatherInteractor;
     }
 
-    public static SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor;
+    private static SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor;
 
     public static SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor() {
         if (settingsCitySuggestionsInteractor == null) {
@@ -94,7 +94,7 @@ public final class Injector {
         return settingsCitySuggestionsInteractor;
     }
 
-    public static SettingsSetCityInteractor settingsSetCityInteractor;
+    private static SettingsSetCityInteractor settingsSetCityInteractor;
 
     public static SettingsSetCityInteractor settingsSetCityInteractor() {
         if (settingsSetCityInteractor == null) {
@@ -110,7 +110,7 @@ public final class Injector {
         return settingsSetCityInteractor;
     }
 
-    public static CurrentSettingsInteractor currentSettingsInteractor;
+    private static CurrentSettingsInteractor currentSettingsInteractor;
 
     public static CurrentSettingsInteractor currentSettingsInteractor() {
         if (currentSettingsInteractor == null) {

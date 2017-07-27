@@ -66,7 +66,7 @@ public class ClosableAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     }
 
 
-    OnKeyActionListener onKeyActionListener;
+    private OnKeyActionListener onKeyActionListener;
 
     public void setOnKeyActionListener(OnKeyActionListener onKeyActionListener) {
         this.onKeyActionListener = onKeyActionListener;

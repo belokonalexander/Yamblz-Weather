@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public class CityRepositoryStorage implements DataProvider.DataBase.CityRepository {
 
-    public static final int DEFAULT_OFFSET = 5;
+    private static final int DEFAULT_OFFSET = 5;
     private CityToIDModelDao cityToIDModelDao;
 
 

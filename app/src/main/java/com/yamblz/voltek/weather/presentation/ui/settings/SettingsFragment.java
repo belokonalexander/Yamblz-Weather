@@ -34,7 +34,7 @@ import io.reactivex.disposables.Disposable;
 public class SettingsFragment extends BaseFragment implements SettingsView {
 
     public static final String INTERVAL_KEY = "INTERVAL_KEY";
-    public static final String TAG = "SettingsFragment";
+    private static final String TAG = "SettingsFragment";
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -147,7 +147,6 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
                 autoCompleteTextView.showDropDown();
             else autoCompleteTextView.post(() -> autoCompleteTextView.showDropDown());
     }
-
 
 
     @Override

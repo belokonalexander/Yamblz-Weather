@@ -35,7 +35,8 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
     }
 
     private void successLoadSettings(Result<CityUIModel> city) {
-        getViewState().setCity(city.getData().name);
+        if (city.getData() != null)
+            getViewState().setCity(city.getData().name);
     }
 
     void findSuggestions(String text) {
@@ -61,9 +62,9 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
     /**
      * if we change city with id - save directly to prefs
      *
-     * @param city
+     * @param city the chosen city
      */
-    public void selectCity(CityUIModel city) {
+    void selectCity(CityUIModel city) {
         getViewState().setCity(city.name);
         Parameter<CityUIModel> param = new Parameter<>();
         param.setItem(city);
@@ -71,18 +72,19 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
     }
 
     /**
-     * if we put random name - should check it with db/api and save to shared prefs
+     * if we put random name - should check it with db/api and save it to shared prefs
      *
-     * @param cityName the city which we want to select
+     * @param cityName the city name we want to select
      */
-    public void selectCity(String cityName) {
+    void selectCity(String cityName) {
         Parameter<CityUIModel> param = new Parameter<>();
         param.setItem(new CityUIModel(cityName));
         settingsSetCityInteractor.execute(param, this::onNextCorrectCity, this::onError, this::onComplete);
     }
 
     private void onNextCorrectCity(Result<CityUIModel> cityUIModelResult) {
-        getViewState().setCity(cityUIModelResult.getData().name);
+        if (cityUIModelResult.getData() != null)
+            getViewState().setCity(cityUIModelResult.getData().name);
     }
 
 }

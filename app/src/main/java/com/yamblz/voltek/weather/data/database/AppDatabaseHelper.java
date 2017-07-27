@@ -70,8 +70,8 @@ public class AppDatabaseHelper extends DaoMaster.DevOpenHelper {
     /**
      * Create new database if not present
      */
-    public void createDataBase() {
-        SQLiteDatabase sqliteDatabase = null;
+    private void createDataBase() {
+        SQLiteDatabase sqliteDatabase;
 
         if (databaseExists()) {
             /* Check for Upgrade */
@@ -106,7 +106,7 @@ public class AppDatabaseHelper extends DaoMaster.DevOpenHelper {
     /**
      * Copy existing database file in system
      */
-    public void copyDataBase() {
+    private void copyDataBase() {
 
         int length;
         byte[] buffer = new byte[1024];

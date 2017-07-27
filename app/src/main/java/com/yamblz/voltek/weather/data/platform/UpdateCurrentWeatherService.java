@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 public class UpdateCurrentWeatherService extends IntentService {
 
-    public static final String TAG = "UpdateCurrentWeatherService";
+    private static final String TAG = "UpdateCurrentWeatherService";
 
     public UpdateCurrentWeatherService() {
         super(TAG);

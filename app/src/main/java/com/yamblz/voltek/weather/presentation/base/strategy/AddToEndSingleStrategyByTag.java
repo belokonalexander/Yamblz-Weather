@@ -7,9 +7,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategy;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by Alexander on 25.07.2017.
- */
 
 public class AddToEndSingleStrategyByTag implements StateStrategy {
     @Override
