@@ -16,10 +16,6 @@ import static junit.framework.Assert.assertTrue;
 
 public class StringUtilsTest {
 
-    @Before
-    public void beforeEachTest() {
-
-    }
 
     @Test
     public void unknownThrowablePresentation() {
@@ -32,14 +28,14 @@ public class StringUtilsTest {
         Throwable[] throwable = {new NoConnectionException(), new RequestFailedException()};
         int[] expected = {R.string.er_request_failed, R.string.er_no_connection};
         int[] actual = new int[throwable.length];
-        for (int i =0; i < throwable.length; i++) {
+        for (int i = 0; i < throwable.length; i++) {
             actual[i] = StringUtils.fromError(throwable[i]);
         }
 
         Arrays.sort(expected);
         Arrays.sort(actual);
 
-        assertTrue(Arrays.equals(expected,actual));
+        assertTrue(Arrays.equals(expected, actual));
     }
 
 }
