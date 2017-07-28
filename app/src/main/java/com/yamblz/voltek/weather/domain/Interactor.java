@@ -6,6 +6,12 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
+
+/**
+ *  I think there The Single Responsibility Principle is broken
+ *  interactor has complex tasks: it returns data from build method and executes
+ *  subscription. So I can't test it without subscribe external logic :( (Alexander)
+ */
 public abstract class Interactor<ParameterType, ResultType> {
 
     private final CompositeDisposable subscription = new CompositeDisposable();

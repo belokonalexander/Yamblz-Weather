@@ -47,7 +47,7 @@ public class SettingsSetCityInteractor extends Interactor<CityUIModel, CityUIMod
         CityUIModel city = parameter.getItem();
 
         if (city == null)
-            throw new IllegalArgumentException();
+            return Observable.empty();
 
         if (city.id > 0) {
             return getCorrectObservable(city);

@@ -68,5 +68,22 @@ public class CityToIDModel {
         this.cityId = cityId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        CityToIDModel that = (CityToIDModel) o;
+
+        if (!alias.equals(that.alias)) return false;
+        return cityId.equals(that.cityId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = alias.hashCode();
+        result = 31 * result + cityId.hashCode();
+        return result;
+    }
 }
