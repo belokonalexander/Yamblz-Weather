@@ -19,7 +19,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
     private SettingsSetCityInteractor settingsSetCityInteractor;
     private CurrentSettingsInteractor currentSettingsInteractor;
 
-    SettingsPresenter(SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor,
+    public SettingsPresenter(SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor,
                       SettingsSetCityInteractor settingsSetCityInteractor,
                       CurrentSettingsInteractor currentSettingsInteractor
     ) {
@@ -39,7 +39,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
             getViewState().setCity(city.getData().name);
     }
 
-    void findSuggestions(String text) {
+    public void findSuggestions(String text) {
         if (text.length() > 0) {
             Parameter<String> param = new Parameter<>();
             param.setItem(text);
@@ -64,7 +64,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
      *
      * @param city the chosen city
      */
-    void selectCity(CityUIModel city) {
+    public void selectCity(CityUIModel city) {
         getViewState().setCity(city.name);
         Parameter<CityUIModel> param = new Parameter<>();
         param.setItem(city);
@@ -76,7 +76,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
      *
      * @param cityName the city name we want to select
      */
-    void selectCity(String cityName) {
+    public void selectCity(String cityName) {
         Parameter<CityUIModel> param = new Parameter<>();
         param.setItem(new CityUIModel(cityName));
         settingsSetCityInteractor.execute(param, this::onNextCorrectCity, this::onError, this::onComplete);
