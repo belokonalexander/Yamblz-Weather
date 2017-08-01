@@ -1,18 +1,19 @@
 package com.yamblz.voltek.weather.data.api.weather.response;
 
-import com.squareup.moshi.Json;
+
+import com.google.gson.annotations.SerializedName;
 
 public class Weather {
 
-    @Json(name = "id")
+    @SerializedName("id")
     public int id;
 
-    @Json(name = "main")
+    @SerializedName("main")
     public String main;
 
-    @Json(name = "description")
+    @SerializedName("description")
     public String description;
 
-    @Json(name = "icon")
+    @SerializedName("icon")
     public String icon;
 }

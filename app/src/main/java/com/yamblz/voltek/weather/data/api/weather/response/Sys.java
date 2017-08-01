@@ -1,15 +1,15 @@
 package com.yamblz.voltek.weather.data.api.weather.response;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Sys {
 
-    @Json(name = "country")
+    @SerializedName("country")
     public String country;
 
-    @Json(name = "sunrise")
+    @SerializedName("sunrise")
     public int sunrise;
 
-    @Json(name = "sunset")
+    @SerializedName("sunset")
     public int sunset;
 }

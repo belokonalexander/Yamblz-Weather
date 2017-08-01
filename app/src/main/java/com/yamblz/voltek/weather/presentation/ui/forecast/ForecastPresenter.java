@@ -1,19 +1,25 @@
 package com.yamblz.voltek.weather.presentation.ui.forecast;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.yamblz.voltek.weather.domain.Parameter;
-import com.yamblz.voltek.weather.domain.exception.NoConnectionException;
-import com.yamblz.voltek.weather.domain.exception.RequestFailedException;
-import com.yamblz.voltek.weather.domain.interactor.CurrentWeatherInteractor;
+import com.yamblz.voltek.weather.domain.interactor.ForecastInteractor;
 import com.yamblz.voltek.weather.presentation.base.BasePresenter;
+import com.yamblz.voltek.weather.utils.LogUtils;
+import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 
 @InjectViewState
 public class ForecastPresenter extends BasePresenter<ForecastView> {
 
-    private CurrentWeatherInteractor interactor;
+    private ForecastInteractor interactor;
+    private RxSchedulers rxSchedulers;
 
-    public ForecastPresenter(CurrentWeatherInteractor interactor) {
+    public ForecastPresenter(ForecastInteractor interactor, RxSchedulers rxSchedulers) {
         this.interactor = interactor;
+        this.rxSchedulers = rxSchedulers;
+    }
+
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
         loadWeather(false);
     }
 
@@ -24,25 +30,22 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     // Private logic
     private void loadWeather(boolean refresh) {
-        Parameter<Void> param = new Parameter<>();
-        if (refresh)
-            param.setFlag(CurrentWeatherInteractor.REFRESH);
 
         getViewState().showLoading(true);
-        getViewState().showError(null);
 
-        interactor.execute(
-                param,
-                result -> getViewState().showData(result.getData()),
-                error -> {
-                    if (error instanceof NoConnectionException || error instanceof RequestFailedException) {
-                        getViewState().showLoading(false);
-                        getViewState().showError(error);
-                    } else {
-                        throw new Exception("Unhandled exception passed to ForecastPresenter", error);
-                    }
-                },
-                () -> getViewState().showLoading(false)
-        );
+
+        interactor.getCurrentWeather(refresh)
+                .compose(rxSchedulers.getIOToMainTransformerSingle())
+                .subscribe(weatherUIModel -> {
+                    LogUtils.log(" Получили данные ");
+                    getViewState().showData(weatherUIModel);
+                    getViewState().showLoading(false);
+                }, throwable -> {
+                    LogUtils.log(" Не получили данные ", throwable);
+
+                    getViewState().showError(throwable);
+                    getViewState().showLoading(false);
+                });
+
     }
 }

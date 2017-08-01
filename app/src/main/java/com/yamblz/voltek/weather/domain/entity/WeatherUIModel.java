@@ -8,12 +8,14 @@ public class WeatherUIModel {
     private int temperature;
     private int humidity;
     private int conditionId;
+    private String cityName;
 
     public WeatherUIModel(WeatherResponseModel model) {
         condition = model.weather.get(0).description;
         temperature = (int) model.main.temp;
         humidity = (int) model.main.humidity;
         conditionId = model.weather.get(0).id;
+        cityName = model.name;
     }
 
     public String getCondition() {
@@ -30,5 +32,9 @@ public class WeatherUIModel {
 
     public int getConditionId() {
         return conditionId;
+    }
+
+    public String getCityName() {
+        return cityName;
     }
 }

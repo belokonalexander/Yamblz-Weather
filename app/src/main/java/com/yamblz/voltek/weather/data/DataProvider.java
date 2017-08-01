@@ -50,9 +50,9 @@ public final class DataProvider {
         }
     }
 
-    public static class DataBase {
+    public static class Database {
 
-        private DataBase() {}
+        private Database() {}
 
         public interface CityRepository {
 

@@ -3,9 +3,7 @@ package com.example.alexander.weatherapp;
 
 import com.example.alexander.weatherapp.Helpers.InteractorTestHelper;
 import com.yamblz.voltek.weather.data.DataProvider;
-import com.yamblz.voltek.weather.domain.Parameter;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.domain.interactor.CurrentSettingsInteractor;
 
 import org.junit.Before;
 import org.junit.Test;

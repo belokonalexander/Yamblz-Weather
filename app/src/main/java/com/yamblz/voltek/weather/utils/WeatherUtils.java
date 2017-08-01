@@ -4,8 +4,6 @@ import com.yamblz.voltek.weather.R;
 
 public final class WeatherUtils {
 
-    private WeatherUtils() {}
-
     public static int getImageByCondition(int condition) {
         // Condition codes from here https://openweathermap.org/weather-conditions
         if (condition >= 200 && condition <= 232) return R.drawable.ic_storm;

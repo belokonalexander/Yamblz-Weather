@@ -4,9 +4,7 @@ package com.example.alexander.weatherapp;
 import com.example.alexander.weatherapp.Helpers.InteractorTestHelper;
 import com.yamblz.voltek.weather.data.DataProvider;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
-import com.yamblz.voltek.weather.domain.Parameter;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.domain.interactor.SettingsCitySuggestionsInteractor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,11 +25,11 @@ public class SettingsCitySuggestionsInteractorTest {
 
 
     private SettingsCitySuggestionsInteractor interactor;
-    private DataProvider.DataBase.CityRepository cityRepository;
+    private DataProvider.Database.CityRepository cityRepository;
 
     @Before
     public void beforeEachTest() {
-        cityRepository = mock(DataProvider.DataBase.CityRepository.class);
+        cityRepository = mock(DataProvider.Database.CityRepository.class);
         interactor = new SettingsCitySuggestionsInteractor(Schedulers.newThread(), Schedulers.io(), cityRepository);
     }
 

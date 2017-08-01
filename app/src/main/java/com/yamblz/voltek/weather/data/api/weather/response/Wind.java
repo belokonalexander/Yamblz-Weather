@@ -1,12 +1,12 @@
 package com.yamblz.voltek.weather.data.api.weather.response;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Wind {
 
-    @Json(name = "speed")
+    @SerializedName("speed")
     public double speed;
 
-    @Json(name = "deg")
+    @SerializedName("deg")
     public double deg;
 }

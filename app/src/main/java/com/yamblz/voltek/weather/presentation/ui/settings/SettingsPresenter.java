@@ -1,13 +1,10 @@
 package com.yamblz.voltek.weather.presentation.ui.settings;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.yamblz.voltek.weather.domain.Parameter;
-import com.yamblz.voltek.weather.domain.Result;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.domain.interactor.CurrentSettingsInteractor;
-import com.yamblz.voltek.weather.domain.interactor.SettingsCitySuggestionsInteractor;
-import com.yamblz.voltek.weather.domain.interactor.SettingsSetCityInteractor;
+import com.yamblz.voltek.weather.domain.interactor.SettingsInteractor;
 import com.yamblz.voltek.weather.presentation.base.BasePresenter;
+import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,36 +12,32 @@ import java.util.List;
 @InjectViewState
 public class SettingsPresenter extends BasePresenter<SettingsView> {
 
-    private SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor;
-    private SettingsSetCityInteractor settingsSetCityInteractor;
-    private CurrentSettingsInteractor currentSettingsInteractor;
+    private SettingsInteractor interactor;
+    private RxSchedulers rxSchedulers;
 
-    public SettingsPresenter(SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor,
-                      SettingsSetCityInteractor settingsSetCityInteractor,
-                      CurrentSettingsInteractor currentSettingsInteractor
-    ) {
-        this.settingsCitySuggestionsInteractor = settingsCitySuggestionsInteractor;
-        this.settingsSetCityInteractor = settingsSetCityInteractor;
-        this.currentSettingsInteractor = currentSettingsInteractor;
+    public SettingsPresenter(SettingsInteractor interactor, RxSchedulers rxSchedulers) {
+        this.interactor = interactor;
+        this.rxSchedulers = rxSchedulers;
         this.loadSettingsData();
-
     }
 
     private void loadSettingsData() {
-        currentSettingsInteractor.execute(new Parameter<>(), this::successLoadSettings, this::onError, this::onComplete);
+        interactor.getCurrentCity()
+                .compose(rxSchedulers.getIOToMainTransformerSingle())
+                .subscribe(this::successLoadSettings, this::onError);
+
     }
 
-    private void successLoadSettings(Result<CityUIModel> city) {
-        if (city.getData() != null)
-            getViewState().setCity(city.getData().name);
+    private void successLoadSettings(CityUIModel city) {
+        getViewState().setCity(city.name);
     }
 
     public void findSuggestions(String text) {
         if (text.length() > 0) {
-            Parameter<String> param = new Parameter<>();
-            param.setItem(text);
-            settingsCitySuggestionsInteractor.unsubscribe();
-            settingsCitySuggestionsInteractor.execute(param, this::onNextSuggestions, this::onError, this::onComplete);
+            interactor.getCitySuggestions(text)
+                    .compose(rxSchedulers.getIOToMainTransformerSingle())
+                    .subscribe(this::onNextSuggestions, this::onError);
+
         } else {
             getViewState().showSuggestions(new ArrayList<>());
         }
@@ -55,8 +48,8 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
         getViewState().showError(throwable);
     }
 
-    private void onNextSuggestions(Result<List<CityUIModel>> result) {
-        getViewState().showSuggestions(result.getData());
+    private void onNextSuggestions(List<CityUIModel> result) {
+        getViewState().showSuggestions(result);
     }
 
     /**
@@ -66,9 +59,15 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
      */
     public void selectCity(CityUIModel city) {
         getViewState().setCity(city.name);
-        Parameter<CityUIModel> param = new Parameter<>();
-        param.setItem(city);
-        settingsSetCityInteractor.execute(param, this::onNext, this::onError, this::onComplete);
+
+        interactor.saveCity(city)
+                .compose(rxSchedulers.getIOToMainTransformerSingle())
+                .subscribe(this::onSuccessCitySaved, this::onError);
+
+    }
+
+    public void onSuccessCitySaved(CityUIModel city) {
+        //TODO
     }
 
     /**
@@ -77,14 +76,15 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
      * @param cityName the city name we want to select
      */
     public void selectCity(String cityName) {
-        Parameter<CityUIModel> param = new Parameter<>();
-        param.setItem(new CityUIModel(cityName));
-        settingsSetCityInteractor.execute(param, this::onNextCorrectCity, this::onError, this::onComplete);
+
+        interactor.saveCity(new CityUIModel(cityName))
+                .compose(rxSchedulers.getIOToMainTransformerSingle())
+                .subscribe(this::onCorrectCityChanged, this::onError);
+
     }
 
-    private void onNextCorrectCity(Result<CityUIModel> cityUIModelResult) {
-        if (cityUIModelResult.getData() != null)
-            getViewState().setCity(cityUIModelResult.getData().name);
+    private void onCorrectCityChanged(CityUIModel cityUIModel) {
+        getViewState().setCity(cityUIModel.name);
     }
 
 }

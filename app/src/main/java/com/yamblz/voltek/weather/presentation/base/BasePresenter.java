@@ -1,9 +1,12 @@
 package com.yamblz.voltek.weather.presentation.base;
 
 import com.arellomobile.mvp.MvpPresenter;
-import com.yamblz.voltek.weather.domain.Result;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BasePresenter<V extends BaseView> extends MvpPresenter<V> {
+
+    protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     public void attachView(V view) {
@@ -17,14 +20,10 @@ public abstract class BasePresenter<V extends BaseView> extends MvpPresenter<V> 
         super.detachView(view);
     }
 
-
-    final protected void onComplete() {
-        //dummy
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
-
-    final protected <T extends Result> void onNext(T parameter) {
-        //dummy
-    }
-
 
 }

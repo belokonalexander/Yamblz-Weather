@@ -4,11 +4,9 @@ package com.example.alexander.weatherapp;
 import com.example.alexander.weatherapp.Helpers.InteractorTestHelper;
 import com.yamblz.voltek.weather.data.DataProvider;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
-import com.yamblz.voltek.weather.domain.Parameter;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.exception.NoConnectionException;
 import com.yamblz.voltek.weather.domain.exception.RequestFailedException;
-import com.yamblz.voltek.weather.domain.interactor.SettingsSetCityInteractor;
 
 import org.greenrobot.greendao.DaoException;
 import org.junit.Before;
@@ -27,7 +25,7 @@ public class SettingsSetCityInteractorTest {
 
 
     private SettingsSetCityInteractor interactor;
-    private DataProvider.DataBase.CityRepository db;
+    private DataProvider.Database.CityRepository db;
     private DataProvider.API.Weather api;
     private DataProvider.Storage.Weather storage;
 
@@ -37,7 +35,7 @@ public class SettingsSetCityInteractorTest {
 
     @Before
     public void beforeEachTest() {
-        db = mock(DataProvider.DataBase.CityRepository.class);
+        db = mock(DataProvider.Database.CityRepository.class);
         api = mock(DataProvider.API.Weather.class);
         storage = mock(DataProvider.Storage.Weather.class);
         interactor = new SettingsSetCityInteractor(Schedulers.newThread(), Schedulers.io(), api, storage, db);

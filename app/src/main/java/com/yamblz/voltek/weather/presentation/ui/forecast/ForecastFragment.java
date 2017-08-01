@@ -11,15 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.PresenterType;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout;
-import com.yamblz.voltek.weather.Injector;
 import com.yamblz.voltek.weather.R;
+import com.yamblz.voltek.weather.WeatherApp;
+import com.yamblz.voltek.weather.di.modules.ForecastModule;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.presentation.base.BaseFragment;
 import com.yamblz.voltek.weather.utils.StringUtils;
 import com.yamblz.voltek.weather.utils.WeatherUtils;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
@@ -29,7 +31,6 @@ import static android.view.View.VISIBLE;
 
 public class ForecastFragment extends BaseFragment implements ForecastView {
 
-    public static final String TAG = "ForecastFragment";
 
     public static ForecastFragment newInstance() {
         return new ForecastFragment();
@@ -52,12 +53,16 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     @BindView(R.id.tv_humidity)
     TextView humidityTv;
 
-    @InjectPresenter(type = PresenterType.LOCAL, tag = TAG)
+    @BindView(R.id.tv_city_name)
+    TextView cityNameTv;
+
+    @Inject
+    @InjectPresenter()
     ForecastPresenter presenter;
 
-    @ProvidePresenter(type = PresenterType.LOCAL, tag = TAG)
+    @ProvidePresenter()
     ForecastPresenter provideForecastPresenter() {
-        return new ForecastPresenter(Injector.currentWeatherInteractor());
+        return presenter;
     }
 
 
@@ -65,6 +70,12 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_forecast, container, false);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        WeatherApp.get(getContext()).getAppComponent().plus(new ForecastModule()).inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -96,17 +107,19 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
         if (weather == null) {
             contentContainer.setVisibility(GONE);
         } else {
+
             weatherIconIm.setImageResource(WeatherUtils.getImageByCondition(weather.getConditionId()));
             descriptionTv.setText(weather.getCondition());
             temperatureTv.setText(getString(R.string.wthr_temperature, weather.getTemperature()));
             humidityTv.setText(getString(R.string.wthr_humidity, weather.getHumidity()));
-
+            cityNameTv.setText(weather.getCityName());
             contentContainer.setVisibility(VISIBLE);
         }
     }
 
     @Override
     public void showError(@Nullable Throwable error) {
+
         if (error == null) {
             emptyStateTv.setVisibility(GONE);
         } else {

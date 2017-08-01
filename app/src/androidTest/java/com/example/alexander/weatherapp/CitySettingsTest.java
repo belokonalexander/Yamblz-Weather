@@ -8,7 +8,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.orhanobut.hawk.Hawk;
 import com.yamblz.voltek.weather.R;
-import com.yamblz.voltek.weather.data.api.ApiUtils;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.presentation.ui.MainActivity;
 

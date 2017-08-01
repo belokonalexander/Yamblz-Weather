@@ -37,6 +37,19 @@ android {
         }
     }
 
+    sourceSets {
+        test {
+            java {
+                exclude '*'
+            }
+        }
+        androidTest {
+            java {
+                exclude '*'
+            }
+        }
+    }
+
     buildTypes {
 
         buildTypes.each {
@@ -72,15 +85,15 @@ ext {
     rxAndroidVersion = '2.0.1'
     rxbindingVersion = '2.0.0'
     hawkVersion = '2.0.1'
-    timberVersion = '4.5.1'
     androidJobVersion = '1.1.11'
-    moxyVersion = '1.5.1'
+    moxyVersion = '1.5.3'
     acdatVersion = '3.2.1'
     leakCanaryVersion = '1.5.1'
     greendaoVersion = '3.2.2'
     stethoVersion = '1.5.0'
     mockitoVersion = '2.7.22'
     espressoVersion = '2.2.2'
+    daggerVersion = '2.11'
 }
 
 greendao {
@@ -121,8 +134,12 @@ dependencies {
 
     // Networking
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    compile "com.squareup.retrofit2:converter-moshi:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
     compile "com.squareup.okhttp3:logging-interceptor:3.7.0"
+
+    //Storage
+    compile "com.orhanobut:hawk:${hawkVersion}"
 
     // Rx
     compile "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
@@ -132,11 +149,6 @@ dependencies {
     compile "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:${rxbindingVersion}"
     compile "com.jakewharton.rxbinding2:rxbinding-support-v4:${rxbindingVersion}"
 
-    // Storage
-    compile "com.orhanobut:hawk:${hawkVersion}"
-
-    // Logging
-    compile "com.jakewharton.timber:timber:${timberVersion}"
 
     // Background
     compile "com.evernote:android-job:$androidJobVersion"
@@ -154,5 +166,9 @@ dependencies {
 
     //mockito for unit tests
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
+
+    //dagger 2
+    compile "com.google.dagger:dagger:${daggerVersion}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
 
 }

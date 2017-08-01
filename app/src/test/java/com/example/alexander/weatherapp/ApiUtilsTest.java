@@ -5,8 +5,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.yamblz.voltek.weather.data.api.ApiUtils;
-
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;

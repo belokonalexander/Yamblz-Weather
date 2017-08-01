@@ -5,12 +5,11 @@ import com.example.alexander.weatherapp.Helpers.ApiWeatherModelHelper;
 import com.example.alexander.weatherapp.Helpers.InteractorTestHelper;
 import com.example.alexander.weatherapp.Helpers.InteractorTestHelperObserver;
 import com.yamblz.voltek.weather.data.DataProvider;
-import com.yamblz.voltek.weather.domain.Parameter;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.domain.exception.NoConnectionException;
 import com.yamblz.voltek.weather.domain.exception.RequestFailedException;
-import com.yamblz.voltek.weather.domain.interactor.CurrentWeatherInteractor;
+import com.yamblz.voltek.weather.domain.interactor.ForecastInteractor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,13 +27,13 @@ public class CurrentWeatherInteractorTest {
 
     private DataProvider.Storage.Weather storage;
     private DataProvider.API.Weather api;
-    private CurrentWeatherInteractor currentWeatherInteractor;
+    private ForecastInteractor currentWeatherInteractor;
 
     @Before
     public void beforeEachTest() {
         storage = mock(DataProvider.Storage.Weather.class);
         api = mock(DataProvider.API.Weather.class);
-        currentWeatherInteractor = new CurrentWeatherInteractor(Schedulers.newThread(), Schedulers.io(), api, storage);
+        currentWeatherInteractor = new ForecastInteractor(Schedulers.newThread(), Schedulers.io(), api, storage);
     }
 
     @Test
@@ -88,7 +87,7 @@ public class CurrentWeatherInteractorTest {
 
         InteractorTestHelper<WeatherUIModel> interactorTestHelper = new InteractorTestHelper<>(TestSubscriber.create());
         Parameter<Void> p = new Parameter<>();
-        p.setFlag(CurrentWeatherInteractor.REFRESH);
+        p.setFlag(ForecastInteractor.REFRESH);
         currentWeatherInteractor.execute(p,interactorTestHelper::onNext,interactorTestHelper::onThrowable,interactorTestHelper::onComplete);
 
 

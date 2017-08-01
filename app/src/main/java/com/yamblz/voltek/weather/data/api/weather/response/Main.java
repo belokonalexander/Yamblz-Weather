@@ -1,21 +1,21 @@
 package com.yamblz.voltek.weather.data.api.weather.response;
 
-import com.squareup.moshi.Json;
+import com.google.gson.annotations.SerializedName;
 
 public class Main {
 
-    @Json(name = "temp")
+    @SerializedName("temp")
     public double temp;
 
-    @Json(name = "humidity")
+    @SerializedName("humidity")
     public double humidity;
 
-    @Json(name = "pressure")
+    @SerializedName("pressure")
     public double pressure;
 
-    @Json(name = "temp_min")
+    @SerializedName("temp_min")
     public double tempMin;
 
-    @Json(name = "temp_max")
+    @SerializedName("temp_max")
     public double tempMax;
 }

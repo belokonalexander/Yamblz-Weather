@@ -2,9 +2,6 @@ package com.example.alexander.weatherapp;
 
 
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.domain.interactor.CurrentSettingsInteractor;
-import com.yamblz.voltek.weather.domain.interactor.SettingsCitySuggestionsInteractor;
-import com.yamblz.voltek.weather.domain.interactor.SettingsSetCityInteractor;
 import com.yamblz.voltek.weather.presentation.ui.settings.SettingsPresenter;
 import com.yamblz.voltek.weather.presentation.ui.settings.SettingsView;
 
@@ -80,7 +77,7 @@ public class SettingsPresenterTest {
     }
 
     /*
-       не могу протестирвать приватные методы-коллбеки onNext(), onComplete(), onError()
+       не могу протестирвать приватные методы-коллбеки onNext(), onEmptyComplete(), onError()
        можно ли определить приватные методы как stub методы?;
 
        + как решение: если бы интерактор возвращал только Observable, а не выполнял подписку с делегированием callback

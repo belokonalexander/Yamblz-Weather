@@ -1,40 +1,41 @@
 package com.yamblz.voltek.weather.data.api.weather.response;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
-import com.squareup.moshi.Json;
 
 public class WeatherResponseModel {
 
-    @Json(name = "coord")
+    @SerializedName("coord")
     public Coord coord;
 
-    @Json(name = "sys")
+    @SerializedName("sys")
     public Sys sys;
 
-    @Json(name = "weather")
+    @SerializedName("weather")
     public List<Weather> weather = null;
 
-    @Json(name = "main")
+    @SerializedName("main")
     public Main main;
 
-    @Json(name = "wind")
+    @SerializedName("wind")
     public Wind wind;
 
-    @Json(name = "rain")
+    @SerializedName("rain")
     public Rain rain;
 
-    @Json(name = "clouds")
+    @SerializedName("clouds")
     public Clouds clouds;
 
-    @Json(name = "dt")
+    @SerializedName("dt")
     public int dt;
 
-    @Json(name = "id")
+    @SerializedName("id")
     public int id;
 
-    @Json(name = "name")
+    @SerializedName("name")
     public String name;
 
-    @Json(name = "cod")
+    @SerializedName("cod")
     public int cod;
 }

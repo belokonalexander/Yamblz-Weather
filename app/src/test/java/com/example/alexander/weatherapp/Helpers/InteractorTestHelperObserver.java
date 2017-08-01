@@ -1,8 +1,6 @@
 package com.example.alexander.weatherapp.Helpers;
 
 
-import com.yamblz.voltek.weather.domain.Result;
-
 import io.reactivex.observers.TestObserver;
 
 public class InteractorTestHelperObserver<T> {
