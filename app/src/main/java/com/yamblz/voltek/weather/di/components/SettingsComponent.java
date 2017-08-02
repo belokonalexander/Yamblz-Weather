@@ -2,7 +2,8 @@ package com.yamblz.voltek.weather.di.components;
 
 import com.yamblz.voltek.weather.di.modules.SettingsModule;
 import com.yamblz.voltek.weather.di.scopes.SettingsScope;
-import com.yamblz.voltek.weather.presentation.ui.settings.SettingsFragment;
+import com.yamblz.voltek.weather.presentation.ui.settings.SettingsPresenter;
+import com.yamblz.voltek.weather.presentation.ui.settings.SelectCity.SettingsSelectCityPresenter;
 
 import dagger.Subcomponent;
 
@@ -13,6 +14,8 @@ import dagger.Subcomponent;
 @SettingsScope
 public interface SettingsComponent {
 
-    void inject(SettingsFragment settingsFragment);
+    SettingsSelectCityPresenter getSettingsSelectCityPresenter();
+
+    SettingsPresenter getSettingsPresenter();
 
 }

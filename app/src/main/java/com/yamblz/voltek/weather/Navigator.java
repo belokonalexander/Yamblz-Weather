@@ -16,5 +16,7 @@ public interface Navigator {
 
     String NAVIGATION_BACKPRESS = "NAVIGATION_BACKPRESS";
 
-    void openInThisContainer(Fragment whichWillOpen);
+    void openWithBackStack(Fragment fragment, String tag);
+
+    void openAsRoot(Fragment fragment, String tag);
 }

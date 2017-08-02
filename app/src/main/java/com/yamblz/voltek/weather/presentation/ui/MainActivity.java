@@ -127,12 +127,9 @@ public class MainActivity extends BaseActivity implements Navigator {
         Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
 
         if (isRoot) {
-            fm.beginTransaction()
-                    .replace(R.id.main_content, fragment, tag)
-                    .commit();
+            openAsRoot(fragment, tag);
         } else
-            openInThisContainer(fragment);
-
+            openWithBackStack(fragment, tag);
 
         navigation.setSelection(id, false);
 
@@ -189,20 +186,20 @@ public class MainActivity extends BaseActivity implements Navigator {
     }
 
     @Override
-    public void openInThisContainer(Fragment fragment) {
-        Bundle additional = fragment.getArguments();
-        if (additional == null)
-            additional = new Bundle();
-
-        additional.putBoolean(Navigator.NAVIGATION_BACKPRESS, true);
-
-        fragment.setArguments(additional);
-
+    public void openWithBackStack(Fragment fragment, String tag) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_content, fragment, null)
-                //.setCustomAnimations(R.anim.slide_in_left, 0, 0, R.anim.slide_out_right)
+                .replace(R.id.main_content, fragment, tag)
                 .show(fragment)
                 .addToBackStack(null)
                 .commit();
     }
+
+    @Override
+    public void openAsRoot(Fragment fragment, String tag) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_content, fragment, tag)
+                .commit();
+    }
+
+
 }

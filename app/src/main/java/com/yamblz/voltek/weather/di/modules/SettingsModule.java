@@ -6,6 +6,7 @@ import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.di.scopes.SettingsScope;
 import com.yamblz.voltek.weather.domain.interactor.SettingsInteractor;
 import com.yamblz.voltek.weather.presentation.ui.settings.SettingsPresenter;
+import com.yamblz.voltek.weather.presentation.ui.settings.SelectCity.SettingsSelectCityPresenter;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 
 import dagger.Module;
@@ -18,10 +19,17 @@ import dagger.Provides;
 @Module
 public class SettingsModule {
 
+
     @Provides
     @SettingsScope
     SettingsInteractor provideSettingsInteractor(WeatherAPI weatherApi, StorageRepository storageRepository, DatabaseRepository databaseRepository) {
         return new SettingsInteractor(weatherApi, storageRepository, databaseRepository);
+    }
+
+    @Provides
+    @SettingsScope
+    SettingsSelectCityPresenter provideSettingsSelectCityPresenter(SettingsInteractor settingsInteractor, RxSchedulers rxSchedulers) {
+        return new SettingsSelectCityPresenter(settingsInteractor, rxSchedulers);
     }
 
     @Provides

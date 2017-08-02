@@ -28,7 +28,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
     // Holds all disposable with input events subscriptions
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
     protected abstract Toolbar getToolbar();
-    private Navigator navigationManager;
+    public Navigator navigationManager;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -38,8 +38,9 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
 
     public void initToolbar(String title) {
         getToolbar().setTitle(title);
+        int backstackCount = getFragmentManager().getBackStackEntryCount();
         Drawable toolbarNavigationIcon;
-        if (getArguments() != null && getArguments().getBoolean(Navigator.NAVIGATION_BACKPRESS)) {
+        if (backstackCount>0) {
             navigationManager.setNavigationDrawerState(false);
             toolbarNavigationIcon = VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_black_24dp, null);
             getToolbar().setNavigationOnClickListener(v -> getActivity().onBackPressed());

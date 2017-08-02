@@ -2,8 +2,8 @@ package com.example.alexander.weatherapp;
 
 
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.presentation.ui.settings.SettingsPresenter;
-import com.yamblz.voltek.weather.presentation.ui.settings.SettingsView;
+import com.yamblz.voltek.weather.presentation.ui.settings.SelectCity.SettingsCityView;
+import com.yamblz.voltek.weather.presentation.ui.settings.SelectCity.SettingsSelectCityPresenter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,16 +24,16 @@ public class SettingsPresenterTest {
     private SettingsCitySuggestionsInteractor settingsCitySuggestionsInteractor;
     private SettingsSetCityInteractor settingsSetCityInteractor;
     private CurrentSettingsInteractor currentSettingsInteractor;
-    private SettingsView view;
-    private SettingsPresenter spyPresenter;
+    private SettingsCityView view;
+    private SettingsSelectCityPresenter spyPresenter;
 
     @Before
     public void beforeEachTest() {
         settingsCitySuggestionsInteractor = mock(SettingsCitySuggestionsInteractor.class);
         settingsSetCityInteractor = mock(SettingsSetCityInteractor.class);
         currentSettingsInteractor = mock(CurrentSettingsInteractor.class);
-        view = mock(SettingsView.class);
-        SettingsPresenter presenter = new SettingsPresenter(settingsCitySuggestionsInteractor, settingsSetCityInteractor, currentSettingsInteractor);
+        view = mock(SettingsCityView.class);
+        SettingsSelectCityPresenter presenter = new SettingsSelectCityPresenter(settingsCitySuggestionsInteractor, settingsSetCityInteractor, currentSettingsInteractor);
         spyPresenter = spy(presenter);
         when(spyPresenter.getViewState()).thenReturn(view);
 

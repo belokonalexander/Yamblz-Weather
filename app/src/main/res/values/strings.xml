@@ -9,6 +9,7 @@
     <string name="title_forecast">@string/nav_forecast</string>
     <string name="title_settings">@string/nav_settings</string>
     <string name="title_about">@string/nav_about</string>
+    <string name="title_city_select">Select the city</string>
 
     <!-- Navigation drawer related -->
     <string name="nav_open">Open navigation drawer</string>

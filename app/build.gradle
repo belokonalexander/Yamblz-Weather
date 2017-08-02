@@ -93,6 +93,7 @@ ext {
     mockitoVersion = '2.7.22'
     espressoVersion = '2.2.2'
     daggerVersion = '2.11'
+    adapterDelegate='3.0.1'
 }
 
 greendao {
@@ -121,6 +122,9 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.9.4@aar') {
         transitive = true
     }
+
+    //adapter delegate
+    compile "com.hannesdorfmann:adapterdelegates3:$adapterDelegate"
 
     // Leak Canary
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
