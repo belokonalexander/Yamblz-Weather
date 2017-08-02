@@ -41,4 +41,15 @@
 
     <string name="city_name_hint">City</string>
 
+    <string name="pr_auto_refresh">Auto refresh</string>
+    <string name="pr_refresh_interval">Refresh interval</string>
+    <string name="pr_cat_common_prefs">Common prefs</string>
+
+    <string-array name="update_intervals">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+    </string-array>
+
 </resources>

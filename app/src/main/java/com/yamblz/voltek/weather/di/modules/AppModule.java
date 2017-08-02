@@ -3,9 +3,11 @@ package com.yamblz.voltek.weather.di.modules;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.google.gson.GsonBuilder;
 import com.yamblz.voltek.weather.data.database.DatabaseRepository;
 import com.yamblz.voltek.weather.data.database.DatabaseRepositoryImpl;
 import com.yamblz.voltek.weather.data.database.models.DaoSession;
+import com.yamblz.voltek.weather.data.storage.GsonConverter;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.data.storage.StorageRepositoryImpl;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
@@ -40,8 +42,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    StorageRepository provideStorageRepository() {
-        return new StorageRepositoryImpl();
+    StorageRepository provideStorageRepository(Context context, GsonConverter gsonConverter) {
+        return new StorageRepositoryImpl(context, gsonConverter);
     }
 
     @Provides
@@ -61,5 +63,10 @@ public class AppModule {
     @Singleton
     RxSchedulers provideRxSchedulers() {
         return new RxSchedulersWork();
+    }
+
+    @Provides
+    GsonConverter gsonConverter() {
+        return new GsonConverter(new GsonBuilder());
     }
 }

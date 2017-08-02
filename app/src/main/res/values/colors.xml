@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="yellow_md500">#FFEB3B</color>
-    <color name="yellow_md700">#FBC02D</color>
-
-    <color name="deep_purple_md200a">#7C4DFF</color>
+    <color name="color_primary">#FFEB3B</color>
+    <color name="color_primary_dark">#FBC02D</color>
+    <color name="color_accent">#7C4DFF</color>
+    <color name="normal_text_color">#bfbfbf</color>
 
 </resources>

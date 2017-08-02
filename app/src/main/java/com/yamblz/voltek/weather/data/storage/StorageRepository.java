@@ -3,7 +3,6 @@ package com.yamblz.voltek.weather.data.storage;
 import android.support.annotation.NonNull;
 
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -14,9 +13,17 @@ import io.reactivex.Single;
 
 public interface StorageRepository {
 
-    Single<WeatherUIModel> getCurrent();
+    String CATEGORY_SETTINGS = "settings";
+    String CATEGORY_STORE = "store";
 
-    Completable putCurrent(@NonNull WeatherUIModel weatherUIModel);
+    String WEATHER_KEY = "WEATHER_KEY";
+    String CITY_KEY = "CITY_KEY";
+    String UPDATE_INTERVAL_KEY = "UPDATE_INTERVAL_KEY";
+    String ENABLE_UPDATE_KEY = "ENABLE_UPDATE_KEY";
+
+    //Single<WeatherUIModel> getCurrent();
+
+    //Completable putCurrent(@NonNull WeatherUIModel weatherUIModel);
 
     Completable putSelectedCity(@NonNull CityUIModel city);
 

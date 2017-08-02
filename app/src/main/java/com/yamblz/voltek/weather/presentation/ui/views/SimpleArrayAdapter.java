@@ -17,6 +17,7 @@ public class SimpleArrayAdapter<T> extends ArrayAdapter<T> implements Filterable
     public SimpleArrayAdapter(Context context, int textViewResourceId, List<T> list) {
         super(context, textViewResourceId);
         this.list = new ArrayList<>(list);
+
     }
 
     @Override

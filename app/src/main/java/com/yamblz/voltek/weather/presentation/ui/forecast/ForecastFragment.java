@@ -3,6 +3,7 @@ package com.yamblz.voltek.weather.presentation.ui.forecast;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,8 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     TextView temperatureTv;
     @BindView(R.id.tv_humidity)
     TextView humidityTv;
-
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.tv_city_name)
     TextView cityNameTv;
 
@@ -82,6 +84,11 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(R.string.title_forecast);
+    }
+
+    @Override
+    protected Toolbar getToolbar() {
+        return toolbar;
     }
 
     @Override
@@ -132,5 +139,11 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
                 emptyStateTv.setVisibility(VISIBLE);
             }
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initToolbar(getString(R.string.title_forecast));
     }
 }

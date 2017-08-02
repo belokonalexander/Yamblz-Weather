@@ -1,0 +1,28 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pr_cat_common_prefs">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="_auto_refresh"
+            android:title="@string/pr_auto_refresh" />
+
+        <ListPreference
+            android:dependency="_auto_refresh"
+            android:entries="@array/update_intervals"
+            android:entryValues="@array/update_intervals_values"
+            android:key="_update_interval"
+            android:persistent="true"
+            android:summary="%s"
+            android:title="@string/pr_refresh_interval" />
+
+
+    </PreferenceCategory>
+
+    <Preference
+        android:key="city_preference"
+        android:persistent="false"
+        android:title="@string/city_name_hint" />
+
+
+</PreferenceScreen>

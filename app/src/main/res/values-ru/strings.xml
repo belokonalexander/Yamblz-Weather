@@ -38,4 +38,15 @@
 
     <string name="city_name_hint">Город</string>
 
+    <string name="pr_auto_refresh">Автообновление</string>
+    <string name="pr_refresh_interval">Интервал обновления</string>
+    <string name="pr_cat_common_prefs">Общие настройки</string>
+
+    <string-array name="update_intervals">
+        <item>15 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+        <item>3 часа</item>
+    </string-array>
+
 </resources>

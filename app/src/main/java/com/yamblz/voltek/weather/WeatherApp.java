@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import com.evernote.android.job.JobManager;
 import com.facebook.stetho.Stetho;
-import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
 import com.yamblz.voltek.weather.data.database.AppDatabaseHelper;
 import com.yamblz.voltek.weather.data.database.models.DaoMaster;
@@ -41,11 +40,8 @@ public class WeatherApp extends Application {
         Database db = helper.getWritableDb();
         DaoSession session = new DaoMaster(db).newSession();
 
-        Hawk.init(this).build();
-
         appComponent = DaggerAppComponent.builder().appModule(new AppModule(this, session)).build();
         appComponent.inject(this);
-
 
         Stetho.initializeWithDefaults(this);
 

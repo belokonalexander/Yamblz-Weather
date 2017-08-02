@@ -11,7 +11,6 @@ import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -71,6 +70,10 @@ public class NetworkModule {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
+        /*httpClient.connectTimeout(1000, TimeUnit.MILLISECONDS);
+        httpClient.readTimeout(1000, TimeUnit.MILLISECONDS);
+        */
+
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             HttpUrl originalHttpUrl = original.url();
@@ -91,8 +94,7 @@ public class NetworkModule {
             return chain.proceed(request);
         });
 
-        httpClient.connectTimeout(5, TimeUnit.SECONDS);
-        httpClient.readTimeout(5, TimeUnit.SECONDS);
+
 
         return httpClient.addInterceptor(getNetworkConnectInterceptor(networkUtils)).build();
     }

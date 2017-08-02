@@ -22,13 +22,13 @@ public class ForecastInteractor {
     public Single<WeatherUIModel> getCurrentWeather(boolean refresh) {
 
         Single<WeatherUIModel> apiRequest = storageRepository.getSelectedCity()
-                .flatMap(cityUIModel -> api.byCityId(cityUIModel.id)).map(apiWeatherToUIWeather())
-                .doOnSuccess(weatherUIModel -> storageRepository.putCurrent(weatherUIModel).subscribe());
+                .flatMap(cityUIModel -> api.byCityId(cityUIModel.id)).map(apiWeatherToUIWeather());
+                //.doOnSuccess(weatherUIModel -> storageRepository.putCurrent(weatherUIModel).subscribe());
 
         if (refresh) {
             return apiRequest;
         } else {
-            return storageRepository.getCurrent().onErrorResumeNext(apiRequest);
+            return /*storageRepository.getCurrent().onErrorResumeNext(*/apiRequest  ;
         }
     }
 

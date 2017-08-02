@@ -50,7 +50,8 @@ public class WeatherJob extends Job {
                 .flatMap(new Function<WeatherUIModel, SingleSource<WeatherUIModel>>() {
                     @Override
                     public SingleSource<WeatherUIModel> apply(@NonNull WeatherUIModel weatherUIModel) throws Exception {
-                        return storageRepository.putCurrent(weatherUIModel).toSingleDefault(weatherUIModel);
+
+                        return null/*storageRepository.putCurrent(weatherUIModel).toSingleDefault(weatherUIModel)*/;
                     }})
                 .subscribe(new DisposableSingleObserver<WeatherUIModel>() {
                     @Override
