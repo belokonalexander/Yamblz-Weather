@@ -14,5 +14,6 @@
     <dimen name="medium_padding">8dp</dimen>
 
     <dimen name="item_height">56dp</dimen>
+    <dimen name="navigation_menu_width">240dp</dimen>
 
 </resources>

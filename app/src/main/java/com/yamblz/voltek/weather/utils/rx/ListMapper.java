@@ -13,13 +13,10 @@ public class ListMapper {
 
     public static <T, S> Function<List<T>, List<S>> mapList(SingleItemMapper<T, S> singleItemMapper) {
         return list -> {
-
             List<S> dest = new ArrayList<>();
-
             for(T sourceItem : list) {
                 dest.add(singleItemMapper.getItem(sourceItem));
             }
-
             return dest;
         };
     }

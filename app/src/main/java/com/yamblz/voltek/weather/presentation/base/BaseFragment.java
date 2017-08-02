@@ -29,6 +29,8 @@ public abstract class BaseFragment extends MvpAppCompatFragment {
     // Holds all disposable with input events subscriptions
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    private Toolbar toolbar;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         unbinder = ButterKnife.bind(this, view);
@@ -60,12 +62,26 @@ public abstract class BaseFragment extends MvpAppCompatFragment {
 
     protected abstract Toolbar getToolbar();
 
-    protected abstract @LayoutRes int getLayout();
+    protected abstract
+    @LayoutRes
+    int getLayout();
 
-    protected abstract @StringRes int getTitle();
+    protected abstract
+    @StringRes
+    int getTitle();
+
+    private boolean globalToolbar = false;
 
     public void initToolbar(String title) {
-        getToolbar().setTitle(title);
+
+        toolbar = getToolbar();
+        //has no own toolbar - get activity toolbar
+        if (toolbar == null) {
+            globalToolbar = true;
+            toolbar = navigationManager.getToolbar();
+        }
+
+        toolbar.setTitle(title);
         int backstackCount = getFragmentManager().getBackStackEntryCount();
         Drawable toolbarNavigationIcon;
         if (backstackCount > 0) {

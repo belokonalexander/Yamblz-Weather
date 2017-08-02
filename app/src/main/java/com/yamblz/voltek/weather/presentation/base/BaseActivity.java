@@ -10,16 +10,11 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    protected void replaceFragment(Fragment fragment, @IdRes int container) {
-        FragmentTransaction fts = getSupportFragmentManager().beginTransaction();
-        fts.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        fts.replace(container, fragment).commit();
-    }
+
 }

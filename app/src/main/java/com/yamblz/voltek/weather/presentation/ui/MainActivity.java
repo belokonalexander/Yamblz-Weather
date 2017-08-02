@@ -2,15 +2,18 @@ package com.yamblz.voltek.weather.presentation.ui;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -27,13 +30,23 @@ import com.yamblz.voltek.weather.presentation.ui.settings.SettingsFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements Navigator {
     public static final String NAVIGATE_POSITION = "NAVIGATE_POSITION_ID";
-    public static final String NAVIGATION_BACKPRESS = "NAVIGATION_BACKPRESS";
 
     private Drawer navigation;
+
+    @Nullable
+    @BindView(R.id.drawer_content)
+    FrameLayout navigationContainer;
+
+    @Nullable
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    private boolean singlePane = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +54,54 @@ public class MainActivity extends BaseActivity implements Navigator {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        navigation = new DrawerBuilder().withActivity(this)
+
+        //check dual pane mode
+        singlePane = navigationContainer==null;
+
+        DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
                 .withHeaderHeight(DimenHolder.fromDp(240))
                 .withTranslucentStatusBar(true)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     onDrawerItemClick(view.getId());
-                    return false;
+                    return true;
                 })
-                .withDrawerItems(customInflateMenu())
-                .build();
+                .withDrawerItems(customInflateMenu());
+
+
+        if (!singlePane) {
+            navigation = drawerBuilder.buildView();
+            navigationContainer.addView(navigation.getSlider());
+        } else {
+            navigation = drawerBuilder.build();
+        }
 
 
         if (savedInstanceState == null) {
             onDrawerItemClick(R.id.nav_forecast);
+            if(singlePane) {
+                navigation.setSelection(-1, false);
+            }
         } else {
-            navigation.setSelection(savedInstanceState.getInt(NAVIGATE_POSITION), false);
+            if(!singlePane)
+                navigation.setSelection(savedInstanceState.getInt(NAVIGATE_POSITION), false);
         }
 
+
     }
+
+
+    /**
+     * saving current select position
+     *
+     * @param outState
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(!singlePane)
+            outState.putInt(NAVIGATE_POSITION, (int) navigation.getCurrentSelection());
+    }
+
 
     /**
      * gets menu items from menu.xml
@@ -82,11 +125,6 @@ public class MainActivity extends BaseActivity implements Navigator {
      *
      * @param outState
      */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(NAVIGATE_POSITION, (int) navigation.getCurrentSelection());
-    }
 
 
     /**
@@ -121,24 +159,26 @@ public class MainActivity extends BaseActivity implements Navigator {
 
         //if this item already selected
         if (fm.findFragmentByTag(tag) != null) {
+            navigation.closeDrawer();
             return;
         }
 
         Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
 
-        if (isRoot) {
+        if (!singlePane || isRoot) {
             openAsRoot(fragment, tag);
-        } else
+        } else {
             openWithBackStack(fragment, tag);
+        }
 
-        navigation.setSelection(id, false);
+
 
     }
 
 
     @Override
     public void onBackPressed() {
-        if (navigation.isDrawerOpen()) {
+        if (singlePane && navigation.isDrawerOpen()) {
             navigation.closeDrawer();
         } else {
             super.onBackPressed();
@@ -160,6 +200,7 @@ public class MainActivity extends BaseActivity implements Navigator {
                     .withIdentifier(mMenuItem.getItemId())
                     .withEnabled(mMenuItem.isEnabled())
                     .withIconTintingEnabled(true)
+                    .withSelectable(!singlePane)
                     .withSelectedIconColor(ContextCompat.getColor(getBaseContext(), R.color.material_drawer_dark_selected));
             item.add(iDrawerItem);
         }
@@ -173,16 +214,20 @@ public class MainActivity extends BaseActivity implements Navigator {
 
     @Override
     public void setNavigationDrawerState(boolean enabled) {
-        if (enabled) {
-            navigation.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        } else {
-            navigation.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        if (singlePane) {
+            if (enabled) {
+                navigation.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            } else {
+                navigation.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
         }
     }
 
     @Override
     public void openNavigationDrawer() {
-        navigation.openDrawer();
+        if (singlePane)
+            navigation.openDrawer();
     }
 
     @Override
@@ -199,6 +244,12 @@ public class MainActivity extends BaseActivity implements Navigator {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_content, fragment, tag)
                 .commit();
+    }
+
+    @Nullable
+    @Override
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 
 
