@@ -8,7 +8,6 @@ import com.yamblz.voltek.weather.presentation.ui.adapter.models.CityAdapterItem;
 import com.yamblz.voltek.weather.utils.rx.ListMapper;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.functions.Function;
@@ -24,16 +23,17 @@ public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView>
         this.rxSchedulers = rxSchedulers;
     }
 
+    public void clearTextView() {
+        getViewState().clearText();
+    }
 
     public void findSuggestions(String text) {
+        text = text.trim();
         if (text.length() > 0) {
             interactor.getCitySuggestions(text)
                     .map(mapCityToAdapterITem())
                     .compose(rxSchedulers.getIOToMainTransformerSingle())
                     .subscribe(this::onNextSuggestions, this::onError);
-
-        } else {
-            getViewState().showSuggestions(new ArrayList<>());
         }
     }
 
@@ -72,9 +72,11 @@ public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView>
      */
     public void selectCity(String cityName) {
 
-        interactor.saveCity(new CityUIModel(cityName))
-                .compose(rxSchedulers.getIOToMainTransformerSingle())
-                .subscribe(this::onSuccessCitySaved, this::onError);
+        if (cityName.trim().length() > 0) {
+            interactor.saveCity(new CityUIModel(cityName))
+                    .compose(rxSchedulers.getIOToMainTransformerSingle())
+                    .subscribe(this::onSuccessCitySaved, this::onError);
+        }
 
     }
 

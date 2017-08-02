@@ -20,6 +20,12 @@ public interface SettingsCityView extends BaseView {
     void selectCity(CityUIModel city);
 
     @StateStrategyType(value = SkipStrategy.class)
+    void selectCity(String city);
+
+    @StateStrategyType(value = SkipStrategy.class)
     void showError(@NonNull Throwable error);
+
+    @StateStrategyType(value = SkipStrategy.class)
+    void clearText();
 
 }

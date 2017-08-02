@@ -32,13 +32,12 @@ public class SettingsFragment extends BasePreferenceFragment implements Settings
     private Preference cityPreference;
 
 
-
     @InjectPresenter
     SettingsPresenter presenter;
 
     @ProvidePresenter()
     SettingsPresenter provideSettingsPresenter() {
-         return WeatherApp.get(getContext()).getAppComponent().plus(new SettingsModule()).getSettingsPresenter();
+        return WeatherApp.get(getContext()).getAppComponent().plus(new SettingsModule()).getSettingsPresenter();
     }
 
 
@@ -47,7 +46,6 @@ public class SettingsFragment extends BasePreferenceFragment implements Settings
         getPreferenceManager().setSharedPreferencesName(StorageRepository.CATEGORY_SETTINGS);
         setPreferencesFromResource(R.xml.app_prefs, rootKey);
     }
-
 
 
     @Override
@@ -70,14 +68,14 @@ public class SettingsFragment extends BasePreferenceFragment implements Settings
 
     @Override
     public void attachInputListeners() {
-            cityPreference = findPreference("city_preference");
-            if(cityPreference!=null) {
+        cityPreference = findPreference("city_preference");
+        if (cityPreference != null) {
+            cityPreference.setOnPreferenceClickListener(preference -> {
 
-                cityPreference.setOnPreferenceClickListener(preference -> {
-                    navigationManager.openWithBackStack(new SelectCityFragment(), "some");
-                    return true;
-                });
-            }
+                navigationManager.openWithBackStack(new SelectCityFragment(), SettingsFragment.class.getSimpleName());
+                return true;
+            });
+        }
     }
 
     @Override
@@ -86,12 +84,10 @@ public class SettingsFragment extends BasePreferenceFragment implements Settings
     }
 
 
-
     @Override
     public void setCitySummary(String cityName) {
-       cityPreference.setSummary(cityName);
+        cityPreference.setSummary(cityName);
     }
-
 
 
 }

@@ -21,7 +21,7 @@ public class CityAdapterItem implements AdapterItem {
                 '}';
     }
 
-    public String getCityName() {
-        return content.name;
+    public CityUIModel getContent() {
+        return content;
     }
 }

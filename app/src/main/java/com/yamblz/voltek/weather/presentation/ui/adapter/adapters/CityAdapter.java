@@ -16,10 +16,10 @@ import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter {
 
-    private AdapterDelegatesManager<List<? extends AdapterItem>> delegatesManager;
-    private List<? extends AdapterItem> items;
+    private AdapterDelegatesManager<List<AdapterItem>> delegatesManager;
+    private List<AdapterItem> items;
 
-    public CityAdapter(LayoutInflater inflater, List<? extends AdapterItem> items, OnAdapterItemClickListener clickListener) {
+    public CityAdapter(LayoutInflater inflater, List<AdapterItem> items, OnAdapterItemClickListener clickListener) {
         this.items = items;
 
         delegatesManager = new AdapterDelegatesManager<>();
@@ -49,6 +49,6 @@ public class CityAdapter extends RecyclerView.Adapter {
 
 
     public void rewriteItems(List<? extends AdapterItem> items) {
-        this.items = items;
+        this.items = (List<AdapterItem>) items; // ??? wat... looks so painful :(
     }
 }

@@ -8,11 +8,9 @@
     </style>
 
 
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 
 
     <style name="AppTextInputLayout" parent="Widget.Design.TextInputLayout">
@@ -24,8 +22,30 @@
     </style>
 
 
+    <style name="ItemWrapperCardView" parent="CardView">
+        <item name="android:layout_height">@dimen/item_height</item>
+        <item name="cardCornerRadius">1dp</item>
+        <item name="android:clickable">true</item>
+        <item name="contentPaddingLeft">0dp</item>
+        <item name="contentPaddingRight">0dp</item>
+        <item name="contentPaddingTop">0dp</item>
+        <item name="contentPaddingBottom">0dp</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardMaxElevation">@dimen/card_elevation</item>
+        <item name="contentPadding">0dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardBackgroundColor">@color/item_background</item>
+    </style>
 
 
+    <style name="ClickableItem">
+        <item name="android:background">@drawable/cardholder_click_selector</item>
+    </style>
 
+    <style name="ListText">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 
 </resources>

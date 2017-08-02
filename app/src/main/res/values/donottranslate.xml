@@ -12,4 +12,6 @@
         <item>180</item>
     </string-array>
 
+    <integer name="ui_click_delay">100</integer>
+
 </resources>

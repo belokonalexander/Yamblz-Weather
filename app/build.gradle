@@ -86,7 +86,6 @@ ext {
     rxbindingVersion = '2.0.0'
     androidJobVersion = '1.1.11'
     moxyVersion = '1.5.3'
-    preferenceVersion = '26.0.0'
     leakCanaryVersion = '1.5.1'
     greendaoVersion = '3.2.2'
     stethoVersion = '1.5.0'
@@ -94,6 +93,7 @@ ext {
     espressoVersion = '2.2.2'
     daggerVersion = '2.11'
     adapterDelegate='3.0.1'
+    fixPreferenceVersion = '26.0.0.0'
 }
 
 greendao {
@@ -135,7 +135,8 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-v4:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
-    compile 'com.takisoft.fix:preference-v7:26.0.0.0'
+    compile "com.android.support:cardview-v7:$supportLibVersion"
+    compile "com.takisoft.fix:preference-v7:$fixPreferenceVersion"
 
     // Butterknife
     compile "com.jakewharton:butterknife:$butterknifeVersion"

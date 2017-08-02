@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
  * Created on 02.08.2017.
  */
 
-public class CityAdapterDelegate<T extends AdapterItem> extends AdapterDelegate<List<T>> {
+public class CityAdapterDelegate extends AdapterDelegate<List<AdapterItem>> {
 
     private LayoutInflater inflater;
     private OnAdapterItemClickListener clickListener;
@@ -33,7 +33,7 @@ public class CityAdapterDelegate<T extends AdapterItem> extends AdapterDelegate<
     }
 
     @Override
-    protected boolean isForViewType(@NonNull List<T> items, int position) {
+    protected boolean isForViewType(@NonNull List<AdapterItem> items, int position) {
         return items.get(position) instanceof CityAdapterItem;
     }
 
@@ -44,7 +44,7 @@ public class CityAdapterDelegate<T extends AdapterItem> extends AdapterDelegate<
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull List<T> items, int position, @NonNull RecyclerView.ViewHolder holder, @NonNull List<Object> payloads) {
+    protected void onBindViewHolder(@NonNull List<AdapterItem> items, int position, @NonNull RecyclerView.ViewHolder holder, @NonNull List<Object> payloads) {
         ((CityViewHolder) holder).bindTo((CityAdapterItem) items.get(position), clickListener);
     }
 
@@ -53,14 +53,17 @@ public class CityAdapterDelegate<T extends AdapterItem> extends AdapterDelegate<
         @BindView(R.id.city_name)
         TextView cityName;
 
+        @BindView(R.id.item_wrapper)
+        View wrapper;
+
         public CityViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         void bindTo(CityAdapterItem displayableItem, OnAdapterItemClickListener clickListener) {
-            cityName.setText(displayableItem.getCityName());
-            cityName.setOnClickListener(v -> clickListener.onClick(displayableItem));
+            cityName.setText(displayableItem.getContent().name);
+            wrapper.setOnClickListener(v -> clickListener.onClick(displayableItem));
         }
     }
 

@@ -14,7 +14,7 @@ import io.reactivex.Single;
 
 public class DatabaseRepositoryImpl implements DatabaseRepository {
 
-    private static final int DEFAULT_SUGGESTIONS_OFFSET = 5;
+    private static final int DEFAULT_SUGGESTIONS_OFFSET = 40;
 
     private CityToIDModelDao cityToIDModelDao;
 
@@ -26,7 +26,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
     @Override
     public Single<Collection<CityToIDModel>> getCityByPrefix(String prefix) {
         return Single.fromCallable(() -> cityToIDModelDao.queryBuilder()
-                .where(CityToIDModelDao.Properties.Alias.like("%" + prefix + "%"))
+                .where(CityToIDModelDao.Properties.Alias.like(prefix + "%"))
                 .limit(DEFAULT_SUGGESTIONS_OFFSET).list());
     }
 

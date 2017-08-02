@@ -1,13 +1,18 @@
 package com.yamblz.voltek.weather.presentation.ui.settings.SelectCity;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.yamblz.voltek.weather.R;
 import com.yamblz.voltek.weather.WeatherApp;
@@ -18,7 +23,7 @@ import com.yamblz.voltek.weather.presentation.ui.adapter.adapters.CityAdapter;
 import com.yamblz.voltek.weather.presentation.ui.adapter.adapters.OnAdapterItemClickListener;
 import com.yamblz.voltek.weather.presentation.ui.adapter.models.AdapterItem;
 import com.yamblz.voltek.weather.presentation.ui.adapter.models.CityAdapterItem;
-import com.yamblz.voltek.weather.utils.LogUtils;
+import com.yamblz.voltek.weather.presentation.ui.views.CustomEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +43,13 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
     Toolbar toolbar;
 
     @BindView(R.id.filter_edit_text)
-    EditText filterEditText;
+    CustomEditText filterEditText;
 
     @BindView(R.id.cities_recycler)
     RecyclerView citiesRecyclerView;
+
+    @BindView(R.id.clear_button)
+    ImageView clearButton;
 
     @InjectPresenter
     SettingsSelectCityPresenter presenter;
@@ -54,12 +62,21 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
     }
 
     @Override
-    public void attachInputListeners() {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         cityAdapter = new CityAdapter(getLayoutInflater(), new ArrayList<>(), this);
-
-        citiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        citiesRecyclerView.setLayoutManager(llm);
+        citiesRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), llm.getOrientation()));
         citiesRecyclerView.setAdapter(cityAdapter);
+
+        filterEditText.setOnKeyActionListener(text -> presenter.selectCity(text));
+
+    }
+
+    @Override
+    public void attachInputListeners() {
 
         Disposable getCities = RxTextView.afterTextChangeEvents(filterEditText)
                 .skip(1)
@@ -69,14 +86,10 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(text -> presenter.findSuggestions(text));
 
+        Disposable clearText = RxView.clicks(clearButton).subscribe(o -> presenter.clearTextView());
 
-        /*Disposable selectCities = RxAutoCompleteTextView.itemClickEvents(autoCompleteTextView)
-                .map(adapterViewItemClickEvent -> arrayAdapter.getItem(adapterViewItemClickEvent.position()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(city -> presenter.selectCity(city)
-                );*/
 
-        compositeDisposable.addAll(getCities/*, selectCities*/);
+        compositeDisposable.addAll(getCities, clearText);
     }
 
     @Override
@@ -102,13 +115,17 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
 
     @Override
     public void showSuggestions(List<CityAdapterItem> values) {
-        LogUtils.log(" showSuggestions -> " + values);
         cityAdapter.rewriteItems(values);
         cityAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void selectCity(CityUIModel city) {
+        getActivity().onBackPressed();
+    }
+
+    @Override
+    public void selectCity(String city) {
 
     }
 
@@ -118,7 +135,14 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
     }
 
     @Override
+    public void clearText() {
+        filterEditText.setText("");
+    }
+
+    @Override
     public void onClick(AdapterItem item) {
-        LogUtils.log(" -> " + item);
+        filterEditText.clearFocus();
+        CityAdapterItem adapterItem = (CityAdapterItem) item;
+        presenter.selectCity(adapterItem.getContent());
     }
 }
