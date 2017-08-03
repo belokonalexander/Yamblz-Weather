@@ -1,12 +1,8 @@
 package com.yamblz.voltek.weather.presentation.base;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
@@ -16,19 +12,24 @@ import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 import com.yamblz.voltek.weather.Navigator;
 import com.yamblz.voltek.weather.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
 
 
-public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
+public abstract class BasePreferenceFragment extends PreferenceFragmentCompat implements FragmentContent, CommonToolbarLoader.ToolbarNavigationListener {
 
+    @Nullable
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
 
     private Unbinder unbinder;
     // Holds all disposable with input events subscriptions
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
-    protected abstract Toolbar getToolbar();
+
     public Navigator navigationManager;
+    private CommonToolbarLoader toolbarLoader;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -36,35 +37,25 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
         unbinder = ButterKnife.bind(this, view);
     }
 
-    public void initToolbar(String title) {
-        getToolbar().setTitle(title);
-        int backstackCount = getFragmentManager().getBackStackEntryCount();
-        Drawable toolbarNavigationIcon;
-        if (backstackCount>0) {
-            navigationManager.setNavigationDrawerState(false);
-            toolbarNavigationIcon = VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_black_24dp, null);
-            getToolbar().setNavigationOnClickListener(v -> getActivity().onBackPressed());
-        } else {
-            toolbarNavigationIcon = VectorDrawableCompat.create(getResources(), R.drawable.ic_menu_black_24dp, null);
-            navigationManager.setNavigationDrawerState(true);
-            getToolbar().setNavigationOnClickListener(v -> navigationManager.openNavigationDrawer());
-        }
-
-        initToolbarView(toolbarNavigationIcon);
-
-    }
-
-    private void initToolbarView(Drawable navigationIcon) {
-        navigationIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.normal_text_color), PorterDuff.Mode.SRC_IN);
-        getToolbar().setNavigationIcon(navigationIcon);
-        getToolbar().setContentInsetStartWithNavigation(0);
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         navigationManager = (Navigator) getActivity();
+        toolbarLoader = new CommonToolbarLoader(navigationManager, getFragmentManager(), getContext(), toolbar, this);
+        toolbarLoader.initToolbar(getString(getTitle()));
     }
+
+
+    @Override
+    public void onBackClick() {
+        getActivity().onBackPressed();
+    }
+
+    @Override
+    public void onMenuClick() {
+        navigationManager.openNavigationDrawer();
+    }
+
 
 
     private boolean mIsStateSaved;

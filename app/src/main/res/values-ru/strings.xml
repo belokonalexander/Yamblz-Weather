@@ -13,6 +13,7 @@
 
     <string name="nav_forecast">Прогноз</string>
     <string name="nav_settings">Настройки</string>
+    <string name="nav_add_city">Добавить город</string>
     <string name="nav_about">О приложении</string>
 
     <!-- Weather -->

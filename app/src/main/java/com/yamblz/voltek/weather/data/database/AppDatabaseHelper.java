@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-public class AppDatabaseHelper extends DaoMaster.DevOpenHelper {
+public class AppDatabaseHelper extends DaoMaster.OpenHelper {
 
     private Context context;
 
@@ -74,7 +74,8 @@ public class AppDatabaseHelper extends DaoMaster.DevOpenHelper {
         SQLiteDatabase sqliteDatabase;
 
         if (databaseExists()) {
-            /* Check for Upgrade */
+            //todo something
+
         } else {
             /* Database does not exists create blank database */
             sqliteDatabase = this.getReadableDatabase();
@@ -82,6 +83,8 @@ public class AppDatabaseHelper extends DaoMaster.DevOpenHelper {
 
             copyDataBase();
         }
+
+        DaoMaster.createAllTables(getWritableDb(), true);
     }
 
     /**

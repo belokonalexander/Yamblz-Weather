@@ -9,5 +9,6 @@
     <color name="item_background">#ffffff</color>
     <color name="ripple">#dcdcdc</color>
     <color name="white">#fff</color>
+    <color name="drawer_header_color">#f4f4f4</color>
 
 </resources>

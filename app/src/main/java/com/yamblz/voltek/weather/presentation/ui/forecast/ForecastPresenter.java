@@ -3,8 +3,9 @@ package com.yamblz.voltek.weather.presentation.ui.forecast;
 import com.arellomobile.mvp.InjectViewState;
 import com.yamblz.voltek.weather.domain.interactor.ForecastInteractor;
 import com.yamblz.voltek.weather.presentation.base.BasePresenter;
-import com.yamblz.voltek.weather.utils.LogUtils;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
+
+import io.reactivex.disposables.Disposable;
 
 @InjectViewState
 public class ForecastPresenter extends BasePresenter<ForecastView> {
@@ -17,6 +18,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         this.rxSchedulers = rxSchedulers;
     }
 
+    Disposable loadWeatherTask;
+
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
@@ -28,24 +31,22 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         loadWeather(true);
     }
 
-    // Private logic
+
     private void loadWeather(boolean refresh) {
 
-        getViewState().showLoading(true);
+        if (loadWeatherTask == null || loadWeatherTask.isDisposed()) {
+            getViewState().showLoading(true);
+            loadWeatherTask = interactor.getCurrentWeather(refresh)
+                    .compose(rxSchedulers.getIOToMainTransformerSingle())
+                    .doAfterTerminate(() -> getViewState().showLoading(false))
+                    .subscribe(weatherUIModel -> {
+                        getViewState().showData(weatherUIModel);
+                    }, throwable -> {
+                        getViewState().showError(throwable);
+                    });
 
-
-        interactor.getCurrentWeather(refresh)
-                .compose(rxSchedulers.getIOToMainTransformerSingle())
-                .subscribe(weatherUIModel -> {
-                    LogUtils.log(" Получили данные ");
-                    getViewState().showData(weatherUIModel);
-                    getViewState().showLoading(false);
-                }, throwable -> {
-                    LogUtils.log(" Не получили данные ", throwable);
-
-                    getViewState().showError(throwable);
-                    getViewState().showLoading(false);
-                });
+            compositeDisposable.addAll(loadWeatherTask);
+        }
 
     }
 }

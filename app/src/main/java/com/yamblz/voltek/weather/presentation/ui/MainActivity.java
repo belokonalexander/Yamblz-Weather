@@ -1,7 +1,9 @@
 package com.yamblz.voltek.weather.presentation.ui;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
+import android.support.annotation.MenuRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,11 +12,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.holder.DimenHolder;
@@ -22,10 +25,18 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.yamblz.voltek.weather.Navigator;
 import com.yamblz.voltek.weather.R;
+import com.yamblz.voltek.weather.WeatherApp;
+import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.presentation.base.BaseActivity;
 import com.yamblz.voltek.weather.presentation.ui.about.AboutFragment;
+import com.yamblz.voltek.weather.presentation.ui.favorites.FavoritesPresenter;
+import com.yamblz.voltek.weather.presentation.ui.favorites.FavoritesView;
 import com.yamblz.voltek.weather.presentation.ui.forecast.ForecastFragment;
+import com.yamblz.voltek.weather.presentation.ui.menu.items.MainDrawerItem;
+import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
+import com.yamblz.voltek.weather.presentation.ui.settings.SelectCity.SelectCityFragment;
 import com.yamblz.voltek.weather.presentation.ui.settings.SettingsFragment;
+import com.yamblz.voltek.weather.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +44,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements Navigator {
+public class MainActivity extends BaseActivity implements Navigator, FavoritesView {
     public static final String NAVIGATE_POSITION = "NAVIGATE_POSITION_ID";
+
+    @InjectPresenter
+    FavoritesPresenter favoritesPresenter;
+
+    @ProvidePresenter
+    FavoritesPresenter provideFavoritesPresenter() {
+        return WeatherApp.get(this).getAppComponent().getFavoritesPresenter();
+    }
 
     private Drawer navigation;
 
@@ -56,17 +75,20 @@ public class MainActivity extends BaseActivity implements Navigator {
         ButterKnife.bind(this);
 
         //check dual pane mode
-        singlePane = navigationContainer==null;
+        singlePane = navigationContainer == null;
 
         DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
-                .withHeaderHeight(DimenHolder.fromDp(240))
-                .withTranslucentStatusBar(true)
+                .withHeader(R.layout.drawer_header_layout)
+                .withHeaderHeight(DimenHolder.fromDp(getResources().getDimensionPixelSize(R.dimen.drawer_header_height)))
+                .withScrollToTopAfterClick(false)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
-                    onDrawerItemClick(view.getId());
+                    onDrawerItemClick(drawerItem);
                     return true;
-                })
-                .withDrawerItems(customInflateMenu());
+                });
 
+
+        drawerBuilder.withStickyDrawerItems(customInflateMenu(R.menu.sticky_footer_drawer));
+        drawerBuilder.withDrawerItems(customInflateMenu(R.menu.after_items_menu));
 
         if (!singlePane) {
             navigation = drawerBuilder.buildView();
@@ -76,30 +98,6 @@ public class MainActivity extends BaseActivity implements Navigator {
         }
 
 
-        if (savedInstanceState == null) {
-            onDrawerItemClick(R.id.nav_forecast);
-            if(singlePane) {
-                navigation.setSelection(-1, false);
-            }
-        } else {
-            if(!singlePane)
-                navigation.setSelection(savedInstanceState.getInt(NAVIGATE_POSITION), false);
-        }
-
-
-    }
-
-
-    /**
-     * saving current select position
-     *
-     * @param outState
-     */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if(!singlePane)
-            outState.putInt(NAVIGATE_POSITION, (int) navigation.getCurrentSelection());
     }
 
 
@@ -108,49 +106,70 @@ public class MainActivity extends BaseActivity implements Navigator {
      *
      * @return
      */
-    private List<IDrawerItem> customInflateMenu() {
+    private List<IDrawerItem> customInflateMenu(@MenuRes int menuId) {
 
         MenuInflater menuInflater = new SupportMenuInflater(this);
         MenuBuilder menu = new MenuBuilder(this);
-        menuInflater.inflate(R.menu.activity_main_drawer, menu);
+        menuInflater.inflate(menuId, menu);
         List<IDrawerItem> result = new ArrayList<>();
-        addMenuItems(result, menu);
+
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem menuItem = menu.getItem(i);
+            PrimaryDrawerItem drawerItem;
+            drawerItem = new MainDrawerItem(menuItem.getItemId());
+            result.add(initiateItemField(drawerItem, menuItem.getTitle().toString(), menuItem.getIcon()));
+        }
 
         return result;
     }
 
+    private IDrawerItem initiateItemField(PrimaryDrawerItem drawerItem, String title, Drawable icon) {
 
-    /**
-     * saving current select position
-     *
-     * @param outState
-     */
+        IDrawerItem item = drawerItem.withName(title)
+
+                .withIcon(icon)
+                .withIconTintingEnabled(true)
+                .withSelectable(!singlePane)
+                .withSelectedIconColor(ContextCompat.getColor(getBaseContext(), R.color.material_drawer_dark_selected));
+
+        if (drawerItem instanceof MainDrawerItem) {
+            item.withIdentifier(((MainDrawerItem) drawerItem).getItemId());
+        }
+
+        return item;
+    }
 
 
-    /**
-     * item click handling
-     *
-     * @param id - id of selected item
-     */
-    private void onDrawerItemClick(@IdRes int id) {
+    private void onDrawerItemClick(IDrawerItem drawerItem) {
 
         Class fragmentClass = null;
-
         boolean isRoot = false;
 
-        switch (id) {
-            case R.id.nav_forecast:
-                fragmentClass = ForecastFragment.class;
-                isRoot = true;
-                break;
-            case R.id.nav_settings:
-                fragmentClass = SettingsFragment.class;
+        //individual item of menu
+        if (drawerItem instanceof MainDrawerItem) {
+            int id = ((MainDrawerItem) drawerItem).getItemId();
+            switch (id) {
+                case R.id.nav_settings:
+                    fragmentClass = SettingsFragment.class;
+                    break;
 
-                break;
-            case R.id.nav_about:
-                fragmentClass = AboutFragment.class;
-                break;
+                case R.id.nav_about:
+                    fragmentClass = AboutFragment.class;
+                    break;
+
+                case R.id.nav_add_city:
+                    fragmentClass = SelectCityFragment.class;
+                    isRoot = true;
+                    break;
+
+            }
+        } else {
+
+            fragmentClass = ForecastFragment.class;
+            isRoot = true;
+
         }
+
 
         //NPE, if will dummy menu item
         String tag = fragmentClass.getSimpleName();
@@ -172,7 +191,6 @@ public class MainActivity extends BaseActivity implements Navigator {
         }
 
 
-
     }
 
 
@@ -182,27 +200,6 @@ public class MainActivity extends BaseActivity implements Navigator {
             navigation.closeDrawer();
         } else {
             super.onBackPressed();
-        }
-    }
-
-    /**
-     * convert items menu in IDrawerItem
-     *
-     * @param item
-     * @param menu
-     */
-    private void addMenuItems(List<IDrawerItem> item, Menu menu) {
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem mMenuItem = menu.getItem(i);
-            IDrawerItem iDrawerItem = new PrimaryDrawerItem()
-                    .withName(mMenuItem.getTitle().toString())
-                    .withIcon(mMenuItem.getIcon())
-                    .withIdentifier(mMenuItem.getItemId())
-                    .withEnabled(mMenuItem.isEnabled())
-                    .withIconTintingEnabled(true)
-                    .withSelectable(!singlePane)
-                    .withSelectedIconColor(ContextCompat.getColor(getBaseContext(), R.color.material_drawer_dark_selected));
-            item.add(iDrawerItem);
         }
     }
 
@@ -241,6 +238,7 @@ public class MainActivity extends BaseActivity implements Navigator {
 
     @Override
     public void openAsRoot(Fragment fragment, String tag) {
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_content, fragment, tag)
                 .commit();
@@ -248,9 +246,37 @@ public class MainActivity extends BaseActivity implements Navigator {
 
     @Nullable
     @Override
-    public Toolbar getToolbar() {
+    public Toolbar getCommonToolbar() {
         return toolbar;
     }
 
+    @Override
+    public void initToolbarNavigationView(Toolbar toolbar, Drawable navigationIcon, boolean globalToolbar, boolean isRoot) {
+        if (!globalToolbar || !isRoot) {
+            navigationIcon.setColorFilter(ContextCompat.getColor(getBaseContext(), R.color.normal_text_color), PorterDuff.Mode.SRC_IN);
+            toolbar.setNavigationIcon(navigationIcon);
+            toolbar.setContentInsetStartWithNavigation(0);
+        } else {
+            LogUtils.log(" LOOO G");
+            toolbar.setNavigationIcon(null);
+        }
+    }
 
+
+    @Override
+    public void attachInputListeners() {
+
+    }
+
+    @Override
+    public void detachInputListeners() {
+
+    }
+
+    @Override
+    public void setFavoritesItems(List<CityUIModel> models) {
+        for (CityUIModel cityUIModel : models) {
+            navigation.addItemAtPosition(initiateItemField(new WeatherItem(cityUIModel), cityUIModel.name, null), 1);
+        }
+    }
 }

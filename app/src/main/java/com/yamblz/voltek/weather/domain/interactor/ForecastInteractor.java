@@ -22,8 +22,10 @@ public class ForecastInteractor {
     public Single<WeatherUIModel> getCurrentWeather(boolean refresh) {
 
         Single<WeatherUIModel> apiRequest = storageRepository.getSelectedCity()
-                .flatMap(cityUIModel -> api.byCityId(cityUIModel.id)).map(apiWeatherToUIWeather());
-                //.doOnSuccess(weatherUIModel -> storageRepository.putCurrent(weatherUIModel).subscribe());
+                .flatMap(cityUIModel -> api.byCityId(cityUIModel.id)).zipWith(storageRepository.getSelectedCity(), (weatherResponseModel, cityUIModel) -> {
+                    weatherResponseModel.name = cityUIModel.name;
+                    return weatherResponseModel;
+                }).map(apiWeatherToUIWeather());
 
         if (refresh) {
             return apiRequest;

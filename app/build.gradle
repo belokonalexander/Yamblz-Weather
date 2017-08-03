@@ -97,7 +97,7 @@ ext {
 }
 
 greendao {
-    schemaVersion 6
+    schemaVersion 9
 }
 
 dependencies {

@@ -1,5 +1,6 @@
 package com.yamblz.voltek.weather;
 
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 
@@ -15,11 +16,11 @@ public interface Navigator {
 
     void openNavigationDrawer();
 
-    String NAVIGATION_BACKPRESS = "NAVIGATION_BACKPRESS";
-
     void openWithBackStack(Fragment fragment, String tag);
 
     void openAsRoot(Fragment fragment, String tag);
 
-    Toolbar getToolbar();
+    Toolbar getCommonToolbar();
+
+    void initToolbarNavigationView(Toolbar toolbar, Drawable toolbarNavigationIcon, boolean globalToolbar, boolean isRoot);
 }

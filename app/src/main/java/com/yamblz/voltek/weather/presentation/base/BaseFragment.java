@@ -1,13 +1,8 @@
 package com.yamblz.voltek.weather.presentation.base;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,18 +13,23 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.yamblz.voltek.weather.Navigator;
 import com.yamblz.voltek.weather.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
 
-public abstract class BaseFragment extends MvpAppCompatFragment {
+public abstract class BaseFragment extends MvpAppCompatFragment implements FragmentContent, CommonToolbarLoader.ToolbarNavigationListener {
+
+    @Nullable
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
 
     private Unbinder unbinder;
     public Navigator navigationManager;
     // Holds all disposable with input events subscriptions
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private Toolbar toolbar;
+    private CommonToolbarLoader toolbarLoader;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -37,11 +37,24 @@ public abstract class BaseFragment extends MvpAppCompatFragment {
     }
 
     @Override
+    public void onBackClick() {
+        getActivity().onBackPressed();
+    }
+
+    @Override
+    public void onMenuClick() {
+        navigationManager.openNavigationDrawer();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         navigationManager = ((Navigator) getActivity());
         super.onActivityCreated(savedInstanceState);
-        initToolbar(getString(getTitle()));
+        toolbarLoader = new CommonToolbarLoader(navigationManager, getFragmentManager(), getContext(), toolbar, this);
+        toolbarLoader.initToolbar(getString(getTitle()));
     }
+
+
 
     @Override
     public void onDestroyView() {
@@ -60,48 +73,7 @@ public abstract class BaseFragment extends MvpAppCompatFragment {
     }
 
 
-    protected abstract Toolbar getToolbar();
 
-    protected abstract
-    @LayoutRes
-    int getLayout();
 
-    protected abstract
-    @StringRes
-    int getTitle();
-
-    private boolean globalToolbar = false;
-
-    public void initToolbar(String title) {
-
-        toolbar = getToolbar();
-        //has no own toolbar - get activity toolbar
-        if (toolbar == null) {
-            globalToolbar = true;
-            toolbar = navigationManager.getToolbar();
-        }
-
-        toolbar.setTitle(title);
-        int backstackCount = getFragmentManager().getBackStackEntryCount();
-        Drawable toolbarNavigationIcon;
-        if (backstackCount > 0) {
-            navigationManager.setNavigationDrawerState(false);
-            toolbarNavigationIcon = VectorDrawableCompat.create(getResources(), R.drawable.ic_arrow_back_black_24dp, null);
-            getToolbar().setNavigationOnClickListener(v -> getActivity().onBackPressed());
-        } else {
-            toolbarNavigationIcon = VectorDrawableCompat.create(getResources(), R.drawable.ic_menu_black_24dp, null);
-            navigationManager.setNavigationDrawerState(true);
-            getToolbar().setNavigationOnClickListener(v -> navigationManager.openNavigationDrawer());
-        }
-
-        initToolbarView(toolbarNavigationIcon);
-
-    }
-
-    private void initToolbarView(Drawable navigationIcon) {
-        navigationIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.normal_text_color), PorterDuff.Mode.SRC_IN);
-        getToolbar().setNavigationIcon(navigationIcon);
-        getToolbar().setContentInsetStartWithNavigation(0);
-    }
 
 }

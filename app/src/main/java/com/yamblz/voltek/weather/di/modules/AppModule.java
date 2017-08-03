@@ -10,6 +10,8 @@ import com.yamblz.voltek.weather.data.database.models.DaoSession;
 import com.yamblz.voltek.weather.data.storage.GsonConverter;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.data.storage.StorageRepositoryImpl;
+import com.yamblz.voltek.weather.domain.interactor.FavoritesInteractor;
+import com.yamblz.voltek.weather.presentation.ui.favorites.FavoritesPresenter;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulersWork;
 
@@ -68,5 +70,17 @@ public class AppModule {
     @Provides
     GsonConverter gsonConverter() {
         return new GsonConverter(new GsonBuilder());
+    }
+
+    @Provides
+    @Singleton
+    FavoritesPresenter provideFavoritesPresenter(FavoritesInteractor favoritesInteractor) {
+        return new FavoritesPresenter(favoritesInteractor);
+    }
+
+    @Provides
+    @Singleton
+    FavoritesInteractor provideFavoritesInteractor(DatabaseRepository databaseRepository) {
+        return new FavoritesInteractor(databaseRepository);
     }
 }

@@ -28,6 +28,7 @@ import static android.view.View.VISIBLE;
 public class ForecastFragment extends BaseFragment implements ForecastView {
 
 
+
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;
     @BindView(R.id.ll_content)
@@ -44,8 +45,7 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     TextView temperatureTv;
     @BindView(R.id.tv_humidity)
     TextView humidityTv;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+
     @BindView(R.id.tv_city_name)
     TextView cityNameTv;
 
@@ -67,17 +67,12 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
 
 
     @Override
-    protected Toolbar getToolbar() {
-        return toolbar;
-    }
-
-    @Override
-    protected int getLayout() {
+    public int getLayout() {
         return R.layout.fragment_forecast;
     }
 
     @Override
-    protected int getTitle() {
+    public int getTitle() {
         return R.string.title_forecast;
     }
 

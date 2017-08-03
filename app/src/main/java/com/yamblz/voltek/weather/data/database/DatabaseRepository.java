@@ -1,8 +1,10 @@
 package com.yamblz.voltek.weather.data.database;
 
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
+import com.yamblz.voltek.weather.data.database.models.FavoriteCityModel;
 
 import java.util.Collection;
+import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -18,5 +20,7 @@ public interface DatabaseRepository {
     Single<CityToIDModel> getCityByName(String name);
 
     Completable saveCity(CityToIDModel city);
+
+    Single<List<FavoriteCityModel>> getFavorite();
 
 }

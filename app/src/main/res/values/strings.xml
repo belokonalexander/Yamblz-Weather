@@ -17,6 +17,7 @@
 
     <string name="nav_forecast">Forecast</string>
     <string name="nav_settings">Settings</string>
+    <string name="nav_add_city">Add city</string>
     <string name="nav_about">About</string>
 
     <!-- Weather -->

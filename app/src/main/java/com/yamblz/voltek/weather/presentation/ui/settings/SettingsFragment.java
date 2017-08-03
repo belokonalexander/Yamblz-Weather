@@ -3,7 +3,6 @@ package com.yamblz.voltek.weather.presentation.ui.settings;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.Preference;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -17,13 +16,9 @@ import com.yamblz.voltek.weather.presentation.base.BasePreferenceFragment;
 import com.yamblz.voltek.weather.presentation.ui.settings.SelectCity.SelectCityFragment;
 import com.yamblz.voltek.weather.presentation.ui.views.SimpleArrayAdapter;
 
-import butterknife.BindView;
-
 public class SettingsFragment extends BasePreferenceFragment implements SettingsView {
 
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
 /*
     @BindView(R.id.city_name_settings_view)
     ClosableAutoCompleteTextView autoCompleteTextView;*/
@@ -49,14 +44,13 @@ public class SettingsFragment extends BasePreferenceFragment implements Settings
 
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        initToolbar(getString(R.string.title_settings));
+    public int getLayout() {
+        return 0;
     }
 
     @Override
-    protected Toolbar getToolbar() {
-        return toolbar;
+    public int getTitle() {
+        return R.string.nav_settings;
     }
 
     @Override

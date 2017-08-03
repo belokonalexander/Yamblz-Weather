@@ -39,8 +39,7 @@ import io.reactivex.disposables.Disposable;
 
 public class SelectCityFragment extends BaseFragment implements SettingsCityView, OnAdapterItemClickListener {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+
 
     @BindView(R.id.filter_edit_text)
     CustomEditText filterEditText;
@@ -92,18 +91,14 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
         compositeDisposable.addAll(getCities, clearText);
     }
 
-    @Override
-    protected Toolbar getToolbar() {
-        return toolbar;
-    }
 
     @Override
-    protected int getLayout() {
+    public int getLayout() {
         return R.layout.fragment_settings_select_city;
     }
 
     @Override
-    protected int getTitle() {
+    public int getTitle() {
         return R.string.title_city_select;
     }
 
