@@ -1,4 +1,4 @@
-package com.yamblz.voltek.weather.presentation.ui.settings.SelectCity;
+package com.yamblz.voltek.weather.presentation.ui.settings;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,7 +17,7 @@ import com.yamblz.voltek.weather.R;
 import com.yamblz.voltek.weather.WeatherApp;
 import com.yamblz.voltek.weather.di.modules.SettingsModule;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.presentation.base.BaseFragment;
+import com.yamblz.voltek.weather.presentation.base.BaseResultFragment;
 import com.yamblz.voltek.weather.presentation.ui.adapter.adapters.CityAdapter;
 import com.yamblz.voltek.weather.presentation.ui.adapter.adapters.OnAdapterItemClickListener;
 import com.yamblz.voltek.weather.presentation.ui.adapter.models.AdapterItem;
@@ -37,9 +36,7 @@ import io.reactivex.disposables.Disposable;
  * Created on 02.08.2017.
  */
 
-public class SelectCityFragment extends BaseFragment implements SettingsCityView, OnAdapterItemClickListener {
-
-
+public class SelectCityFragment extends BaseResultFragment implements SettingsCityView, OnAdapterItemClickListener {
 
     @BindView(R.id.filter_edit_text)
     CustomEditText filterEditText;
@@ -53,7 +50,7 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
     @InjectPresenter
     SettingsSelectCityPresenter presenter;
 
-    CityAdapter cityAdapter;
+    private CityAdapter cityAdapter;
 
     @ProvidePresenter
     public SettingsSelectCityPresenter provideSettingsPresenter() {
@@ -116,13 +113,10 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
 
     @Override
     public void selectCity(CityUIModel city) {
-        getActivity().onBackPressed();
+        if (citySelectedListener != null)
+            citySelectedListener.onResultCallback(city);
     }
 
-    @Override
-    public void selectCity(String city) {
-
-    }
 
     @Override
     public void showError(@NonNull Throwable error) {

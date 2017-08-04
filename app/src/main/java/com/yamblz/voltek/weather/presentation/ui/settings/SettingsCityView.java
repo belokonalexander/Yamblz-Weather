@@ -1,4 +1,4 @@
-package com.yamblz.voltek.weather.presentation.ui.settings.SelectCity;
+package com.yamblz.voltek.weather.presentation.ui.settings;
 
 import android.support.annotation.NonNull;
 
@@ -18,9 +18,6 @@ public interface SettingsCityView extends BaseView {
 
     @StateStrategyType(value = SkipStrategy.class)
     void selectCity(CityUIModel city);
-
-    @StateStrategyType(value = SkipStrategy.class)
-    void selectCity(String city);
 
     @StateStrategyType(value = SkipStrategy.class)
     void showError(@NonNull Throwable error);

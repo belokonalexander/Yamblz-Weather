@@ -3,6 +3,7 @@ package com.yamblz.voltek.weather.presentation.ui.forecast;
 import com.arellomobile.mvp.InjectViewState;
 import com.yamblz.voltek.weather.domain.interactor.ForecastInteractor;
 import com.yamblz.voltek.weather.presentation.base.BasePresenter;
+import com.yamblz.voltek.weather.utils.LogUtils;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 
 import io.reactivex.disposables.Disposable;
@@ -42,6 +43,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(weatherUIModel -> {
                         getViewState().showData(weatherUIModel);
                     }, throwable -> {
+                        LogUtils.log("error: ", throwable);
                         getViewState().showError(throwable);
                     });
 

@@ -1,6 +1,8 @@
 package com.yamblz.voltek.weather.utils.rx;
 
 
+import io.reactivex.CompletableTransformer;
+import io.reactivex.MaybeTransformer;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Scheduler;
 import io.reactivex.SingleTransformer;
@@ -38,6 +40,19 @@ public abstract class RxSchedulers {
     public <T> SingleTransformer<T, T> getComputationToMainTransformerSingle()  {
         return objectObservable -> objectObservable
                 .subscribeOn(getComputationScheduler())
+                .observeOn(getMainThreadScheduler());
+    }
+
+
+    public CompletableTransformer getIOToMainTransformerCompletable()  {
+        return objectObservable -> objectObservable
+                .subscribeOn(getIOScheduler())
+                .observeOn(getMainThreadScheduler());
+    }
+
+    public <T> MaybeTransformer<T, T> getIOToMainTransformerMaybe()  {
+        return objectObservable -> objectObservable
+                .subscribeOn(getIOScheduler())
                 .observeOn(getMainThreadScheduler());
     }
 

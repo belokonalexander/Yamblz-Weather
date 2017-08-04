@@ -1,5 +1,7 @@
 package com.yamblz.voltek.weather.domain.interactor;
 
+import android.database.sqlite.SQLiteConstraintException;
+
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
 import com.yamblz.voltek.weather.data.database.DatabaseRepository;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
@@ -39,6 +42,7 @@ public class SettingsInteractor {
         return databaseRepository.getCityByPrefix(prefix).flatMap(toCity());
     }
 
+
     public Single<CityUIModel> saveCity(CityUIModel city) {
         if (city == null)
             return Single.error(new IllegalArgumentException());
@@ -48,7 +52,7 @@ public class SettingsInteractor {
         } else {
 
             return databaseRepository.getCityByName(city.name)
-                    .onErrorResumeNext(throwable -> api.byCityName(city.name)
+                    .onErrorResumeNext(throwable -> api.byCityName(city.name, null)
                             .map(apiWeatherToDBCityMapper())
                             .flatMap(cityToIDModel -> databaseRepository.saveCity(cityToIDModel).toSingleDefault(cityToIDModel)))
                     .map(dbCityToUiCityMapper())
@@ -59,7 +63,15 @@ public class SettingsInteractor {
     }
 
     private Single<CityUIModel> getCorrectSaveCity(CityUIModel city) {
-        return storage.putSelectedCity(city).toSingleDefault(city);
+        return databaseRepository.saveAsFavorite(new CityToIDModel(city.name, city.id))
+                .onErrorResumeNext(throwable -> {
+                    if (throwable instanceof SQLiteConstraintException) {
+                        return Completable.complete();
+                    } else
+                        return Completable.error(throwable);
+                })
+                //.andThen(storage.putSelectedCity(city)).onErrorComplete()
+                .toSingleDefault(city);
     }
 
     private Function<CityToIDModel, CityUIModel> dbCityToUiCityMapper() {
@@ -80,5 +92,7 @@ public class SettingsInteractor {
             return list;
         });
     }
+
+
 
 }

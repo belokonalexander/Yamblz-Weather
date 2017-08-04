@@ -1,9 +1,12 @@
 package com.yamblz.voltek.weather.domain.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
 
 
-public class CityUIModel {
+public class CityUIModel{
 
     public final int id;
 
@@ -22,6 +25,12 @@ public class CityUIModel {
     public CityUIModel(WeatherResponseModel body) {
         this(body.id, body.name);
     }
+
+    protected CityUIModel(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+    }
+
 
     @Override
     public String toString() {
@@ -43,4 +52,6 @@ public class CityUIModel {
     public int hashCode() {
         return id;
     }
+
+
 }

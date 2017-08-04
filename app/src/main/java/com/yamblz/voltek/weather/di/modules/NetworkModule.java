@@ -109,7 +109,6 @@ public class NetworkModule {
                 throw new UnknownHostException("Unable to resolve host \"" + request.url().host() + "\"");
             }
 
-
             //run real api query
             Response response = null;
             response = chain.proceed(request);

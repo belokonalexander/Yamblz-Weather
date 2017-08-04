@@ -1,4 +1,5 @@
-package com.yamblz.voltek.weather.presentation.ui;
+package com.yamblz.voltek.weather.presentation.ui.main;
+
 
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -27,16 +29,16 @@ import com.yamblz.voltek.weather.Navigator;
 import com.yamblz.voltek.weather.R;
 import com.yamblz.voltek.weather.WeatherApp;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
+import com.yamblz.voltek.weather.domain.exception.DeleteLastCityException;
 import com.yamblz.voltek.weather.presentation.base.BaseActivity;
-import com.yamblz.voltek.weather.presentation.ui.about.AboutFragment;
-import com.yamblz.voltek.weather.presentation.ui.favorites.FavoritesPresenter;
-import com.yamblz.voltek.weather.presentation.ui.favorites.FavoritesView;
-import com.yamblz.voltek.weather.presentation.ui.forecast.ForecastFragment;
+import com.yamblz.voltek.weather.presentation.base.BaseFragment;
+import com.yamblz.voltek.weather.presentation.base.BaseResultFragment;
+import com.yamblz.voltek.weather.presentation.base.OnResultCallback;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.MainDrawerItem;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
-import com.yamblz.voltek.weather.presentation.ui.settings.SelectCity.SelectCityFragment;
-import com.yamblz.voltek.weather.presentation.ui.settings.SettingsFragment;
 import com.yamblz.voltek.weather.utils.LogUtils;
+import com.yamblz.voltek.weather.utils.StringUtils;
+import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +46,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements Navigator, FavoritesView {
+public class MainActivity extends BaseActivity implements Navigator, WeatherView {
     public static final String NAVIGATE_POSITION = "NAVIGATE_POSITION_ID";
 
     @InjectPresenter
-    FavoritesPresenter favoritesPresenter;
+    WeatherPresenter weatherPresenter;
 
     @ProvidePresenter
-    FavoritesPresenter provideFavoritesPresenter() {
+    WeatherPresenter provideFavoritesPresenter() {
         return WeatherApp.get(this).getAppComponent().getFavoritesPresenter();
     }
 
@@ -82,13 +84,17 @@ public class MainActivity extends BaseActivity implements Navigator, FavoritesVi
                 .withHeaderHeight(DimenHolder.fromDp(getResources().getDimensionPixelSize(R.dimen.drawer_header_height)))
                 .withScrollToTopAfterClick(false)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
-                    onDrawerItemClick(drawerItem);
+                    onDrawerItemClick(drawerItem, false);
+                    return true;
+                })
+                .withOnDrawerItemLongClickListener((view, position, drawerItem) -> {
+                    onDrawerItemClick(drawerItem, true);
                     return true;
                 });
 
 
         drawerBuilder.withStickyDrawerItems(customInflateMenu(R.menu.sticky_footer_drawer));
-        drawerBuilder.withDrawerItems(customInflateMenu(R.menu.after_items_menu));
+
 
         if (!singlePane) {
             navigation = drawerBuilder.buildView();
@@ -126,7 +132,6 @@ public class MainActivity extends BaseActivity implements Navigator, FavoritesVi
     private IDrawerItem initiateItemField(PrimaryDrawerItem drawerItem, String title, Drawable icon) {
 
         IDrawerItem item = drawerItem.withName(title)
-
                 .withIcon(icon)
                 .withIconTintingEnabled(true)
                 .withSelectable(!singlePane)
@@ -140,57 +145,67 @@ public class MainActivity extends BaseActivity implements Navigator, FavoritesVi
     }
 
 
-    private void onDrawerItemClick(IDrawerItem drawerItem) {
-
-        Class fragmentClass = null;
-        boolean isRoot = false;
+    private void onDrawerItemClick(IDrawerItem drawerItem, boolean longClick) {
 
         //individual item of menu
         if (drawerItem instanceof MainDrawerItem) {
             int id = ((MainDrawerItem) drawerItem).getItemId();
             switch (id) {
                 case R.id.nav_settings:
-                    fragmentClass = SettingsFragment.class;
+                    weatherPresenter.navigateToSettings();
                     break;
 
                 case R.id.nav_about:
-                    fragmentClass = AboutFragment.class;
+                    weatherPresenter.navigateToAbout();
                     break;
 
                 case R.id.nav_add_city:
-                    fragmentClass = SelectCityFragment.class;
-                    isRoot = true;
+                    weatherPresenter.navigateToAddCity();
                     break;
 
             }
+
         } else {
-
-            fragmentClass = ForecastFragment.class;
-            isRoot = true;
-
+            weatherPresenter.weatherClick(drawerItem, longClick);
         }
 
+    }
 
-        //NPE, if will dummy menu item
-        String tag = fragmentClass.getSimpleName();
 
+    @Override
+    public void navigateTo(Class<? extends Fragment> where, boolean asRoot, OnResultCallback onResultCallback) {
+
+        String tag = where.getSimpleName();
         FragmentManager fm = getSupportFragmentManager();
 
         //if this item already selected
-        if (fm.findFragmentByTag(tag) != null) {
+        /*if (fm.findFragmentByTag(tag) != null) {
             navigation.closeDrawer();
             return;
+        }*/
+
+        Fragment fragment = Fragment.instantiate(getBaseContext(), where.getName());
+
+        if (onResultCallback != null && fragment instanceof BaseFragment) {
+            ((BaseResultFragment) fragment).setResultCallback(onResultCallback);
         }
 
-        Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
-
-        if (!singlePane || isRoot) {
+        if (!singlePane || asRoot) {
             openAsRoot(fragment, tag);
         } else {
             openWithBackStack(fragment, tag);
         }
+    }
 
+    @Override
+    public void showDialogForCity(CityUIModel selectedCity) {
+        CityDialog cityDialog = new CityDialog(selectedCity, dialog -> weatherPresenter.deleteCityFromFavorite(selectedCity));
+        cityDialog.show(getSupportFragmentManager(), "showDialogForCity");
+    }
 
+    @Override
+    public void showError(DeleteLastCityException e) {
+        Toast.makeText(this, StringUtils.fromError(e), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -257,7 +272,6 @@ public class MainActivity extends BaseActivity implements Navigator, FavoritesVi
             toolbar.setNavigationIcon(navigationIcon);
             toolbar.setContentInsetStartWithNavigation(0);
         } else {
-            LogUtils.log(" LOOO G");
             toolbar.setNavigationIcon(null);
         }
     }
@@ -274,9 +288,43 @@ public class MainActivity extends BaseActivity implements Navigator, FavoritesVi
     }
 
     @Override
-    public void setFavoritesItems(List<CityUIModel> models) {
-        for (CityUIModel cityUIModel : models) {
-            navigation.addItemAtPosition(initiateItemField(new WeatherItem(cityUIModel), cityUIModel.name, null), 1);
+    public void setFavoritesItems(SetWithSelection<CityUIModel> models) {
+
+        LogUtils.log(" -----> " + models);
+        for (IDrawerItem it : navigation.getDrawerItems()) {
+            LogUtils.log(" in list:  " + ((WeatherItem) it).getModel());
         }
+
+        List<Long> forDelete = new ArrayList<>();
+        for(IDrawerItem item : navigation.getDrawerItems())
+            forDelete.add(item.getIdentifier());
+
+
+        for (CityUIModel cityUIModel : models) {
+            PrimaryDrawerItem drawerItem = new WeatherItem(cityUIModel);
+
+            //skip existed items and add original items
+            if (navigation.getPosition(drawerItem) < 0) {
+                navigation.addItemAtPosition(initiateItemField(drawerItem, cityUIModel.name, null), 1);
+            } else {
+                LogUtils.log("removee: " + ((WeatherItem) drawerItem).getModel());
+                forDelete.remove(drawerItem.getIdentifier());
+
+            }
+
+            //select item
+            if (cityUIModel.equals(models.getSelectedItem()) && navigation.getCurrentSelection() != cityUIModel.id) {
+                navigation.setSelection(drawerItem, true);
+            }
+
+
+        }
+
+        for (Long id : forDelete) {
+            navigation.removeItem(id);
+        }
+
     }
+
+
 }

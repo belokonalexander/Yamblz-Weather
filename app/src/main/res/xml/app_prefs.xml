@@ -2,27 +2,28 @@
 
     <PreferenceCategory android:title="@string/pr_cat_common_prefs">
 
+        <ListPreference
+            android:entries="@array/units_types"
+            android:entryValues="@array/units_types"
+            android:key="UNITS_KEY"
+            android:persistent="true"
+            android:summary="%s"
+            android:title="@string/pr_units" />
+
         <SwitchPreference
-            android:defaultValue="false"
-            android:key="_auto_refresh"
+            android:key="ENABLE_UPDATE_KEY"
             android:title="@string/pr_auto_refresh" />
 
         <ListPreference
-            android:dependency="_auto_refresh"
+            android:dependency="ENABLE_UPDATE_KEY"
             android:entries="@array/update_intervals"
             android:entryValues="@array/update_intervals_values"
-            android:key="_update_interval"
+            android:key="UPDATE_INTERVAL_KEY"
             android:persistent="true"
             android:summary="%s"
             android:title="@string/pr_refresh_interval" />
 
 
     </PreferenceCategory>
-
-    <Preference
-        android:key="city_preference"
-        android:persistent="false"
-        android:title="@string/city_name_hint" />
-
 
 </PreferenceScreen>

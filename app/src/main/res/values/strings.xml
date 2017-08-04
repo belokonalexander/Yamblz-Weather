@@ -46,6 +46,12 @@
     <string name="pr_auto_refresh">Auto refresh</string>
     <string name="pr_refresh_interval">Refresh interval</string>
     <string name="pr_cat_common_prefs">Common prefs</string>
+    <string name="pr_units">Units format</string>
+
+    <string-array name="units_types">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
 
     <string-array name="update_intervals">
         <item>15 minutes</item>
@@ -53,5 +59,9 @@
         <item>1 hour</item>
         <item>3 hours</item>
     </string-array>
+
+    <string name="default_city_name">Moscow</string>
+    <string name="delete_city">Delete city from favorites?</string>
+    <string name="cant_delete_last_city">You can\'t delete last city from favorites</string>
 
 </resources>

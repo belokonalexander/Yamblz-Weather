@@ -43,7 +43,7 @@ public class WeatherJob extends Job {
                 .flatMap(new Function<CityUIModel, SingleSource<WeatherResponseModel>>() {
                     @Override
                     public SingleSource<WeatherResponseModel> apply(@NonNull CityUIModel cityUIModel) throws Exception {
-                        return weatherApi.byCityId(cityUIModel.id);
+                        return weatherApi.byCityId(cityUIModel.id, null);
                     }
                 })
                 .map(WeatherUIModel::new)

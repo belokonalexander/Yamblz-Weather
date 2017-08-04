@@ -42,6 +42,7 @@
     <string name="pr_auto_refresh">Автообновление</string>
     <string name="pr_refresh_interval">Интервал обновления</string>
     <string name="pr_cat_common_prefs">Общие настройки</string>
+    <string name="pr_units">Система единиц</string>
 
     <string-array name="update_intervals">
         <item>15 минут</item>
@@ -49,5 +50,14 @@
         <item>1 час</item>
         <item>3 часа</item>
     </string-array>
+
+    <string-array name="units_types">
+        <item>Метрическая</item>
+        <item>Имперская</item>
+    </string-array>
+
+    <string name="default_city_name">Москва</string>
+    <string name="delete_city">Удалить город из избранного?</string>
+    <string name="cant_delete_last_city">В списке должен остаться хотя бы один город</string>
 
 </resources>

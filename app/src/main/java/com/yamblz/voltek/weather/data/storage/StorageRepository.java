@@ -14,18 +14,16 @@ import io.reactivex.Single;
 public interface StorageRepository {
 
     String CATEGORY_SETTINGS = "settings";
-    String CATEGORY_STORE = "store";
-
-    String WEATHER_KEY = "WEATHER_KEY";
     String CITY_KEY = "CITY_KEY";
+    String UNITS_KEY = "UNITS_KEY";
+    String START_COUNT_KEY = "START_COUNT_KEY";
     String UPDATE_INTERVAL_KEY = "UPDATE_INTERVAL_KEY";
     String ENABLE_UPDATE_KEY = "ENABLE_UPDATE_KEY";
 
-    //Single<WeatherUIModel> getCurrent();
-
-    //Completable putCurrent(@NonNull WeatherUIModel weatherUIModel);
 
     Completable putSelectedCity(@NonNull CityUIModel city);
+
+    Single<String> getUnitsSettings();
 
     Single<CityUIModel> getSelectedCity();
 
@@ -33,4 +31,9 @@ public interface StorageRepository {
 
     Single<Integer> getUpdateInterval();
 
+    Single<Boolean> getApplicationStartFirst();
+
+    Completable incrementApplicationStartCount();
+
+    Completable fillByDefaultData();
 }

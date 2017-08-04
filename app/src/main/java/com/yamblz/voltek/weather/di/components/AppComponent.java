@@ -6,7 +6,7 @@ import com.yamblz.voltek.weather.di.modules.ForecastModule;
 import com.yamblz.voltek.weather.di.modules.JobsModule;
 import com.yamblz.voltek.weather.di.modules.NetworkModule;
 import com.yamblz.voltek.weather.di.modules.SettingsModule;
-import com.yamblz.voltek.weather.presentation.ui.favorites.FavoritesPresenter;
+import com.yamblz.voltek.weather.presentation.ui.main.WeatherPresenter;
 
 import javax.inject.Singleton;
 
@@ -25,6 +25,6 @@ public interface AppComponent {
 
     void inject(WeatherApp app);
 
-    FavoritesPresenter getFavoritesPresenter();
+    WeatherPresenter getFavoritesPresenter();
 
 }

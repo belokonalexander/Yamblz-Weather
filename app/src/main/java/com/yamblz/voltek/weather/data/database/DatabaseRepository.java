@@ -2,6 +2,7 @@ package com.yamblz.voltek.weather.data.database;
 
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
 import com.yamblz.voltek.weather.data.database.models.FavoriteCityModel;
+import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +22,11 @@ public interface DatabaseRepository {
 
     Completable saveCity(CityToIDModel city);
 
+    Completable saveAsFavorite(CityToIDModel city);
+
     Single<List<FavoriteCityModel>> getFavorite();
 
+    Completable deleteFromFavorites(CityUIModel cityUIModel);
+
+    Single<FavoriteCityModel> getTopFavorite();
 }

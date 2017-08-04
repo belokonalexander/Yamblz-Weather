@@ -15,7 +15,14 @@ public class WeatherItem extends PrimaryDrawerItem {
         this.model = model;
     }
 
+    @Override
+    public long getIdentifier() {
+        return model.id;
+    }
+
     public CityUIModel getModel() {
         return model;
     }
+
+
 }

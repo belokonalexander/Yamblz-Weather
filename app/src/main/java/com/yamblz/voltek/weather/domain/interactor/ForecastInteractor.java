@@ -1,5 +1,7 @@
 package com.yamblz.voltek.weather.domain.interactor;
 
+import android.util.Pair;
+
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
@@ -22,7 +24,9 @@ public class ForecastInteractor {
     public Single<WeatherUIModel> getCurrentWeather(boolean refresh) {
 
         Single<WeatherUIModel> apiRequest = storageRepository.getSelectedCity()
-                .flatMap(cityUIModel -> api.byCityId(cityUIModel.id)).zipWith(storageRepository.getSelectedCity(), (weatherResponseModel, cityUIModel) -> {
+                .zipWith(storageRepository.getUnitsSettings(), Pair::new)
+                .flatMap(pair -> api.byCityId(pair.first.id, pair.second))
+                .zipWith(storageRepository.getSelectedCity(), (weatherResponseModel, cityUIModel) -> {
                     weatherResponseModel.name = cityUIModel.name;
                     return weatherResponseModel;
                 }).map(apiWeatherToUIWeather());

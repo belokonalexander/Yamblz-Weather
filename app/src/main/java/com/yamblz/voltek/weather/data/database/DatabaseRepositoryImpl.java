@@ -7,6 +7,8 @@ import com.yamblz.voltek.weather.data.database.models.CityToIDModelDao;
 import com.yamblz.voltek.weather.data.database.models.DaoSession;
 import com.yamblz.voltek.weather.data.database.models.FavoriteCityModel;
 import com.yamblz.voltek.weather.data.database.models.FavoriteCityModelDao;
+import com.yamblz.voltek.weather.domain.entity.CityUIModel;
+import com.yamblz.voltek.weather.utils.LogUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -44,13 +46,34 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
         try {
             cityToIDModelDao.save(city);
         } catch (SQLiteConstraintException e) {
-            e.printStackTrace();
+            LogUtils.log(e.toString(), e);
         }
         return Completable.complete();
+    }
+
+    @Override
+    public Completable saveAsFavorite(CityToIDModel city) {
+        return Completable.fromAction(() -> {
+            FavoriteCityModel favoriteCityModel = new FavoriteCityModel(city.getAlias(), city.getCityId());
+            favoriteCitiesModelDao.save(favoriteCityModel);
+        });
     }
 
     @Override
     public Single<List<FavoriteCityModel>> getFavorite() {
         return Single.fromCallable(() -> favoriteCitiesModelDao.loadAll());
     }
+
+    @Override
+    public Completable deleteFromFavorites(CityUIModel cityUIModel) {
+        return Completable.fromAction(() -> favoriteCitiesModelDao.queryBuilder()
+                .where(FavoriteCityModelDao.Properties.CityId.eq(cityUIModel.id)).buildDelete().executeDeleteWithoutDetachingEntities());
+    }
+
+    @Override
+    public Single<FavoriteCityModel> getTopFavorite() {
+        return Single.fromCallable(() -> favoriteCitiesModelDao.queryBuilder().limit(1).uniqueOrThrow());
+    }
+
+
 }

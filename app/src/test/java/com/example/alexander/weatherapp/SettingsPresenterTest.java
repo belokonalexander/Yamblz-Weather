@@ -2,8 +2,8 @@ package com.example.alexander.weatherapp;
 
 
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.presentation.ui.settings.SelectCity.SettingsCityView;
-import com.yamblz.voltek.weather.presentation.ui.settings.SelectCity.SettingsSelectCityPresenter;
+import com.yamblz.voltek.weather.presentation.ui.settings.SettingsCityView;
+import com.yamblz.voltek.weather.presentation.ui.settings.SettingsSelectCityPresenter;
 
 import org.junit.Before;
 import org.junit.Test;

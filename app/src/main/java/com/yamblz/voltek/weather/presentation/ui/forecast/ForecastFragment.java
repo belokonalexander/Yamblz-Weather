@@ -3,7 +3,6 @@ package com.yamblz.voltek.weather.presentation.ui.forecast;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,8 +25,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class ForecastFragment extends BaseFragment implements ForecastView {
-
-
 
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;

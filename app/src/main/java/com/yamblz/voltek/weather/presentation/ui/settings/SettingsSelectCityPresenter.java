@@ -1,10 +1,11 @@
-package com.yamblz.voltek.weather.presentation.ui.settings.SelectCity;
+package com.yamblz.voltek.weather.presentation.ui.settings;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.interactor.SettingsInteractor;
 import com.yamblz.voltek.weather.presentation.base.BasePresenter;
 import com.yamblz.voltek.weather.presentation.ui.adapter.models.CityAdapterItem;
+import com.yamblz.voltek.weather.utils.LogUtils;
 import com.yamblz.voltek.weather.utils.rx.ListMapper;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 
@@ -43,6 +44,7 @@ public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView>
 
 
     private void onError(Throwable throwable) {
+        LogUtils.log("error: ", throwable);
         getViewState().showError(throwable);
     }
 
