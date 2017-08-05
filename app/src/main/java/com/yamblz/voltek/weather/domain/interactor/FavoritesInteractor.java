@@ -1,17 +1,14 @@
 package com.yamblz.voltek.weather.domain.interactor;
 
 import com.yamblz.voltek.weather.data.database.DatabaseRepository;
-import com.yamblz.voltek.weather.data.database.models.FavoriteCityModel;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
+import com.yamblz.voltek.weather.domain.mappers.RxMapper;
 import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
-import com.yamblz.voltek.weather.utils.rx.ListMapper;
-
-import java.util.List;
-import java.util.Set;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.annotations.NonNull;
@@ -25,23 +22,28 @@ public class FavoritesInteractor {
 
     private DatabaseRepository databaseRepository;
     private StorageRepository storageRepository;
+    private RxMapper rxMapper;
 
-    public FavoritesInteractor(DatabaseRepository databaseRepository, StorageRepository storageRepository) {
+    public FavoritesInteractor(DatabaseRepository databaseRepository, StorageRepository storageRepository, RxMapper rxMapper) {
         this.databaseRepository = databaseRepository;
         this.storageRepository = storageRepository;
+        this.rxMapper = rxMapper;
     }
 
+    public Observable<CityUIModel> favoritesDataAdded(){
+        return databaseRepository.getFavoritesAddedSubject()
+                .map(rxMapper.favoriteCityModelToCityUIModel());
+    }
+
+
     public Single<SetWithSelection<CityUIModel>> getFavorites() {
-        return databaseRepository.getFavorite().map(mapDBCityModelToUIModel())
+        return databaseRepository.getFavorite().map(rxMapper.favoriteCityModelListToCityUiModelSet())
                 .zipWith(storageRepository.getSelectedCity(), (cityUIModels, cityUIModel) -> {
                     cityUIModels.add(cityUIModel);
                     return new SetWithSelection<>(cityUIModels, cityUIModel);
                 });
     }
 
-    private Function<List<FavoriteCityModel>, Set<CityUIModel>> mapDBCityModelToUIModel() {
-        return ListMapper.mapToSet(another -> new CityUIModel(another.getCityId(), another.getAlias()));
-    }
 
     public Completable selectCity(CityUIModel city) {
         return storageRepository.putSelectedCity(city);
@@ -60,7 +62,7 @@ public class FavoritesInteractor {
         else {
             return databaseRepository.deleteFromFavorites(cityUIModel)
                     .andThen(databaseRepository.getTopFavorite()
-                            .map(favoriteCityModel -> new CityUIModel(favoriteCityModel.getCityId(), favoriteCityModel.getAlias())))
+                            .map(rxMapper.favoriteCityModelToCityUIModel()))
                     .flatMap(new Function<CityUIModel, SingleSource<CityUIModel>>() {
                         @Override
                         public SingleSource<CityUIModel> apply(@NonNull CityUIModel cityUIModel) throws Exception {
@@ -68,6 +70,5 @@ public class FavoritesInteractor {
                         }
                     }).toMaybe();
         }
-
     }
 }

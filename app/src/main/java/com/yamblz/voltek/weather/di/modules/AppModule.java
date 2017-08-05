@@ -11,9 +11,10 @@ import com.yamblz.voltek.weather.data.storage.GsonConverter;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.data.storage.StorageRepositoryImpl;
 import com.yamblz.voltek.weather.domain.interactor.FavoritesInteractor;
+import com.yamblz.voltek.weather.domain.mappers.RxMapper;
 import com.yamblz.voltek.weather.presentation.ui.main.WeatherPresenter;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
-import com.yamblz.voltek.weather.utils.rx.RxSchedulersWork;
+import com.yamblz.voltek.weather.utils.rx.RxSchedulersImpl;
 
 import javax.inject.Singleton;
 
@@ -64,7 +65,7 @@ public class AppModule {
     @Provides
     @Singleton
     RxSchedulers provideRxSchedulers() {
-        return new RxSchedulersWork();
+        return new RxSchedulersImpl();
     }
 
     @Provides
@@ -80,8 +81,14 @@ public class AppModule {
 
     @Provides
     @Singleton
-    FavoritesInteractor provideFavoritesInteractor(DatabaseRepository databaseRepository, StorageRepository storageRepository) {
-        return new FavoritesInteractor(databaseRepository, storageRepository);
+    FavoritesInteractor provideFavoritesInteractor(DatabaseRepository databaseRepository, StorageRepository storageRepository, RxMapper rxMapper) {
+        return new FavoritesInteractor(databaseRepository, storageRepository, rxMapper);
+    }
+
+    @Provides
+    @Singleton
+    RxMapper provideRxMapper() {
+        return new RxMapper();
     }
 
 

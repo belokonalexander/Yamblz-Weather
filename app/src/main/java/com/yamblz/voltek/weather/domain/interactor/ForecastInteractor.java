@@ -3,22 +3,23 @@ package com.yamblz.voltek.weather.domain.interactor;
 import android.util.Pair;
 
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
-import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
+import com.yamblz.voltek.weather.domain.mappers.RxMapper;
 
 import io.reactivex.Single;
-import io.reactivex.functions.Function;
 
 public class ForecastInteractor {
 
     private WeatherAPI api;
     private StorageRepository storageRepository;
+    private RxMapper rxMapper;
 
 
-    public ForecastInteractor(WeatherAPI api, StorageRepository storageRepository) {
+    public ForecastInteractor(WeatherAPI api, StorageRepository storageRepository, RxMapper rxMapper) {
         this.api = api;
         this.storageRepository = storageRepository;
+        this.rxMapper = rxMapper;
     }
 
     public Single<WeatherUIModel> getCurrentWeather(boolean refresh) {
@@ -29,19 +30,19 @@ public class ForecastInteractor {
                 .zipWith(storageRepository.getSelectedCity(), (weatherResponseModel, cityUIModel) -> {
                     weatherResponseModel.name = cityUIModel.name;
                     return weatherResponseModel;
-                }).map(apiWeatherToUIWeather());
+                }).map(rxMapper.weatherResponseModelToWeatherUiModel());
 
         if (refresh) {
             return apiRequest;
         } else {
-            return /*storageRepository.getCurrent().onErrorResumeNext(*/apiRequest  ;
+            return /*storageRepository.getCurrent().onErrorResumeNext(*/apiRequest;
         }
     }
 
 
-    private Function<WeatherResponseModel, WeatherUIModel> apiWeatherToUIWeather() {
+   /* private Function<WeatherResponseModel, WeatherUIModel> apiWeatherToUIWeather() {
         return WeatherUIModel::new;
-    }
+    }*/
 
 
 }

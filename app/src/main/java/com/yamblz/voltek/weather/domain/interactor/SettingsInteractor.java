@@ -1,16 +1,16 @@
 package com.yamblz.voltek.weather.domain.interactor;
 
 import android.database.sqlite.SQLiteConstraintException;
+import android.support.annotation.NonNull;
 
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
-import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
 import com.yamblz.voltek.weather.data.database.DatabaseRepository;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
-import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
+import com.yamblz.voltek.weather.domain.mappers.RxMapper;
+import com.yamblz.voltek.weather.presentation.ui.adapter.models.CityAdapterItem;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -25,27 +25,23 @@ import io.reactivex.functions.Function;
 public class SettingsInteractor {
 
     private WeatherAPI api;
-    private StorageRepository storage;
     private DatabaseRepository databaseRepository;
+    private RxMapper rxMapper;
 
-    public SettingsInteractor(WeatherAPI api, StorageRepository storageRepository, DatabaseRepository databaseRepository) {
+    public SettingsInteractor(WeatherAPI api, DatabaseRepository databaseRepository, RxMapper rxMapper) {
         this.api = api;
-        this.storage = storageRepository;
         this.databaseRepository = databaseRepository;
-    }
-
-    public Single<CityUIModel> getCurrentCity() {
-        return storage.getSelectedCity();
-    }
-
-    public Single<List<CityUIModel>> getCitySuggestions(String prefix) {
-        return databaseRepository.getCityByPrefix(prefix).flatMap(toCity());
+        this.rxMapper = rxMapper;
     }
 
 
-    public Single<CityUIModel> saveCity(CityUIModel city) {
-        if (city == null)
-            return Single.error(new IllegalArgumentException());
+    public Single<List<CityAdapterItem>> getCitySuggestions(@NonNull String prefix) {
+        return databaseRepository.getCityByPrefix(prefix)
+                .flatMap(toCity())
+                .map(rxMapper.cityUIModelListToCityAdapterItemList());
+    }
+
+    public Single<CityUIModel> saveCity(@NonNull CityUIModel city) {
 
         if (city.id > 0) {
             return getCorrectSaveCity(city);
@@ -53,16 +49,16 @@ public class SettingsInteractor {
 
             return databaseRepository.getCityByName(city.name)
                     .onErrorResumeNext(throwable -> api.byCityName(city.name, null)
-                            .map(apiWeatherToDBCityMapper())
+                            .map(rxMapper.weatherResponseModelToCityToIDModel())
                             .flatMap(cityToIDModel -> databaseRepository.saveCity(cityToIDModel).toSingleDefault(cityToIDModel)))
-                    .map(dbCityToUiCityMapper())
+                    .map(rxMapper.cityToIDModelToCityUIModel())
                     .flatMap(this::getCorrectSaveCity);
 
 
         }
     }
 
-    private Single<CityUIModel> getCorrectSaveCity(CityUIModel city) {
+    private Single<CityUIModel> getCorrectSaveCity(@NonNull CityUIModel city) {
         return databaseRepository.saveAsFavorite(new CityToIDModel(city.name, city.id))
                 .onErrorResumeNext(throwable -> {
                     if (throwable instanceof SQLiteConstraintException) {
@@ -70,20 +66,11 @@ public class SettingsInteractor {
                     } else
                         return Completable.error(throwable);
                 })
-                //.andThen(storage.putSelectedCity(city)).onErrorComplete()
                 .toSingleDefault(city);
     }
 
-    private Function<CityToIDModel, CityUIModel> dbCityToUiCityMapper() {
-        return cityToIDModel -> new CityUIModel(cityToIDModel.getCityId(), cityToIDModel.getAlias());
-    }
 
-
-    private Function<WeatherResponseModel, CityToIDModel> apiWeatherToDBCityMapper() {
-        return weatherResponseModel -> new CityToIDModel(weatherResponseModel.name, weatherResponseModel.id);
-    }
-
-    private Function<Collection<CityToIDModel>, SingleSource<List<CityUIModel>>> toCity() {
+    private Function<List<CityToIDModel>, SingleSource<List<CityUIModel>>> toCity() {
         return cityToIDModels -> Single.fromCallable(() -> {
             List<CityUIModel> list = new ArrayList<>();
             for (CityToIDModel model : cityToIDModels) {
@@ -92,7 +79,6 @@ public class SettingsInteractor {
             return list;
         });
     }
-
 
 
 }

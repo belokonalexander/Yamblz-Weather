@@ -31,9 +31,7 @@ import com.yamblz.voltek.weather.WeatherApp;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.exception.DeleteLastCityException;
 import com.yamblz.voltek.weather.presentation.base.BaseActivity;
-import com.yamblz.voltek.weather.presentation.base.BaseFragment;
-import com.yamblz.voltek.weather.presentation.base.BaseResultFragment;
-import com.yamblz.voltek.weather.presentation.base.OnResultCallback;
+import com.yamblz.voltek.weather.presentation.base.moxyprimitives.LinkableBoolean;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.MainDrawerItem;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
 import com.yamblz.voltek.weather.utils.LogUtils;
@@ -47,7 +45,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements Navigator, WeatherView {
-    public static final String NAVIGATE_POSITION = "NAVIGATE_POSITION_ID";
 
     @InjectPresenter
     WeatherPresenter weatherPresenter;
@@ -83,6 +80,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
                 .withHeader(R.layout.drawer_header_layout)
                 .withHeaderHeight(DimenHolder.fromDp(getResources().getDimensionPixelSize(R.dimen.drawer_header_height)))
                 .withScrollToTopAfterClick(false)
+                .withSelectedItem(-1)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     onDrawerItemClick(drawerItem, false);
                     return true;
@@ -95,15 +93,12 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
         drawerBuilder.withStickyDrawerItems(customInflateMenu(R.menu.sticky_footer_drawer));
 
-
         if (!singlePane) {
             navigation = drawerBuilder.buildView();
             navigationContainer.addView(navigation.getSlider());
         } else {
             navigation = drawerBuilder.build();
         }
-
-
     }
 
 
@@ -147,6 +142,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     private void onDrawerItemClick(IDrawerItem drawerItem, boolean longClick) {
 
+
         //individual item of menu
         if (drawerItem instanceof MainDrawerItem) {
             int id = ((MainDrawerItem) drawerItem).getItemId();
@@ -167,28 +163,23 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
         } else {
             weatherPresenter.weatherClick(drawerItem, longClick);
+            if(!longClick)
+                navigation.closeDrawer();
         }
 
     }
 
 
     @Override
-    public void navigateTo(Class<? extends Fragment> where, boolean asRoot, OnResultCallback onResultCallback) {
+    public void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag) {
 
-        String tag = where.getSimpleName();
-        FragmentManager fm = getSupportFragmentManager();
-
-        //if this item already selected
-        /*if (fm.findFragmentByTag(tag) != null) {
+        //TODO if this item already selected
+        if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
             navigation.closeDrawer();
             return;
-        }*/
+        }
 
         Fragment fragment = Fragment.instantiate(getBaseContext(), where.getName());
-
-        if (onResultCallback != null && fragment instanceof BaseFragment) {
-            ((BaseResultFragment) fragment).setResultCallback(onResultCallback);
-        }
 
         if (!singlePane || asRoot) {
             openAsRoot(fragment, tag);
@@ -253,6 +244,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     @Override
     public void openAsRoot(Fragment fragment, String tag) {
+        LogUtils.log(" OPEN FOR ROOT: " + fragment.getClass().getName());
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_content, fragment, tag)
@@ -266,8 +258,8 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     }
 
     @Override
-    public void initToolbarNavigationView(Toolbar toolbar, Drawable navigationIcon, boolean globalToolbar, boolean isRoot) {
-        if (!globalToolbar || !isRoot) {
+    public void initToolbarNavigationView(Toolbar toolbar, Drawable navigationIcon) {
+        if (singlePane) {
             navigationIcon.setColorFilter(ContextCompat.getColor(getBaseContext(), R.color.normal_text_color), PorterDuff.Mode.SRC_IN);
             toolbar.setNavigationIcon(navigationIcon);
             toolbar.setContentInsetStartWithNavigation(0);
@@ -288,17 +280,11 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     }
 
     @Override
-    public void setFavoritesItems(SetWithSelection<CityUIModel> models) {
-
-        LogUtils.log(" -----> " + models);
-        for (IDrawerItem it : navigation.getDrawerItems()) {
-            LogUtils.log(" in list:  " + ((WeatherItem) it).getModel());
-        }
+    public void setFavoritesItems(SetWithSelection<CityUIModel> models, LinkableBoolean clickOnSelected) {
 
         List<Long> forDelete = new ArrayList<>();
-        for(IDrawerItem item : navigation.getDrawerItems())
+        for (IDrawerItem item : navigation.getDrawerItems())
             forDelete.add(item.getIdentifier());
-
 
         for (CityUIModel cityUIModel : models) {
             PrimaryDrawerItem drawerItem = new WeatherItem(cityUIModel);
@@ -307,16 +293,20 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
             if (navigation.getPosition(drawerItem) < 0) {
                 navigation.addItemAtPosition(initiateItemField(drawerItem, cityUIModel.name, null), 1);
             } else {
-                LogUtils.log("removee: " + ((WeatherItem) drawerItem).getModel());
+
+                //remove from future deleted scope
                 forDelete.remove(drawerItem.getIdentifier());
 
             }
 
-            //select item
-            if (cityUIModel.equals(models.getSelectedItem()) && navigation.getCurrentSelection() != cityUIModel.id) {
+            //select item if it current selected
+            if (clickOnSelected.isValue() && cityUIModel.equals(models.getSelectedItem()) && navigation.getCurrentSelection() != cityUIModel.id) {
                 navigation.setSelection(drawerItem, true);
+                //cause I can't click on item without select it, in despite of I disable selection for this item early %)
+                if (singlePane) {
+                    navigation.deselect();
+                }
             }
-
 
         }
 

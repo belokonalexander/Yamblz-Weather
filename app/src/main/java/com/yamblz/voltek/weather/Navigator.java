@@ -22,5 +22,5 @@ public interface Navigator {
 
     Toolbar getCommonToolbar();
 
-    void initToolbarNavigationView(Toolbar toolbar, Drawable toolbarNavigationIcon, boolean globalToolbar, boolean isRoot);
+    void initToolbarNavigationView(Toolbar toolbar, Drawable toolbarNavigationIcon);
 }

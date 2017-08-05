@@ -8,7 +8,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created on 31.07.2017.
  */
 
-public class RxSchedulersWork extends RxSchedulers {
+public class RxSchedulersImpl extends RxSchedulers {
     @Override
     public Scheduler getMainThreadScheduler() {
         return AndroidSchedulers.mainThread();

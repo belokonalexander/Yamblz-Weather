@@ -6,12 +6,9 @@ import com.yamblz.voltek.weather.domain.interactor.SettingsInteractor;
 import com.yamblz.voltek.weather.presentation.base.BasePresenter;
 import com.yamblz.voltek.weather.presentation.ui.adapter.models.CityAdapterItem;
 import com.yamblz.voltek.weather.utils.LogUtils;
-import com.yamblz.voltek.weather.utils.rx.ListMapper;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 
 import java.util.List;
-
-import io.reactivex.functions.Function;
 
 @InjectViewState
 public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView> {
@@ -32,16 +29,10 @@ public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView>
         text = text.trim();
         if (text.length() > 0) {
             interactor.getCitySuggestions(text)
-                    .map(mapCityToAdapterITem())
                     .compose(rxSchedulers.getIOToMainTransformerSingle())
                     .subscribe(this::onNextSuggestions, this::onError);
         }
     }
-
-    private Function<List<CityUIModel>, List<CityAdapterItem>> mapCityToAdapterITem() {
-        return ListMapper.mapList(CityAdapterItem::new);
-    }
-
 
     private void onError(Throwable throwable) {
         LogUtils.log("error: ", throwable);

@@ -5,8 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.TextView;
 
 import com.yamblz.voltek.weather.Navigator;
 import com.yamblz.voltek.weather.R;
@@ -65,21 +63,9 @@ public class CommonToolbarLoader implements ToolbarLoader {
             });
         }
 
-        navigationManager.initToolbarNavigationView(toolbar, toolbarNavigationIcon, globalToolbar, isRoot);
+        navigationManager.initToolbarNavigationView(toolbar, toolbarNavigationIcon);
     }
 
-
-    public TextView getTextViewTitle(Toolbar toolbar){
-        TextView textViewTitle = null;
-        for(int i = 0; i<toolbar.getChildCount(); i++) {
-            View view = toolbar.getChildAt(i);
-            if(view instanceof TextView) {
-                textViewTitle = (TextView) view;
-                break;
-            }
-        }
-        return textViewTitle;
-    }
 
     public interface ToolbarNavigationListener {
 

@@ -16,6 +16,6 @@
     <dimen name="item_height">56dp</dimen>
     <dimen name="navigation_menu_width">240dp</dimen>
 
-    <dimen name="drawer_header_height">40dp</dimen>
+    <dimen name="drawer_header_height">32dp</dimen>
 
 </resources>

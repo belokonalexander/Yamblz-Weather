@@ -8,7 +8,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.exception.DeleteLastCityException;
 import com.yamblz.voltek.weather.presentation.base.BaseView;
-import com.yamblz.voltek.weather.presentation.base.OnResultCallback;
+import com.yamblz.voltek.weather.presentation.base.moxyprimitives.LinkableBoolean;
 import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 
 /**
@@ -18,10 +18,10 @@ import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 public interface WeatherView extends BaseView {
 
     @StateStrategyType(value = AddToEndSingleStrategy.class)
-    void setFavoritesItems(SetWithSelection<CityUIModel> models);
+    void setFavoritesItems(SetWithSelection<CityUIModel> models, LinkableBoolean clickOnSelected);
 
     @StateStrategyType(value = SkipStrategy.class)
-    void navigateTo(Class<? extends Fragment> where, boolean asRoot, OnResultCallback onResultCallback);
+    void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag);
 
     @StateStrategyType(value = SkipStrategy.class)
     void showDialogForCity(CityUIModel selectedCity);

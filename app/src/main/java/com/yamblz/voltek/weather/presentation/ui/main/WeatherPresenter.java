@@ -6,6 +6,7 @@ import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.exception.DeleteLastCityException;
 import com.yamblz.voltek.weather.domain.interactor.FavoritesInteractor;
 import com.yamblz.voltek.weather.presentation.base.BasePresenter;
+import com.yamblz.voltek.weather.presentation.base.moxyprimitives.LinkableBoolean;
 import com.yamblz.voltek.weather.presentation.ui.about.AboutFragment;
 import com.yamblz.voltek.weather.presentation.ui.forecast.ForecastFragment;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
@@ -28,10 +29,18 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
     private RxSchedulers rxSchedulers;
     private SetWithSelection<CityUIModel> cities;
 
+    private LinkableBoolean isCitySelected = new LinkableBoolean(true);
+
     public WeatherPresenter(FavoritesInteractor interactor, RxSchedulers rxSchedulers) {
         this.interactor = interactor;
         this.rxSchedulers = rxSchedulers;
         this.cities = new SetWithSelection<>();
+        Disposable favoritesWatcher = interactor.favoritesDataAdded()
+                .compose(rxSchedulers.getIOToMainTransformer())
+                .subscribe(this::onCityAdded);
+
+        compositeDisposable.addAll(favoritesWatcher);
+
     }
 
 
@@ -61,7 +70,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
 
     private void onSuccesLoadFavorites(SetWithSelection<CityUIModel> cityUIModels) {
         cities = cityUIModels;
-        getViewState().setFavoritesItems(cities);
+        getViewState().setFavoritesItems(cities, isCitySelected);
     }
 
     private void onError(Throwable throwable) {
@@ -77,8 +86,9 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
             Disposable setSelectedCityTask = interactor.selectCity(selectedCity)
                     .compose(rxSchedulers.getIOToMainTransformerCompletable())
                     .subscribe(() -> {
+                        isCitySelected.setValue(true);
                         cities.addAsSelected(selectedCity);
-                        getViewState().navigateTo(ForecastFragment.class, true, null);
+                        getViewState().navigateTo(ForecastFragment.class, true, ForecastFragment.class.getName()+selectedCity.id);
                     }, throwable -> LogUtils.log("error: ", throwable));
 
             compositeDisposable.addAll(setSelectedCityTask);
@@ -89,36 +99,37 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
     }
 
     public void navigateToSettings() {
-        getViewState().navigateTo(SettingsFragment.class, false, null);
+        isCitySelected.setValue(false);
+        getViewState().navigateTo(SettingsFragment.class, false, SettingsFragment.class.getName());
     }
 
     public void navigateToAbout() {
-        getViewState().navigateTo(AboutFragment.class, false, null);
+        isCitySelected.setValue(false);
+        getViewState().navigateTo(AboutFragment.class, false, AboutFragment.class.getName());
     }
 
     private void onCityAdded(CityUIModel cityUIModel) {
+        isCitySelected.setValue(true);
         cities.addAsSelected(cityUIModel);
-        getViewState().setFavoritesItems(cities);
+        getViewState().setFavoritesItems(cities, isCitySelected);
     }
 
     public void navigateToAddCity() {
-        getViewState().navigateTo(SelectCityFragment.class, false, result -> {
-            if (result instanceof CityUIModel) {
-                onCityAdded((CityUIModel) result);
-            }
-        });
+        isCitySelected.setValue(false);
+        getViewState().navigateTo(SelectCityFragment.class, false, SelectCityFragment.class.getName());
     }
 
 
     void deleteCityFromFavorite(CityUIModel selectedCity) {
+        isCitySelected.setValue(false);
         Disposable deleteTask = interactor.deleteFromFavorites(selectedCity, cities.getSelectedItem().equals(selectedCity))
                 .compose(rxSchedulers.getIOToMainTransformerMaybe())
                 .subscribe(cityUIModel -> {
                     cities.deleteAndSetSelected(selectedCity, cityUIModel);
-                    getViewState().setFavoritesItems(cities);
+                    getViewState().setFavoritesItems(cities, isCitySelected);
                 }, throwable -> getViewState().showError(new DeleteLastCityException()), () -> {
                     cities.delete(selectedCity);
-                    getViewState().setFavoritesItems(cities);
+                    getViewState().setFavoritesItems(cities, isCitySelected);
                 });
 
         compositeDisposable.addAll(deleteTask);

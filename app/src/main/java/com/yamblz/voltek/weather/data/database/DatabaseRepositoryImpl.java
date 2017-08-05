@@ -10,11 +10,11 @@ import com.yamblz.voltek.weather.data.database.models.FavoriteCityModelDao;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.utils.LogUtils;
 
-import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.subjects.PublishSubject;
 
 
 public class DatabaseRepositoryImpl implements DatabaseRepository {
@@ -23,6 +23,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 
     private CityToIDModelDao cityToIDModelDao;
     private FavoriteCityModelDao favoriteCitiesModelDao;
+    private PublishSubject<FavoriteCityModel> favoriteCityModelPublishSubject = PublishSubject.create();
 
     public DatabaseRepositoryImpl(DaoSession session) {
         this.cityToIDModelDao = session.getCityToIDModelDao();
@@ -30,7 +31,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
     }
 
     @Override
-    public Single<Collection<CityToIDModel>> getCityByPrefix(String prefix) {
+    public Single<List<CityToIDModel>> getCityByPrefix(String prefix) {
         return Single.fromCallable(() -> cityToIDModelDao.queryBuilder()
                 .where(CityToIDModelDao.Properties.Alias.like(prefix + "%"))
                 .limit(DEFAULT_SUGGESTIONS_OFFSET).list());
@@ -56,6 +57,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
         return Completable.fromAction(() -> {
             FavoriteCityModel favoriteCityModel = new FavoriteCityModel(city.getAlias(), city.getCityId());
             favoriteCitiesModelDao.save(favoriteCityModel);
+            favoriteCityModelPublishSubject.onNext(favoriteCityModel);
         });
     }
 
@@ -73,6 +75,11 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
     @Override
     public Single<FavoriteCityModel> getTopFavorite() {
         return Single.fromCallable(() -> favoriteCitiesModelDao.queryBuilder().limit(1).uniqueOrThrow());
+    }
+
+    @Override
+    public PublishSubject<FavoriteCityModel> getFavoritesAddedSubject() {
+        return favoriteCityModelPublishSubject;
     }
 
 

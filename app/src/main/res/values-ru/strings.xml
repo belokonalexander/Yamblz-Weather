@@ -59,5 +59,6 @@
     <string name="default_city_name">Москва</string>
     <string name="delete_city">Удалить город из избранного?</string>
     <string name="cant_delete_last_city">В списке должен остаться хотя бы один город</string>
+    <string name="saved_as_favorite">Выбранный город был сохранен в избранное</string>
 
 </resources>

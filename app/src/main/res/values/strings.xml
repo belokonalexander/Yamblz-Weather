@@ -63,5 +63,6 @@
     <string name="default_city_name">Moscow</string>
     <string name="delete_city">Delete city from favorites?</string>
     <string name="cant_delete_last_city">You can\'t delete last city from favorites</string>
+    <string name="saved_as_favorite">The selected city was saved as favorite!</string>
 
 </resources>
