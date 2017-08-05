@@ -31,10 +31,8 @@ import com.yamblz.voltek.weather.WeatherApp;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.exception.DeleteLastCityException;
 import com.yamblz.voltek.weather.presentation.base.BaseActivity;
-import com.yamblz.voltek.weather.presentation.base.moxyprimitives.LinkableBoolean;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.MainDrawerItem;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
-import com.yamblz.voltek.weather.utils.LogUtils;
 import com.yamblz.voltek.weather.utils.StringUtils;
 import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 
@@ -163,7 +161,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
         } else {
             weatherPresenter.weatherClick(drawerItem, longClick);
-            if(!longClick)
+            if (!longClick)
                 navigation.closeDrawer();
         }
 
@@ -197,6 +195,12 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     @Override
     public void showError(DeleteLastCityException e) {
         Toast.makeText(this, StringUtils.fromError(e), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void scrollToElement(WeatherItem item) {
+        int pos = navigation.getPosition(item);
+        navigation.getRecyclerView().scrollToPosition(pos);
     }
 
 
@@ -244,7 +248,6 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     @Override
     public void openAsRoot(Fragment fragment, String tag) {
-        LogUtils.log(" OPEN FOR ROOT: " + fragment.getClass().getName());
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_content, fragment, tag)
@@ -280,7 +283,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     }
 
     @Override
-    public void setFavoritesItems(SetWithSelection<CityUIModel> models, LinkableBoolean clickOnSelected) {
+    public void setFavoritesItems(SetWithSelection<CityUIModel> models) {
 
         List<Long> forDelete = new ArrayList<>();
         for (IDrawerItem item : navigation.getDrawerItems())
@@ -298,21 +301,25 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
                 forDelete.remove(drawerItem.getIdentifier());
 
             }
-
-            //select item if it current selected
-            if (clickOnSelected.isValue() && cityUIModel.equals(models.getSelectedItem()) && navigation.getCurrentSelection() != cityUIModel.id) {
-                navigation.setSelection(drawerItem, true);
-                //cause I can't click on item without select it, in despite of I disable selection for this item early %)
-                if (singlePane) {
-                    navigation.deselect();
-                }
-            }
-
         }
 
         for (Long id : forDelete) {
             navigation.removeItem(id);
         }
+
+    }
+
+    @Override
+    public void selectWeatherItem(WeatherItem item) {
+        navigation.setSelection(item, false);
+        //cause I can't click on item without select it, in despite of I disable selection for this item early %)
+        if (singlePane) {
+            navigation.deselect();
+        }
+    }
+
+    @Override
+    public void selectStickyItem() {
 
     }
 

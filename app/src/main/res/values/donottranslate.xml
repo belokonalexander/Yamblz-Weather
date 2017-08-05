@@ -12,6 +12,11 @@
         <item>180</item>
     </string-array>
 
+    <string-array name="units_types_values">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+
     <integer name="ui_click_delay">100</integer>
     <integer name="default_city_id">524901</integer>
 </resources>

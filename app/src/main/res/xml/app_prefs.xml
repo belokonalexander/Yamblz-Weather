@@ -4,7 +4,7 @@
 
         <ListPreference
             android:entries="@array/units_types"
-            android:entryValues="@array/units_types"
+            android:entryValues="@array/units_types_values"
             android:key="UNITS_KEY"
             android:persistent="true"
             android:summary="%s"

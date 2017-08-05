@@ -18,7 +18,7 @@ public class StorageRepositoryImpl implements StorageRepository {
     private SharedPreferences settings;
     private GsonConverter converter;
 
-    private String defaultUnits = "Metric";
+    private String defaultUnits;
     private CityUIModel defaultCity;
     private int defaultUpdateInterval = 15;
     private boolean defaultUpdateEnabled = false;
@@ -29,7 +29,8 @@ public class StorageRepositoryImpl implements StorageRepository {
 
         String countryCode = Locale.getDefault().getCountry();
         if ("US".equals(countryCode) || "LR".equals(countryCode) || "MM".equals(countryCode))
-            defaultUnits = "Imperial";
+            defaultUnits = context.getResources().getStringArray(R.array.units_types_values)[1];
+        else defaultUnits = context.getResources().getStringArray(R.array.units_types_values)[0];
 
         defaultCity = new CityUIModel(context.getResources().getInteger(R.integer.default_city_id),
                 context.getResources().getString(R.string.default_city_name));

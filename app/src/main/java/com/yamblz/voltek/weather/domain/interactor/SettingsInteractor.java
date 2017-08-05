@@ -1,6 +1,5 @@
 package com.yamblz.voltek.weather.domain.interactor;
 
-import android.database.sqlite.SQLiteConstraintException;
 import android.support.annotation.NonNull;
 
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
@@ -13,7 +12,6 @@ import com.yamblz.voltek.weather.presentation.ui.adapter.models.CityAdapterItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
@@ -60,12 +58,6 @@ public class SettingsInteractor {
 
     private Single<CityUIModel> getCorrectSaveCity(@NonNull CityUIModel city) {
         return databaseRepository.saveAsFavorite(new CityToIDModel(city.name, city.id))
-                .onErrorResumeNext(throwable -> {
-                    if (throwable instanceof SQLiteConstraintException) {
-                        return Completable.complete();
-                    } else
-                        return Completable.error(throwable);
-                })
                 .toSingleDefault(city);
     }
 

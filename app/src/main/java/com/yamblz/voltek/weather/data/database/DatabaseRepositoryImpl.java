@@ -56,8 +56,14 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
     public Completable saveAsFavorite(CityToIDModel city) {
         return Completable.fromAction(() -> {
             FavoriteCityModel favoriteCityModel = new FavoriteCityModel(city.getAlias(), city.getCityId());
-            favoriteCitiesModelDao.save(favoriteCityModel);
-            favoriteCityModelPublishSubject.onNext(favoriteCityModel);
+            try {
+                favoriteCitiesModelDao.save(favoriteCityModel);
+            } catch (SQLiteConstraintException e) {
+                LogUtils.log("warning: ", e);
+            } finally {
+                favoriteCityModelPublishSubject.onNext(favoriteCityModel);
+            }
+
         });
     }
 
