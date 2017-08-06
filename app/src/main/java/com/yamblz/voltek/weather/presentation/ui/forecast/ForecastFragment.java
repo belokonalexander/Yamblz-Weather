@@ -18,6 +18,8 @@ import com.yamblz.voltek.weather.presentation.base.BaseFragment;
 import com.yamblz.voltek.weather.utils.StringUtils;
 import com.yamblz.voltek.weather.utils.WeatherUtils;
 
+import java.util.List;
+
 import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 
@@ -91,17 +93,18 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
         swipeContainer.setRefreshing(show);
     }
 
+
     @Override
-    public void showData(@Nullable WeatherUIModel weather) {
+    public void showData(@Nullable List<WeatherUIModel> weather) {
         if (weather == null) {
             contentContainer.setVisibility(GONE);
         } else {
 
-            weatherIconIm.setImageResource(WeatherUtils.getImageByCondition(weather.getConditionId()));
-            descriptionTv.setText(weather.getCondition());
-            temperatureTv.setText(getString(R.string.wthr_temperature, weather.getTemperature()));
-            humidityTv.setText(getString(R.string.wthr_humidity, weather.getHumidity()));
-            cityNameTv.setText(weather.getCityName());
+            weatherIconIm.setImageResource(WeatherUtils.getImageByCondition(weather.get(0).getConditionId()));
+            descriptionTv.setText(weather.get(0).getCondition());
+            temperatureTv.setText(getString(R.string.wthr_temperature, weather.get(0).getTemperature()));
+            humidityTv.setText(getString(R.string.wthr_humidity, weather.get(0).getHumidity()));
+            cityNameTv.setText(weather.get(0).getCityName());
             contentContainer.setVisibility(VISIBLE);
         }
     }

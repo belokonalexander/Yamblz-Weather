@@ -1,6 +1,7 @@
 package com.yamblz.voltek.weather.data.api.weather;
 
 import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.response.forecast.ForecastResponseModel;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;
@@ -21,9 +22,10 @@ public interface WeatherAPI {
     );
 
     @GET("forecast")
-    Single<WeatherResponseModel> forecastById(
+    Single<ForecastResponseModel> forecastById(
             @Query("id") int cityId,
-            @Query("units") String units
+            @Query("units") String units,
+            @Query("cnt") int forecastStep
     );
 
 }

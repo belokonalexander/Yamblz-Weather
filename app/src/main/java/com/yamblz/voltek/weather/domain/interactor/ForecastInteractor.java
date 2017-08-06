@@ -7,6 +7,8 @@ import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.domain.mappers.RxMapper;
 
+import java.util.List;
+
 import io.reactivex.Single;
 
 public class ForecastInteractor {
@@ -22,15 +24,15 @@ public class ForecastInteractor {
         this.rxMapper = rxMapper;
     }
 
-    public Single<WeatherUIModel> getCurrentWeather(boolean refresh) {
+    public Single<List<WeatherUIModel>> getCurrentWeather(boolean refresh) {
 
-        Single<WeatherUIModel> apiRequest = storageRepository.getSelectedCity()
+        Single<List<WeatherUIModel>> apiRequest = storageRepository.getSelectedCity()
                 .zipWith(storageRepository.getUnitsSettings(), Pair::new)
-                .flatMap(pair -> api.byCityId(pair.first.id, pair.second))
-                .zipWith(storageRepository.getSelectedCity(), (weatherResponseModel, cityUIModel) -> {
-                    weatherResponseModel.name = cityUIModel.name;
-                    return weatherResponseModel;
-                }).map(rxMapper.weatherResponseModelToWeatherUiModel());
+                .flatMap(pair -> api.forecastById(pair.first.id, pair.second, 5))
+                .zipWith(storageRepository.getSelectedCity(), (forecastResponseModel, cityUIModel) -> {
+                    forecastResponseModel.city.name = cityUIModel.name;
+                    return forecastResponseModel;
+                }).map(rxMapper.forecastResponseModelToWeatherUIModelList());
 
         if (refresh) {
             return apiRequest;

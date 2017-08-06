@@ -1,6 +1,8 @@
 package com.yamblz.voltek.weather.domain.mappers;
 
 import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.response.forecast.ForecastResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.response.forecast.ForecastWeather;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
 import com.yamblz.voltek.weather.data.database.models.FavoriteCityModel;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
@@ -26,7 +28,7 @@ public class RxMapper {
         S getItem(T another);
     }
 
-    private  <T, S> Function<List<T>, List<S>> mapList(SingleItemMapper<T, S> singleItemMapper) {
+    private <T, S> Function<List<T>, List<S>> mapList(SingleItemMapper<T, S> singleItemMapper) {
         return list -> {
             List<S> dest = new ArrayList<>();
             for (T sourceItem : list) {
@@ -36,7 +38,7 @@ public class RxMapper {
         };
     }
 
-    private  <T, S> Function<List<T>, Set<S>> mapSet(SingleItemMapper<T, S> singleItemMapper) {
+    private <T, S> Function<List<T>, Set<S>> mapSet(SingleItemMapper<T, S> singleItemMapper) {
         return list -> {
             Set<S> dest = new HashSet<S>();
             for (T sourceItem : list) {
@@ -46,7 +48,7 @@ public class RxMapper {
         };
     }
 
-    private  <T, S> Function<List<T>, Set<S>> mapSet(SingleItemMapper<T, S> singleItemMapper, Comparator<S> comparator) {
+    private <T, S> Function<List<T>, Set<S>> mapSet(SingleItemMapper<T, S> singleItemMapper, Comparator<S> comparator) {
         return list -> {
             Set<S> dest = new TreeSet<>(comparator);
             for (T sourceItem : list) {
@@ -80,5 +82,15 @@ public class RxMapper {
         return mapList(CityAdapterItem::new);
     }
 
+    public Function<ForecastResponseModel, List<WeatherUIModel>> forecastResponseModelToWeatherUIModelList() {
+        return forecastResponseModel -> {
+            List<WeatherUIModel> weatherUIModels = new ArrayList<>();
+            for (ForecastWeather forecastWeather : forecastResponseModel.weather) {
+                weatherUIModels.add(new WeatherUIModel(forecastWeather, forecastResponseModel.city.name));
+            }
+            return weatherUIModels;
+
+        };
+    }
 
 }

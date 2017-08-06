@@ -58,4 +58,6 @@ public class SetWithSelection<T> implements Iterable<T> {
         delete(removedItem);
         addAsSelected(selectedITem);
     }
+
+
 }

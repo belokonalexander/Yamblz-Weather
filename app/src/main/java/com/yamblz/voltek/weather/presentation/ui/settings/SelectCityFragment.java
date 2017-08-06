@@ -114,7 +114,7 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
 
     @Override
     public void selectCity(CityUIModel city) {
-        Toast.makeText(getContext(), getResources().getString(R.string.saved_as_favorite), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), getResources().getString(R.string.saved_as_favorite), Toast.LENGTH_SHORT).show();
     }
 
 

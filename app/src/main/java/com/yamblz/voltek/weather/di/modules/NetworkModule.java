@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Pair;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.yamblz.voltek.weather.R;
 import com.yamblz.voltek.weather.data.api.NetworkUtils;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
@@ -35,14 +37,20 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    WeatherAPI provideWeatherApi(NetworkUtils utils, Context context) {
+    WeatherAPI provideWeatherApi(NetworkUtils utils, Context context, Gson gson) {
 
         String idAlias = context.getString(R.string.weather_api_id_alias);
         String weatherKey = context.getString(R.string.weather_api_key);
 
         List<Pair<String, String>> params = Collections.singletonList(new Pair<>(idAlias, weatherKey));
 
-        return getService(WeatherAPI.class, utils, context.getString(R.string.base_weather_url), params);
+        return getService(WeatherAPI.class, utils, context.getString(R.string.base_weather_url), gson, params);
+    }
+
+    @Provides
+    @Singleton
+    Gson provideGsonConverter() {
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     }
 
     @Provides
@@ -52,14 +60,14 @@ public class NetworkModule {
     }
 
 
-    private <T> T getService(@NonNull Class<T> service, @NonNull NetworkUtils utils, @NonNull String baseUrl,
+    private <T> T getService(@NonNull Class<T> service, @NonNull NetworkUtils utils, @NonNull String baseUrl, Gson gson,
                              @NonNull List<Pair<String, String>> constantParams) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(getHttpClient(utils, constantParams))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         return retrofit.create(service);
