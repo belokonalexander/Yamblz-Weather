@@ -289,18 +289,20 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         for (IDrawerItem item : navigation.getDrawerItems())
             forDelete.add(item.getIdentifier());
 
+        int pos = 1;
         for (CityUIModel cityUIModel : models) {
             PrimaryDrawerItem drawerItem = new WeatherItem(cityUIModel);
 
             //skip existed items and add original items
             if (navigation.getPosition(drawerItem) < 0) {
-                navigation.addItemAtPosition(initiateItemField(drawerItem, cityUIModel.name, null), 1);
+                navigation.addItemAtPosition(initiateItemField(drawerItem, cityUIModel.name, null), pos);
             } else {
 
                 //remove from future deleted scope
                 forDelete.remove(drawerItem.getIdentifier());
 
             }
+            pos++;
         }
 
         for (Long id : forDelete) {

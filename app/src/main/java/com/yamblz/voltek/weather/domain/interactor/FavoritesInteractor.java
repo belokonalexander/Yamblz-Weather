@@ -37,7 +37,7 @@ public class FavoritesInteractor {
 
 
     public Single<SetWithSelection<CityUIModel>> getFavorites() {
-        return databaseRepository.getFavorite().map(rxMapper.favoriteCityModelListToCityUiModelSet())
+        return databaseRepository.getFavorite().map(rxMapper.favoriteCityModelListToCityUiModelTreeSet())
                 .zipWith(storageRepository.getSelectedCity(), (cityUIModels, cityUIModel) -> {
                     cityUIModels.add(cityUIModel);
                     return new SetWithSelection<>(cityUIModels, cityUIModel);

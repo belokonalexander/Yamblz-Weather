@@ -8,9 +8,11 @@ import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.presentation.ui.adapter.models.CityAdapterItem;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import io.reactivex.functions.Function;
 
@@ -44,12 +46,22 @@ public class RxMapper {
         };
     }
 
+    private  <T, S> Function<List<T>, Set<S>> mapSet(SingleItemMapper<T, S> singleItemMapper, Comparator<S> comparator) {
+        return list -> {
+            Set<S> dest = new TreeSet<>(comparator);
+            for (T sourceItem : list) {
+                dest.add(singleItemMapper.getItem(sourceItem));
+            }
+            return dest;
+        };
+    }
+
     public Function<FavoriteCityModel, CityUIModel> favoriteCityModelToCityUIModel() {
         return favoriteCityModel -> new CityUIModel(favoriteCityModel.getCityId(), favoriteCityModel.getAlias());
     }
 
-    public Function<List<FavoriteCityModel>, Set<CityUIModel>> favoriteCityModelListToCityUiModelSet() {
-        return mapSet(another -> new CityUIModel(another.getCityId(), another.getAlias()));
+    public Function<List<FavoriteCityModel>, Set<CityUIModel>> favoriteCityModelListToCityUiModelTreeSet() {
+        return mapSet(another -> new CityUIModel(another.getCityId(), another.getAlias()), (first, second) -> first.name.compareTo(second.name));
     }
 
     public Function<WeatherResponseModel, WeatherUIModel> weatherResponseModelToWeatherUiModel() {
