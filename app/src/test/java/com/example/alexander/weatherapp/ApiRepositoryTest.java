@@ -2,7 +2,7 @@ package com.example.alexander.weatherapp;
 
 
 import com.example.alexander.weatherapp.Helpers.ApiWeatherModelHelper;
-import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.models.WeatherResponseModel;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 
 import org.junit.Test;

@@ -11,7 +11,7 @@ import com.yamblz.voltek.weather.data.api.NetworkUtils;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 
 import java.net.UnknownHostException;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -41,8 +41,10 @@ public class NetworkModule {
 
         String idAlias = context.getString(R.string.weather_api_id_alias);
         String weatherKey = context.getString(R.string.weather_api_key);
+        String countAlias = context.getString(R.string.weather_api_count_alias);
+        String count = context.getString(R.string.weather_api_default_count);
 
-        List<Pair<String, String>> params = Collections.singletonList(new Pair<>(idAlias, weatherKey));
+        List<Pair<String, String>> params = Arrays.asList(new Pair<>(idAlias, weatherKey), new Pair<>(countAlias, count));
 
         return getService(WeatherAPI.class, utils, context.getString(R.string.base_weather_url), gson, params);
     }

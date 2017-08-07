@@ -1,8 +1,8 @@
 package com.yamblz.voltek.weather.domain.mappers;
 
-import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
-import com.yamblz.voltek.weather.data.api.weather.response.forecast.ForecastResponseModel;
-import com.yamblz.voltek.weather.data.api.weather.response.forecast.ForecastWeather;
+import com.yamblz.voltek.weather.data.api.weather.models.WeatherResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.models.forecast.ForecastResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.models.forecast.ForecastWeather;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
 import com.yamblz.voltek.weather.data.database.models.FavoriteCityModel;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;

@@ -1,9 +1,8 @@
 package com.yamblz.voltek.weather.domain.entity;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.models.WeatherResponseModel;
 
 
 public class CityUIModel{

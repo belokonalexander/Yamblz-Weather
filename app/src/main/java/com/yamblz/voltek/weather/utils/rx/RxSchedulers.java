@@ -17,13 +17,12 @@ public abstract class RxSchedulers {
     abstract public Scheduler getIOScheduler();
     abstract public Scheduler getComputationScheduler();
 
-    public <T> ObservableTransformer<T, T> getIOToMainTransformer()  {
+    public <T> ObservableTransformer<T, T> getIOToMainTransformer(boolean delayError)  {
         return objectObservable -> objectObservable
                 .subscribeOn(getIOScheduler())
-                .observeOn(getMainThreadScheduler());
-
-
+                .observeOn(getMainThreadScheduler(), delayError);
     }
+
 
     public <T> SingleTransformer<T, T> getIOToMainTransformerSingle()  {
         return objectObservable -> objectObservable

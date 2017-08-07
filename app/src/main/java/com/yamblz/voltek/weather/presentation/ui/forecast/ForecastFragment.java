@@ -15,6 +15,7 @@ import com.yamblz.voltek.weather.WeatherApp;
 import com.yamblz.voltek.weather.di.modules.ForecastModule;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.presentation.base.BaseFragment;
+import com.yamblz.voltek.weather.utils.LogUtils;
 import com.yamblz.voltek.weather.utils.StringUtils;
 import com.yamblz.voltek.weather.utils.WeatherUtils;
 
@@ -96,6 +97,11 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
 
     @Override
     public void showData(@Nullable List<WeatherUIModel> weather) {
+
+
+        LogUtils.log("weather: " + weather);
+
+
         if (weather == null) {
             contentContainer.setVisibility(GONE);
         } else {

@@ -20,7 +20,7 @@ public class StorageRepositoryImpl implements StorageRepository {
 
     private String defaultUnits;
     private CityUIModel defaultCity;
-    private int defaultUpdateInterval = 15;
+    private String defaultUpdateInterval = "15";
     private boolean defaultUpdateEnabled = false;
 
     public StorageRepositoryImpl(Context context, GsonConverter converter) {
@@ -59,7 +59,7 @@ public class StorageRepositoryImpl implements StorageRepository {
 
     @Override
     public Single<Integer> getUpdateInterval() {
-        return Single.fromCallable(() -> settings.getInt(UPDATE_INTERVAL_KEY, defaultUpdateInterval));
+        return Single.fromCallable(() -> Integer.parseInt(settings.getString(UPDATE_INTERVAL_KEY, defaultUpdateInterval)));
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.yamblz.voltek.weather.presentation.ui.settings;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.domain.interactor.SettingsInteractor;
+import com.yamblz.voltek.weather.domain.interactor.CitySettingsInteractor;
 import com.yamblz.voltek.weather.presentation.base.BasePresenter;
 import com.yamblz.voltek.weather.presentation.ui.adapter.models.CityAdapterItem;
 import com.yamblz.voltek.weather.utils.LogUtils;
@@ -13,10 +13,10 @@ import java.util.List;
 @InjectViewState
 public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView> {
 
-    private SettingsInteractor interactor;
+    private CitySettingsInteractor interactor;
     private RxSchedulers rxSchedulers;
 
-    public SettingsSelectCityPresenter(SettingsInteractor interactor, RxSchedulers rxSchedulers) {
+    public SettingsSelectCityPresenter(CitySettingsInteractor interactor, RxSchedulers rxSchedulers) {
         this.interactor = interactor;
         this.rxSchedulers = rxSchedulers;
     }

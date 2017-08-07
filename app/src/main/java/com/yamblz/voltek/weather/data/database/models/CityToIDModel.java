@@ -1,10 +1,11 @@
 package com.yamblz.voltek.weather.data.database.models;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * table with names of cities and associated city-id
@@ -27,7 +28,9 @@ public class CityToIDModel {
         this.cityId = cityId;
     }
 
-    @Generated(hash = 122666723)
+
+
+    @Keep
     public CityToIDModel(Long Id, @NotNull String alias, @NotNull Integer cityId) {
         this.Id = Id;
         this.alias = alias;
@@ -35,9 +38,12 @@ public class CityToIDModel {
     }
 
 
-    @Generated(hash = 447841134)
+
+    @Keep
     public CityToIDModel() {
     }
+
+
 
     public Long getId() {
         return this.Id;

@@ -1,8 +1,8 @@
-package com.yamblz.voltek.weather.data.api.weather.response.forecast;
+package com.yamblz.voltek.weather.data.api.weather.models.forecast;
 
 import com.google.gson.annotations.SerializedName;
-import com.yamblz.voltek.weather.data.api.weather.response.Main;
-import com.yamblz.voltek.weather.data.api.weather.response.Weather;
+import com.yamblz.voltek.weather.data.api.weather.models.Main;
+import com.yamblz.voltek.weather.data.api.weather.models.Weather;
 
 import java.util.Date;
 import java.util.List;

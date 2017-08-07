@@ -4,7 +4,7 @@ package com.example.alexander.weatherapp.Helpers;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.models.WeatherResponseModel;
 
 public class ApiWeatherModelHelper {
 

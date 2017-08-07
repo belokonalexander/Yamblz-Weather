@@ -1,5 +1,6 @@
 package com.yamblz.voltek.weather.data.database;
 
+import com.yamblz.voltek.weather.data.api.weather.models.forecast.ForecastResponseModel;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
 import com.yamblz.voltek.weather.data.database.models.FavoriteCityModel;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
@@ -22,7 +23,7 @@ public interface DatabaseRepository {
 
     Completable saveCity(CityToIDModel city);
 
-    Completable saveAsFavorite(CityToIDModel city);
+    Completable saveAsFavoriteIfNotExists(CityToIDModel city, boolean notify);
 
     Single<List<FavoriteCityModel>> getFavorite();
 
@@ -31,4 +32,8 @@ public interface DatabaseRepository {
     Single<FavoriteCityModel> getTopFavorite();
 
     PublishSubject<FavoriteCityModel> getFavoritesAddedSubject();
+
+    Completable updateFavorite(ForecastResponseModel forecastResponseModel);
+
+    Single<ForecastResponseModel> getFavoriteForForecast(int id);
 }

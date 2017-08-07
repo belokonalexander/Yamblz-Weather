@@ -4,9 +4,11 @@ import android.content.Context;
 
 import com.evernote.android.job.JobManager;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
+import com.yamblz.voltek.weather.data.database.DatabaseRepository;
 import com.yamblz.voltek.weather.data.platform.jobs.JobWrapper;
 import com.yamblz.voltek.weather.data.platform.jobs.WeatherJobCreator;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
+import com.yamblz.voltek.weather.domain.mappers.RxMapper;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,13 +23,13 @@ public class JobsModule {
     }
 
     @Provides
-    WeatherJobCreator provideWeatherJobCreator(WeatherAPI weatherApi, StorageRepository storageRepository) {
-        return new WeatherJobCreator(weatherApi, storageRepository);
+    WeatherJobCreator provideWeatherJobCreator(WeatherAPI weatherApi, StorageRepository storageRepository, DatabaseRepository databaseRepository) {
+        return new WeatherJobCreator(weatherApi, storageRepository, databaseRepository);
     }
 
     @Provides
-    JobWrapper provideJobWrapper(Context context, StorageRepository StorageRepository, JobManager jobManager) {
-        return new JobWrapper(context, StorageRepository, jobManager);
+    JobWrapper provideJobWrapper(StorageRepository StorageRepository, JobManager jobManager) {
+        return new JobWrapper(StorageRepository, jobManager);
     }
 
 }

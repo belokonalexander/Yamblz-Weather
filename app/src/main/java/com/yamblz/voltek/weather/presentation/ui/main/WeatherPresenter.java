@@ -33,7 +33,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
         this.rxSchedulers = rxSchedulers;
         this.cities = new SetWithSelection<>();
         Disposable favoritesWatcher = interactor.favoritesDataAdded()
-                .compose(rxSchedulers.getIOToMainTransformer())
+                .compose(rxSchedulers.getIOToMainTransformer(false))
                 .subscribe(this::onCityAdded);
 
         compositeDisposable.addAll(favoritesWatcher);

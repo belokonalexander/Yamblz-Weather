@@ -140,7 +140,6 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     private void onDrawerItemClick(IDrawerItem drawerItem, boolean longClick) {
 
-
         //individual item of menu
         if (drawerItem instanceof MainDrawerItem) {
             int id = ((MainDrawerItem) drawerItem).getItemId();
@@ -171,7 +170,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     @Override
     public void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag) {
 
-        //TODO if this item already selected
+        //if this item is already selected
         if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
             navigation.closeDrawer();
             return;

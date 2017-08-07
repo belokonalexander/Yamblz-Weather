@@ -1,7 +1,7 @@
 package com.yamblz.voltek.weather.domain.entity;
 
-import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
-import com.yamblz.voltek.weather.data.api.weather.response.forecast.ForecastWeather;
+import com.yamblz.voltek.weather.data.api.weather.models.WeatherResponseModel;
+import com.yamblz.voltek.weather.data.api.weather.models.forecast.ForecastWeather;
 
 import java.util.Date;
 
@@ -55,5 +55,17 @@ public class WeatherUIModel {
 
     public Date getDate() {
         return date;
+    }
+
+    @Override
+    public String toString() {
+        return "WeatherUIModel{" +
+                "condition='" + condition + '\'' +
+                ", temperature=" + temperature +
+                ", humidity=" + humidity +
+                ", conditionId=" + conditionId +
+                ", cityName='" + cityName + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

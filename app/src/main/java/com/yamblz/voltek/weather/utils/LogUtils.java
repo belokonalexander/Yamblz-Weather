@@ -16,4 +16,15 @@ public class LogUtils {
         Log.e("TAG", " -> " + o, throwable);
     }
 
+    public static void logWarning(Object o, Throwable throwable) {
+        Log.e("WARNING", " -> " + o, throwable);
+    }
+
+    public static void logJob(Object o) {
+        Log.e("JOB", " -> " + o);
+    }
+
+    public static void logJob(Object o, Throwable throwable) {
+        Log.e("JOB", " -> " + o, throwable);
+    }
 }

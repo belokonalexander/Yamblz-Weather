@@ -13,13 +13,13 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     private ForecastInteractor interactor;
     private RxSchedulers rxSchedulers;
+    private Disposable loadWeatherTask;
 
     public ForecastPresenter(ForecastInteractor interactor, RxSchedulers rxSchedulers) {
         this.interactor = interactor;
         this.rxSchedulers = rxSchedulers;
     }
 
-    Disposable loadWeatherTask;
 
     @Override
     protected void onFirstViewAttach() {
@@ -38,12 +38,12 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         if (loadWeatherTask == null || loadWeatherTask.isDisposed()) {
             getViewState().showLoading(true);
             loadWeatherTask = interactor.getCurrentWeather(refresh)
-                    .compose(rxSchedulers.getIOToMainTransformerSingle())
+                    .compose(rxSchedulers.getIOToMainTransformer(true))
                     .doAfterTerminate(() -> getViewState().showLoading(false))
                     .subscribe(weatherUIModel -> {
                         getViewState().showData(weatherUIModel);
                     }, throwable -> {
-                        LogUtils.log("error: ", throwable);
+                        LogUtils.log("loadWeather error: ", throwable);
                         getViewState().showError(throwable);
                     });
 

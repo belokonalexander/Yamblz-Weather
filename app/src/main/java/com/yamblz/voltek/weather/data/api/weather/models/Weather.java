@@ -1,4 +1,4 @@
-package com.yamblz.voltek.weather.data.api.weather.response;
+package com.yamblz.voltek.weather.data.api.weather.models;
 
 
 import com.google.gson.annotations.SerializedName;

@@ -2,6 +2,7 @@ package com.yamblz.voltek.weather.data.database;
 
 import android.database.sqlite.SQLiteConstraintException;
 
+import com.yamblz.voltek.weather.data.api.weather.models.forecast.ForecastResponseModel;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModelDao;
 import com.yamblz.voltek.weather.data.database.models.DaoSession;
@@ -53,15 +54,17 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
     }
 
     @Override
-    public Completable saveAsFavorite(CityToIDModel city) {
+    public Completable saveAsFavoriteIfNotExists(CityToIDModel city, boolean notify) {
         return Completable.fromAction(() -> {
             FavoriteCityModel favoriteCityModel = new FavoriteCityModel(city.getAlias(), city.getCityId());
             try {
                 favoriteCitiesModelDao.save(favoriteCityModel);
             } catch (SQLiteConstraintException e) {
-                LogUtils.log("warning: ", e);
+                LogUtils.logWarning("warning: ", e);
             } finally {
-                favoriteCityModelPublishSubject.onNext(favoriteCityModel);
+                if(notify) {
+                    favoriteCityModelPublishSubject.onNext(favoriteCityModel);
+                }
             }
 
         });
@@ -88,5 +91,18 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
         return favoriteCityModelPublishSubject;
     }
 
+    @Override
+    public Completable updateFavorite(ForecastResponseModel forecastResponseModel) {
+        return Completable.fromAction(() -> favoriteCitiesModelDao.insertOrReplace(new FavoriteCityModel(forecastResponseModel.city.name,
+                forecastResponseModel.city.id, forecastResponseModel)));
+    }
+
+    @Override
+    public Single<ForecastResponseModel> getFavoriteForForecast(int id) {
+        return Single.fromCallable(() -> favoriteCitiesModelDao.queryBuilder()
+                .where(FavoriteCityModelDao.Properties.CityId.eq(id), FavoriteCityModelDao.Properties.Forecast.isNotNull())
+                .uniqueOrThrow()
+                .getForecast());
+    }
 
 }

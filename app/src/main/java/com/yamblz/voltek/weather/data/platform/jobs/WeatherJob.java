@@ -1,20 +1,17 @@
 package com.yamblz.voltek.weather.data.platform.jobs;
 
 import android.support.annotation.NonNull;
+import android.util.Pair;
 
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
-import com.yamblz.voltek.weather.data.api.weather.response.WeatherResponseModel;
+import com.yamblz.voltek.weather.data.database.DatabaseRepository;
+import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
-import com.yamblz.voltek.weather.domain.entity.CityUIModel;
-import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
+import com.yamblz.voltek.weather.utils.LogUtils;
 
 import java.util.concurrent.TimeUnit;
-
-import io.reactivex.SingleSource;
-import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableSingleObserver;
 
 
 public class WeatherJob extends Job {
@@ -22,14 +19,13 @@ public class WeatherJob extends Job {
     static final String TAG = "GET_WEATHER_JOB";
 
 
-    private WeatherAPI weatherApi;
-    //private WeatherModelToCityWeatherMapper mapper;
+    private WeatherAPI api;
+    private DatabaseRepository databaseRepository;
     private StorageRepository storageRepository;
 
-    WeatherJob(WeatherAPI weatherApi, StorageRepository storageRepository) {
-
-        this.weatherApi = weatherApi;
-        //this.mapper = mapper;
+    WeatherJob(WeatherAPI weatherApi, StorageRepository storageRepository, DatabaseRepository databaseRepository) {
+        this.api = weatherApi;
+        this.databaseRepository = databaseRepository;
         this.storageRepository = storageRepository;
     }
 
@@ -40,43 +36,31 @@ public class WeatherJob extends Job {
         final boolean[] flag = {false};
 
         storageRepository.getSelectedCity()
-                .flatMap(new Function<CityUIModel, SingleSource<WeatherResponseModel>>() {
-                    @Override
-                    public SingleSource<WeatherResponseModel> apply(@NonNull CityUIModel cityUIModel) throws Exception {
-                        return weatherApi.byCityId(cityUIModel.id, null);
-                    }
-                })
-                .map(WeatherUIModel::new)
-                .flatMap(new Function<WeatherUIModel, SingleSource<WeatherUIModel>>() {
-                    @Override
-                    public SingleSource<WeatherUIModel> apply(@NonNull WeatherUIModel weatherUIModel) throws Exception {
+                .zipWith(storageRepository.getUnitsSettings(), (cityUIModel, s) -> {
+                    databaseRepository.saveAsFavoriteIfNotExists(new CityToIDModel(cityUIModel.name, cityUIModel.id), false).subscribe();
+                    return new Pair<>(cityUIModel, s);
+                }).flatMap(pair -> api.forecastById(pair.first.id, pair.second))
+                .zipWith(storageRepository.getSelectedCity(), (forecastResponseModel, cityUIModel) -> {
+                    forecastResponseModel.city.name = cityUIModel.name;
+                    return forecastResponseModel;
+                }).subscribe(forecastResponseModel -> {
+                    flag[0] = true;
+                    databaseRepository.updateFavorite(forecastResponseModel).subscribe();
+                }, throwable -> flag[0] = false);
 
-                        return null/*storageRepository.putCurrent(weatherUIModel).toSingleDefault(weatherUIModel)*/;
-                    }})
-                .subscribe(new DisposableSingleObserver<WeatherUIModel>() {
-                    @Override
-                    public void onSuccess(@NonNull WeatherUIModel weatherUIModel) {
-                        flag[0] = true;
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        flag[0] = false;
-                    }
-                });
-
+        LogUtils.logJob("Job result: " + flag[0]);
 
         return flag[0] ? Result.SUCCESS : Result.FAILURE;
     }
 
     static void scheduleJob(int minutes) {
-
+        int flex = 5;
         new JobRequest.Builder(WeatherJob.TAG)
                 //.setRequiresCharging(true)
-                .setPersisted(true)                                          //задача невоспреимчива к перезагрузке устройства
-                .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)   //задача выполняется при наличии интернет соединения
-                .setUpdateCurrent(true)                                     //переписываю задачу с тем же тэгом
-                .setPeriodic(TimeUnit.MINUTES.toMillis(15), TimeUnit.MINUTES.toMillis(14))  //чтобы выполнение задачи было отложенным
+                .setPersisted(true)
+                .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
+                .setUpdateCurrent(true)
+                .setPeriodic(TimeUnit.MINUTES.toMillis(minutes), TimeUnit.MINUTES.toMillis(flex))
                 .build()
                 .schedule();
     }

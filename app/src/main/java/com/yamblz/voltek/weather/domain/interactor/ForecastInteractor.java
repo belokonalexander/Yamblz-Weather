@@ -3,48 +3,69 @@ package com.yamblz.voltek.weather.domain.interactor;
 import android.util.Pair;
 
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
+import com.yamblz.voltek.weather.data.database.DatabaseRepository;
+import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
+import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.domain.mappers.RxMapper;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public class ForecastInteractor {
 
     private WeatherAPI api;
     private StorageRepository storageRepository;
+    private DatabaseRepository databaseRepository;
     private RxMapper rxMapper;
 
 
-    public ForecastInteractor(WeatherAPI api, StorageRepository storageRepository, RxMapper rxMapper) {
+    public ForecastInteractor(WeatherAPI api, StorageRepository storageRepository, DatabaseRepository databaseRepository, RxMapper rxMapper) {
         this.api = api;
         this.storageRepository = storageRepository;
+        this.databaseRepository = databaseRepository;
         this.rxMapper = rxMapper;
     }
 
-    public Single<List<WeatherUIModel>> getCurrentWeather(boolean refresh) {
-
-        Single<List<WeatherUIModel>> apiRequest = storageRepository.getSelectedCity()
-                .zipWith(storageRepository.getUnitsSettings(), Pair::new)
-                .flatMap(pair -> api.forecastById(pair.first.id, pair.second, 5))
-                .zipWith(storageRepository.getSelectedCity(), (forecastResponseModel, cityUIModel) -> {
-                    forecastResponseModel.city.name = cityUIModel.name;
-                    return forecastResponseModel;
-                }).map(rxMapper.forecastResponseModelToWeatherUIModelList());
+    public Observable<List<WeatherUIModel>> getCurrentWeather(boolean refresh) {
 
         if (refresh) {
-            return apiRequest;
+            return getApiRequest().toObservable();
         } else {
-            return /*storageRepository.getCurrent().onErrorResumeNext(*/apiRequest;
+            //при тестировании обнаружил, что concat прерывался во время ошибки dbRequest и переходил в терминальное состояние onError, вместо запроса к api
+            //хотя в observeOn был выставлен флаг delayError, пришлось выкручиваться так :/
+            return Observable.concat(getDbRequest().toObservable().onErrorResumeNext(throwable -> {
+                return Observable.empty();
+            }), getApiRequest().toObservable());
+
         }
     }
 
+    private Single<Pair<CityUIModel, String>> getPreset() {
+        return storageRepository.getSelectedCity()
+                .zipWith(storageRepository.getUnitsSettings(), (cityUIModel, s) -> {
+                    databaseRepository.saveAsFavoriteIfNotExists(new CityToIDModel(cityUIModel.name, cityUIModel.id), false).subscribe();
+                    return new Pair<>(cityUIModel, s);
+                });
+    }
 
-   /* private Function<WeatherResponseModel, WeatherUIModel> apiWeatherToUIWeather() {
-        return WeatherUIModel::new;
-    }*/
+    private Single<List<WeatherUIModel>> getApiRequest() {
+        return getPreset().flatMap(pair -> api.forecastById(pair.first.id, pair.second))
+                .zipWith(storageRepository.getSelectedCity(), (forecastResponseModel, cityUIModel) -> {
+                    forecastResponseModel.city.name = cityUIModel.name;
+                    return forecastResponseModel;
+                }).doOnSuccess(forecastResponseModel -> databaseRepository.updateFavorite(forecastResponseModel).subscribe())
+                .map(rxMapper.forecastResponseModelToWeatherUIModelList());
+    }
 
-
+    private Single<List<WeatherUIModel>> getDbRequest() {
+        return getPreset().flatMap(pair -> databaseRepository.getFavoriteForForecast(pair.first.id))
+                .zipWith(storageRepository.getSelectedCity(), (favoriteCityModel, cityUIModel) -> {
+                    favoriteCityModel.city.name = cityUIModel.name;
+                    return favoriteCityModel;
+                }).map(rxMapper.forecastResponseModelToWeatherUIModelList());
+    }
 }
