@@ -20,4 +20,7 @@ public interface ForecastView extends BaseView {
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void showError(@Nullable Throwable error);
+
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void initTitle();
 }

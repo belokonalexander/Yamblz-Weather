@@ -2,13 +2,18 @@
 <resources>
 
     <color name="color_primary">#f4f4f4</color>
-    <color name="color_primary_dark">#FBC02D</color>
-    <color name="color_accent">#7C4DFF</color>
+    <color name="color_primary_dark">#606060</color>
+    <color name="color_accent">#f1b500</color>
     <color name="normal_text_color">#bfbfbf</color>
+    <color name="under_white_background">#ffffff</color>
+
 
     <color name="item_background">#ffffff</color>
     <color name="ripple">#dcdcdc</color>
     <color name="white">#fff</color>
     <color name="drawer_header_color">#f4f4f4</color>
+    <color name="drawer_item_background_color">#fff</color>
+    <color name="transparent">#00000000</color>
+
 
 </resources>

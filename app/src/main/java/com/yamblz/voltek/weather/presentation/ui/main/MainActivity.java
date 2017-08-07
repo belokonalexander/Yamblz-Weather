@@ -12,10 +12,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -56,7 +57,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     @Nullable
     @BindView(R.id.drawer_content)
-    FrameLayout navigationContainer;
+    CardView navigationContainer;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -74,11 +75,12 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         //check dual pane mode
         singlePane = navigationContainer == null;
 
+
         DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this)
-                .withHeader(R.layout.drawer_header_layout)
-                .withHeaderHeight(DimenHolder.fromDp(getResources().getDimensionPixelSize(R.dimen.drawer_header_height)))
                 .withScrollToTopAfterClick(false)
                 .withSelectedItem(-1)
+                .withSliderBackgroundColorRes(R.color.drawer_item_background_color)
+                .withDisplayBelowStatusBar(true)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     onDrawerItemClick(drawerItem, false);
                     return true;
@@ -92,6 +94,14 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         drawerBuilder.withStickyDrawerItems(customInflateMenu(R.menu.sticky_footer_drawer));
 
         if (!singlePane) {
+            TypedValue tv = new TypedValue();
+            int actionBarHeight = 0;
+            if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+            }
+            drawerBuilder.withHeader(R.layout.drawer_header_layout)
+                    .withHeaderHeight(DimenHolder.fromPixel(actionBarHeight));
+
             navigation = drawerBuilder.buildView();
             navigationContainer.addView(navigation.getSlider());
         } else {
@@ -168,7 +178,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
 
     @Override
-    public void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag) {
+    public void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag, Bundle bundle) {
 
         //if this item is already selected
         if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
@@ -177,6 +187,10 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         }
 
         Fragment fragment = Fragment.instantiate(getBaseContext(), where.getName());
+
+        if (bundle != null) {
+            fragment.setArguments(bundle);
+        }
 
         if (!singlePane || asRoot) {
             openAsRoot(fragment, tag);
@@ -238,7 +252,9 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     @Override
     public void openWithBackStack(Fragment fragment, String tag) {
+
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out)
                 .replace(R.id.main_content, fragment, tag)
                 .show(fragment)
                 .addToBackStack(null)
@@ -249,6 +265,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     public void openAsRoot(Fragment fragment, String tag) {
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
                 .replace(R.id.main_content, fragment, tag)
                 .commit();
     }
@@ -288,7 +305,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         for (IDrawerItem item : navigation.getDrawerItems())
             forDelete.add(item.getIdentifier());
 
-        int pos = 1;
+        int pos = singlePane ? 0 : 1;
         for (CityUIModel cityUIModel : models) {
             PrimaryDrawerItem drawerItem = new WeatherItem(cityUIModel);
 

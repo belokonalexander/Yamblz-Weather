@@ -13,6 +13,5 @@ import dagger.Subcomponent;
 @ForecastScope
 public interface ForecastComponent {
 
-    //void inject(ForecastFragment forecastFragment);
     ForecastPresenter getForecastPresenter();
 }

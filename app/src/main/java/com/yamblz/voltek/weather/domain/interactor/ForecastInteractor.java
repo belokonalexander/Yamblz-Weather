@@ -30,6 +30,11 @@ public class ForecastInteractor {
         this.rxMapper = rxMapper;
     }
 
+
+    public Single<String> getSelectedCityName() {
+        return storageRepository.getSelectedCity().map(rxMapper.cityUIModelToSimpleName());
+    }
+
     public Observable<List<WeatherUIModel>> getCurrentWeather(boolean refresh) {
 
         if (refresh) {

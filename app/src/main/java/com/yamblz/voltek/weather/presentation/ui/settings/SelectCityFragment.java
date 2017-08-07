@@ -39,6 +39,8 @@ import io.reactivex.disposables.Disposable;
 
 public class SelectCityFragment extends BaseFragment implements SettingsCityView, OnAdapterItemClickListener {
 
+    public static final String CURRENT_SELECTED_CITY = "CURRENT_SELECTED_CITY";
+
     @BindView(R.id.filter_edit_text)
     CustomEditText filterEditText;
 
@@ -69,7 +71,7 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
         citiesRecyclerView.setAdapter(cityAdapter);
 
         filterEditText.setOnKeyActionListener(text -> presenter.selectCity(text));
-
+        filterEditText.requestFocus();
     }
 
     @Override
@@ -114,7 +116,11 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
 
     @Override
     public void selectCity(CityUIModel city) {
-        Toast.makeText(getContext(), getResources().getString(R.string.saved_as_favorite), Toast.LENGTH_SHORT).show();
+        if(city.id==getArguments().getInt(CURRENT_SELECTED_CITY)) {
+            if(getFragmentManager().getBackStackEntryCount()>0)
+                getActivity().onBackPressed();
+        } else
+            Toast.makeText(getContext(), getResources().getString(R.string.saved_as_favorite), Toast.LENGTH_SHORT).show();
     }
 
 

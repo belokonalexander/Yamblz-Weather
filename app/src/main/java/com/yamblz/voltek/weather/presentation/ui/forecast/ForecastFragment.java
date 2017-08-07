@@ -1,6 +1,5 @@
 package com.yamblz.voltek.weather.presentation.ui.forecast;
 
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ImageView;
@@ -15,7 +14,6 @@ import com.yamblz.voltek.weather.WeatherApp;
 import com.yamblz.voltek.weather.di.modules.ForecastModule;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.presentation.base.BaseFragment;
-import com.yamblz.voltek.weather.utils.LogUtils;
 import com.yamblz.voltek.weather.utils.StringUtils;
 import com.yamblz.voltek.weather.utils.WeatherUtils;
 
@@ -28,6 +26,8 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class ForecastFragment extends BaseFragment implements ForecastView {
+
+    public static final String TITLE_ARG = "TITLE";
 
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;
@@ -53,18 +53,11 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     @InjectPresenter()
     ForecastPresenter presenter;
 
+
     @ProvidePresenter()
     ForecastPresenter provideForecastPresenter() {
         return WeatherApp.get(getContext()).getAppComponent().plus(new ForecastModule()).getForecastPresenter();
     }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-    }
-
 
     @Override
     public int getLayout() {
@@ -73,7 +66,7 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
 
     @Override
     public int getTitle() {
-        return R.string.title_forecast;
+        return -1;
     }
 
     @Override
@@ -98,10 +91,6 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
     @Override
     public void showData(@Nullable List<WeatherUIModel> weather) {
 
-
-        LogUtils.log("weather: " + weather);
-
-
         if (weather == null) {
             contentContainer.setVisibility(GONE);
         } else {
@@ -114,6 +103,8 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
             contentContainer.setVisibility(VISIBLE);
         }
     }
+
+
 
     @Override
     public void showError(@Nullable Throwable error) {
@@ -130,6 +121,11 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
                 emptyStateTv.setVisibility(VISIBLE);
             }
         }
+    }
+
+    @Override
+    public void initTitle() {
+        toolbarLoader.initToolbar(getArguments().getString(TITLE_ARG));
     }
 
 

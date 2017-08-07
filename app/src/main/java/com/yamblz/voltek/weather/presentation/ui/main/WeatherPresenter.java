@@ -1,5 +1,7 @@
 package com.yamblz.voltek.weather.presentation.ui.main;
 
+import android.os.Bundle;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
@@ -92,7 +94,9 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
                     .subscribe(() -> {
                         cities.addAsSelected(selectedCity);
                         getViewState().selectWeatherItem(weatherItem);
-                        getViewState().navigateTo(ForecastFragment.class, true, ForecastFragment.class.getName()+selectedCity.id);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(ForecastFragment.TITLE_ARG, selectedCity.name);
+                        getViewState().navigateTo(ForecastFragment.class, true, ForecastFragment.class.getName()+selectedCity.id, bundle);
                     }, throwable -> LogUtils.log("error: ", throwable));
 
             compositeDisposable.addAll(setSelectedCityTask);
@@ -103,12 +107,12 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
     }
 
     public void navigateToSettings() {
-        getViewState().navigateTo(SettingsFragment.class, false, SettingsFragment.class.getName());
+        getViewState().navigateTo(SettingsFragment.class, false, SettingsFragment.class.getName(), null);
         getViewState().selectStickyItem();
     }
 
     public void navigateToAbout() {
-        getViewState().navigateTo(AboutFragment.class, false, AboutFragment.class.getName());
+        getViewState().navigateTo(AboutFragment.class, false, AboutFragment.class.getName(), null);
         getViewState().selectStickyItem();
     }
 
@@ -119,7 +123,9 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
     }
 
     public void navigateToAddCity() {
-        getViewState().navigateTo(SelectCityFragment.class, false, SelectCityFragment.class.getName());
+        Bundle bundle = new Bundle();
+        bundle.putInt(SelectCityFragment.CURRENT_SELECTED_CITY, cities.getSelectedItem().id);
+        getViewState().navigateTo(SelectCityFragment.class, false, SelectCityFragment.class.getName(), bundle);
         getViewState().selectStickyItem();
     }
 

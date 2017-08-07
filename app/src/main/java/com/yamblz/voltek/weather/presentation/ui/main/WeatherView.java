@@ -1,5 +1,6 @@
 package com.yamblz.voltek.weather.presentation.ui.main;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
@@ -28,7 +29,7 @@ public interface WeatherView extends BaseView {
     void selectStickyItem();
 
     @StateStrategyType(value = SkipStrategy.class)
-    void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag);
+    void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag, Bundle bundle);
 
     @StateStrategyType(value = SkipStrategy.class)
     void showDialogForCity(CityUIModel selectedCity);

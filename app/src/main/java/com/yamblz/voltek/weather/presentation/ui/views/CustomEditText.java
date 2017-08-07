@@ -7,6 +7,8 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import com.yamblz.voltek.weather.utils.LogUtils;
+
 
 /**
  * edit text, который реагирует на события клавиатуры: ON_DONE и BACK_PRESSED
@@ -30,7 +32,7 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
     public void onEditorAction(int actionCode) {
         super.onEditorAction(actionCode);
         if (actionCode == EditorInfo.IME_ACTION_DONE) {
-            if(onKeyActionListener!=null)
+            if (onKeyActionListener != null)
                 onKeyActionListener.onAction(getText().toString());
             clearFocus();
         }
@@ -39,9 +41,19 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
     @Override
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
+        LogUtils.log("Focus: " + focused);
+        if (focused) {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(this, 0);
+
+        } else {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
+        }
+
+
     }
+
 
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
@@ -60,7 +72,7 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
         this.onKeyActionListener = onKeyActionListener;
     }
 
-    public interface OnKeyActionListener{
+    public interface OnKeyActionListener {
         void onAction(String text);
     }
 

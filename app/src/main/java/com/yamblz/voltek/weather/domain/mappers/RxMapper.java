@@ -89,8 +89,11 @@ public class RxMapper {
                 weatherUIModels.add(new WeatherUIModel(forecastWeather, forecastResponseModel.city.name));
             }
             return weatherUIModels;
-
         };
+    }
+
+    public Function<CityUIModel, String> cityUIModelToSimpleName() {
+        return cityUIModel -> cityUIModel.name;
     }
 
 }

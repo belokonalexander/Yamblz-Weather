@@ -28,7 +28,7 @@ public abstract class BaseFragment extends MvpAppCompatFragment implements Fragm
     // Holds all disposable with input events subscriptions
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private CommonToolbarLoader toolbarLoader;
+    protected CommonToolbarLoader toolbarLoader;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -50,9 +50,9 @@ public abstract class BaseFragment extends MvpAppCompatFragment implements Fragm
         navigationManager = ((Navigator) getActivity());
         super.onActivityCreated(savedInstanceState);
         toolbarLoader = new CommonToolbarLoader(navigationManager, getFragmentManager(), getContext(), toolbar, this);
-        toolbarLoader.initToolbar(getString(getTitle()));
+        if (getTitle() > 0)
+            toolbarLoader.initToolbar(getString(getTitle()));
     }
-
 
 
     @Override
@@ -70,9 +70,6 @@ public abstract class BaseFragment extends MvpAppCompatFragment implements Fragm
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(getLayout(), container, false);
     }
-
-
-
 
 
 }
