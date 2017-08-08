@@ -1,13 +1,13 @@
 package com.yamblz.voltek.weather.presentation.ui.menu.items;
 
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 
 /**
  * Created on 03.08.2017.
  */
 
-public class WeatherItem extends PrimaryDrawerItem {
+public class WeatherItem extends SecondaryDrawerItem {
 
     private CityUIModel model;
 

@@ -6,25 +6,25 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.MenuRes;
 import android.support.annotation.Nullable;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.holder.DimenHolder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.yamblz.voltek.weather.Navigator;
 import com.yamblz.voltek.weather.R;
@@ -34,7 +34,6 @@ import com.yamblz.voltek.weather.domain.exception.DeleteLastCityException;
 import com.yamblz.voltek.weather.presentation.base.BaseActivity;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.MainDrawerItem;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
-import com.yamblz.voltek.weather.utils.LogUtils;
 import com.yamblz.voltek.weather.utils.StringUtils;
 import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 
@@ -58,7 +57,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     @Nullable
     @BindView(R.id.drawer_content)
-    CardView navigationContainer;
+    ViewGroup navigationContainer;
 
     @Nullable
     @BindView(R.id.toolbar)
@@ -95,14 +94,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         drawerBuilder.withStickyDrawerItems(customInflateMenu(R.menu.sticky_footer_drawer));
 
         if (!singlePane) {
-            TypedValue tv = new TypedValue();
-            int actionBarHeight = 0;
-            if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
-                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-            }
-            drawerBuilder.withHeader(R.layout.drawer_header_layout)
-                    .withHeaderHeight(DimenHolder.fromPixel(actionBarHeight));
-
+            drawerBuilder.withStickyHeader(R.layout.drawer_header_layout);
             navigation = drawerBuilder.buildView();
             navigationContainer.addView(navigation.getSlider());
         } else {
@@ -111,11 +103,6 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     }
 
 
-    /**
-     * gets menu items from menu.xml
-     *
-     * @return
-     */
     private List<IDrawerItem> customInflateMenu(@MenuRes int menuId) {
 
         MenuInflater menuInflater = new SupportMenuInflater(this);
@@ -133,19 +120,22 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         return result;
     }
 
-    private IDrawerItem initiateItemField(PrimaryDrawerItem drawerItem, String title, Drawable icon) {
-
-        IDrawerItem item = drawerItem.withName(title)
+    private IDrawerItem initiateItemField(SecondaryDrawerItem drawerItem, String title, Drawable icon) {
+        return drawerItem.withName(title)
                 .withIcon(icon)
                 .withIconTintingEnabled(true)
                 .withSelectable(!singlePane)
-                .withSelectedIconColor(ContextCompat.getColor(getBaseContext(), R.color.material_drawer_dark_selected));
+                .withIconColor(ContextCompat.getColor(getBaseContext(), R.color.drawer_secondary_icon))
+                .withSelectedIconColor(ContextCompat.getColor(getBaseContext(), R.color.drawer_secondary_icon_selected));
+    }
 
-        if (drawerItem instanceof MainDrawerItem) {
-            item.withIdentifier(((MainDrawerItem) drawerItem).getItemId());
-        }
-
-        return item;
+    private IDrawerItem initiateItemField(PrimaryDrawerItem drawerItem, String title, Drawable icon) {
+        return drawerItem.withName(title)
+                .withIcon(icon)
+                .withIconTintingEnabled(true)
+                .withSelectable(!singlePane)
+                .withSelectedIconColor(ContextCompat.getColor(getBaseContext(), R.color.material_drawer_dark_selected))
+                .withIdentifier(((MainDrawerItem) drawerItem).getItemId());
     }
 
 
@@ -280,7 +270,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     @Override
     public void initToolbarNavigationView(Toolbar toolbar, Drawable navigationIcon) {
         if (singlePane) {
-            navigationIcon.setColorFilter(ContextCompat.getColor(getBaseContext(), R.color.normal_text_color), PorterDuff.Mode.SRC_IN);
+            navigationIcon.setColorFilter(ContextCompat.getColor(getBaseContext(), R.color.title_text_color), PorterDuff.Mode.SRC_IN);
             toolbar.setNavigationIcon(navigationIcon);
             toolbar.setContentInsetStartWithNavigation(0);
         } else {
@@ -306,18 +296,18 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         for (IDrawerItem item : navigation.getDrawerItems())
             forDelete.add(item.getIdentifier());
 
-        int pos = singlePane ? 0 : 1;
+        int pos = 0;
         for (CityUIModel cityUIModel : models) {
-            PrimaryDrawerItem drawerItem = new WeatherItem(cityUIModel);
+            SecondaryDrawerItem drawerItem = new WeatherItem(cityUIModel);
 
             //skip existed items and add original items
             if (navigation.getPosition(drawerItem) < 0) {
-                navigation.addItemAtPosition(initiateItemField(drawerItem, cityUIModel.name, null), pos);
+                navigation.addItemAtPosition(initiateItemField(drawerItem, cityUIModel.name,
+                        VectorDrawableCompat.create(getResources(), R.drawable.ic_location_city_black_24dp, null)), pos);
             } else {
 
-                //remove from future deleted scope
+                //remove from future delete scope
                 forDelete.remove(drawerItem.getIdentifier());
-
             }
             pos++;
         }
@@ -331,10 +321,6 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     @Override
     public void selectWeatherItem(WeatherItem item) {
         navigation.setSelection(item, false);
-        //cause I can't click on item without select it, in despite of I disable selection for this item early %)
-        if (singlePane) {
-            navigation.deselect();
-        }
     }
 
     @Override

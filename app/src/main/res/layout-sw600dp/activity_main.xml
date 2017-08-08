@@ -7,24 +7,31 @@
     android:background="@color/under_white_background"
     android:orientation="horizontal">
 
-
     <android.support.v7.widget.CardView
         android:id="@+id/drawer_content"
         android:layout_width="@dimen/navigation_menu_width"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/default_layout_margin"
+        app:cardBackgroundColor="@color/border_color_light"
         app:cardElevation="@dimen/layout_card_elevation" />
 
-
     <android.support.v7.widget.CardView
-        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/default_layout_margin"
         android:layout_marginEnd="@dimen/default_layout_margin"
         android:layout_marginTop="@dimen/default_layout_margin"
-        app:cardElevation="@dimen/layout_card_elevation"
-        app:cardUseCompatPadding="true"/>
+        app:cardBackgroundColor="@color/border_color_light"
+        app:cardElevation="@dimen/layout_card_elevation">
+
+        <FrameLayout
+            android:id="@+id/main_content"
+            android:background="@color/main_content_background_color"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </android.support.v7.widget.CardView>
 
 
 </LinearLayout>

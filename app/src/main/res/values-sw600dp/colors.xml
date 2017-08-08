@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="material_drawer_background">#f4f4f4</color>
+    <color name="material_drawer_primary_text">#252525</color>
+    <color name="material_drawer_primary_icon">#252525</color>
+
+    <color name="material_drawer_secondary_text">#898989</color>
+
+    <color name="material_drawer_selected">#99c4c4c4</color>
+
+</resources>

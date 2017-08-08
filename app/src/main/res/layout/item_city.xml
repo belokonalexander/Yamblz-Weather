@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:paddingEnd="@dimen/large_padding"
         android:paddingStart="@dimen/large_padding"
-        android:textAppearance="?android:textAppearanceListItem"
+        android:textAppearance="?attr/textAppearanceListItem"
         tools:text="Moscow" />
 
 

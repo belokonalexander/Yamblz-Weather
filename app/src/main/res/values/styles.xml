@@ -37,15 +37,33 @@
         <item name="cardBackgroundColor">@color/item_background</item>
     </style>
 
-
-    <style name="ClickableItem">
-        <item name="android:background">@drawable/cardholder_click_selector</item>
+    <style name="FlatSideCardView" parent="CardView">
+        <item name="android:layout_height">@dimen/item_height</item>
+        <item name="cardCornerRadius">1dp</item>
+        <item name="android:clickable">true</item>
+        <item name="contentPaddingLeft">0dp</item>
+        <item name="contentPaddingRight">0dp</item>
+        <item name="contentPaddingTop">0dp</item>
+        <item name="contentPaddingBottom">0dp</item>
+        <item name="cardElevation">@dimen/layout_card_hard_elevation</item>
+        <item name="cardMaxElevation">@dimen/layout_card_hard_elevation</item>
+        <item name="contentPadding">0dp</item>
+        <item name="android:layout_marginLeft">@dimen/card_margin_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/card_margin_horizontal</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardBackgroundColor">@color/item_background</item>
     </style>
+
 
     <style name="ListText">
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="SplashScreenTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:scaleType">centerCrop</item>
     </style>
 
 </resources>
