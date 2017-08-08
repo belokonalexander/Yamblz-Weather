@@ -8,7 +8,7 @@
         android:valueType="floatType"
         android:valueTo="0"
         android:valueFrom="1"
-        android:duration="@integer/fade_duration" />
+        android:duration="@integer/fade_quick_duration" />
 
 
 </set>

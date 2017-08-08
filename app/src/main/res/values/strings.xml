@@ -53,8 +53,6 @@
         <item>Imperial</item>
     </string-array>
 
-
-
     <string-array name="update_intervals">
         <item>15 minutes</item>
         <item>30 minutes</item>
@@ -66,5 +64,7 @@
     <string name="delete_city">Delete city from favorites?</string>
     <string name="cant_delete_last_city">You can\'t delete last city from favorites</string>
     <string name="saved_as_favorite">The selected city was saved as favorite!</string>
+
+    <string name="weather_api_lang">EN</string>
 
 </resources>

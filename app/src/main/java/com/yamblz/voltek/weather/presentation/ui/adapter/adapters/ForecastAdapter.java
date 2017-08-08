@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager;
-import com.yamblz.voltek.weather.presentation.ui.adapter.delegates.CityAdapterDelegate;
+import com.yamblz.voltek.weather.presentation.ui.adapter.delegates.ForecastAdapterDelegate;
 import com.yamblz.voltek.weather.presentation.ui.adapter.models.AdapterItem;
 
 import java.util.List;
@@ -14,17 +14,17 @@ import java.util.List;
  * Created on 02.08.2017.
  */
 
-public class CityAdapter extends RecyclerView.Adapter {
+public class ForecastAdapter extends RecyclerView.Adapter {
 
-    private AdapterDelegatesManager<List<AdapterItem>> delegatesManager;
-    private List<AdapterItem> items;
+    private AdapterDelegatesManager<List<? extends AdapterItem>> delegatesManager;
+    private List<? extends AdapterItem> items;
 
-    public CityAdapter(LayoutInflater inflater, List<AdapterItem> items, OnAdapterItemClickListener clickListener) {
+    public ForecastAdapter(LayoutInflater inflater, List<? extends AdapterItem> items) {
         this.items = items;
 
         delegatesManager = new AdapterDelegatesManager<>();
 
-        delegatesManager.addDelegate(new CityAdapterDelegate(inflater, clickListener));
+        delegatesManager.addDelegate(new ForecastAdapterDelegate(inflater));
     }
 
     @Override
@@ -47,8 +47,10 @@ public class CityAdapter extends RecyclerView.Adapter {
         return items.size();
     }
 
-
-    public void rewriteItems(List<? extends AdapterItem> items) {
-        this.items = (List<AdapterItem>) items;
+    public void tryUpdateContent(List<? extends AdapterItem> weather) {
+        if(items.hashCode()!=weather.hashCode()) {
+            items = weather;
+            notifyDataSetChanged();
+        }
     }
 }

@@ -68,4 +68,31 @@ public class WeatherUIModel {
                 ", date=" + date +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WeatherUIModel that = (WeatherUIModel) o;
+
+        if (temperature != that.temperature) return false;
+        if (humidity != that.humidity) return false;
+        if (conditionId != that.conditionId) return false;
+        if (!condition.equals(that.condition)) return false;
+        if (!cityName.equals(that.cityName)) return false;
+        return date.equals(that.date);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = condition.hashCode();
+        result = 31 * result + temperature;
+        result = 31 * result + humidity;
+        result = 31 * result + conditionId;
+        result = 31 * result + cityName.hashCode();
+        result = 31 * result + date.hashCode();
+        return result;
+    }
 }

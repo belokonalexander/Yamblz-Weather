@@ -1,6 +1,7 @@
 package com.yamblz.voltek.weather.presentation.ui.settings;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -8,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -71,7 +71,7 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
         citiesRecyclerView.setAdapter(cityAdapter);
 
         filterEditText.setOnKeyActionListener(text -> presenter.selectCity(text));
-        filterEditText.requestFocus();
+        new Handler().postDelayed(() -> filterEditText.requestFocus(), 200);
     }
 
     @Override
@@ -119,8 +119,7 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
         if(city.id==getArguments().getInt(CURRENT_SELECTED_CITY)) {
             if(getFragmentManager().getBackStackEntryCount()>0)
                 getActivity().onBackPressed();
-        } else
-            Toast.makeText(getContext(), getResources().getString(R.string.saved_as_favorite), Toast.LENGTH_SHORT).show();
+        }
     }
 
 

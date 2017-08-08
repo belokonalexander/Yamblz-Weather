@@ -131,7 +131,6 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
 
 
     void deleteCityFromFavorite(CityUIModel selectedCity) {
-
         Disposable deleteTask = interactor.deleteFromFavorites(selectedCity, cities.getSelectedItem().equals(selectedCity))
                 .compose(rxSchedulers.getIOToMainTransformerMaybe())
                 .subscribe(cityUIModel -> {

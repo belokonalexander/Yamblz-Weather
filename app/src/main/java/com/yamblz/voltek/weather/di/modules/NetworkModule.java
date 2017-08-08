@@ -43,8 +43,12 @@ public class NetworkModule {
         String weatherKey = context.getString(R.string.weather_api_key);
         String countAlias = context.getString(R.string.weather_api_count_alias);
         String count = context.getString(R.string.weather_api_default_count);
+        String langAlias = context.getString(R.string.weather_api_lang_alias);
+        String selectedLang = context.getString(R.string.weather_api_lang);
 
-        List<Pair<String, String>> params = Arrays.asList(new Pair<>(idAlias, weatherKey), new Pair<>(countAlias, count));
+        List<Pair<String, String>> params = Arrays.asList(new Pair<>(idAlias, weatherKey),
+                new Pair<>(countAlias, count),
+                new Pair<>(langAlias, selectedLang));
 
         return getService(WeatherAPI.class, utils, context.getString(R.string.base_weather_url), gson, params);
     }
@@ -103,7 +107,6 @@ public class NetworkModule {
             Request request = requestBuilder.build();
             return chain.proceed(request);
         });
-
 
 
         return httpClient.addInterceptor(getNetworkConnectInterceptor(networkUtils)).build();

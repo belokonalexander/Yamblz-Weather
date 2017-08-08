@@ -23,7 +23,8 @@
         android:layout_marginBottom="@dimen/default_layout_margin"
         android:layout_marginEnd="@dimen/default_layout_margin"
         android:layout_marginTop="@dimen/default_layout_margin"
-        app:cardElevation="@dimen/layout_card_elevation" />
+        app:cardElevation="@dimen/layout_card_elevation"
+        app:cardUseCompatPadding="true"/>
 
 
 </LinearLayout>

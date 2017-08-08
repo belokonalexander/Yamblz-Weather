@@ -19,4 +19,5 @@ public final class WeatherUtils {
         else if (condition >= 802 && condition <= 804) return R.drawable.ic_clouds;
         return -1;
     }
+
 }

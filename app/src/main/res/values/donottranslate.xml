@@ -3,9 +3,10 @@
 
     <string name="weather_api_id_alias">appid</string>
     <string name="weather_api_count_alias">cnt</string>
+    <string name="weather_api_lang_alias">lang</string>
     <string name="weather_api_key">2080026a4d30007e744e576b22d43c06</string>
     <string name="base_weather_url">http://api.openweathermap.org/data/2.5/</string>
-    <string name="weather_api_default_count">8</string>
+    <string name="weather_api_default_count">20</string>
 
     <string-array name="update_intervals_values">
         <item>15</item>
@@ -22,5 +23,6 @@
     <integer name="ui_click_delay">100</integer>
     <integer name="default_city_id">524901</integer>
     <integer name="fade_duration">350</integer>
+    <integer name="fade_quick_duration">150</integer>
     <integer name="slide_duration">550</integer>
 </resources>
