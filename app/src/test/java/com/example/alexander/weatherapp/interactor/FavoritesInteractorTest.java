@@ -15,7 +15,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
@@ -26,7 +25,6 @@ import io.reactivex.observers.TestObserver;
 import io.reactivex.subjects.PublishSubject;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.booleanThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -131,72 +129,67 @@ public class FavoritesInteractorTest {
     @Test
     public void deleteFromFavoritesWhenIsSelectedAndExistsAnother() throws InterruptedException {
 
-        boolean isCurrent = true;
-
         CityUIModel selected = new CityUIModel(1, "1");
         FavoriteCityModel topFavorite = new FavoriteCityModel("1", 1);
         CityUIModel favorite = new CityUIModel(topFavorite.getCityId(), topFavorite.getAlias());
 
         when(databaseRepository.deleteFromFavorites(any(CityUIModel.class))).thenReturn(Completable.complete());
-        when(databaseRepository.getTopFavorite()).thenReturn(Single.just(topFavorite));
+        when(databaseRepository.getTopFavorite(1)).thenReturn(Single.just(topFavorite));
         when(storageRepository.putSelectedCity(favorite)).thenReturn(Completable.complete());
 
         TestObserver testObserver = TestObserver.create();
 
-        favoritesInteractor.deleteFromFavorites(selected, isCurrent).subscribe(testObserver);
+        favoritesInteractor.deleteFromFavorites(selected, selected).subscribe(testObserver);
 
         testObserver.await();
         testObserver.assertComplete();
         verify(databaseRepository, times(1)).deleteFromFavorites(any());
-        verify(databaseRepository, times(1)).getTopFavorite();
+        verify(databaseRepository, times(1)).getTopFavorite(1);
         verify(storageRepository, times(1)).putSelectedCity(favorite);
     }
 
     @Test
     public void deleteFromFavoritesWhenIsSelectedAndAnotherNotExists() throws InterruptedException {
 
-        boolean isCurrent = true;
-
         CityUIModel selected = new CityUIModel(1, "1");
         FavoriteCityModel topFavorite = new FavoriteCityModel("1", 1);
         CityUIModel favorite = new CityUIModel(topFavorite.getCityId(), topFavorite.getAlias());
 
         when(databaseRepository.deleteFromFavorites(any(CityUIModel.class))).thenReturn(Completable.complete());
-        when(databaseRepository.getTopFavorite()).thenReturn(Single.error(new DaoException("no value")));
+        when(databaseRepository.getTopFavorite(1)).thenReturn(Single.error(new DaoException("no value")));
         when(storageRepository.putSelectedCity(favorite)).thenReturn(Completable.complete());
 
         TestObserver testObserver = TestObserver.create();
 
-        favoritesInteractor.deleteFromFavorites(selected, isCurrent).subscribe(testObserver);
+        favoritesInteractor.deleteFromFavorites(selected, selected).subscribe(testObserver);
 
         testObserver.await();
         testObserver.assertNotComplete();
-        verify(databaseRepository, times(1)).deleteFromFavorites(any());
-        verify(databaseRepository, times(1)).getTopFavorite();
+        verify(databaseRepository, times(0)).deleteFromFavorites(any());
+        verify(databaseRepository, times(1)).getTopFavorite(1);
         verify(storageRepository, times(0)).putSelectedCity(favorite);
     }
 
     @Test
     public void deleteFromFavoritesWhenIsNotSelected() throws InterruptedException {
 
-        boolean isCurrent = false;
-
         CityUIModel selected = new CityUIModel(1, "1");
+        CityUIModel selected2 = new CityUIModel(2, "1");
         FavoriteCityModel topFavorite = new FavoriteCityModel("1", 1);
         CityUIModel favorite = new CityUIModel(topFavorite.getCityId(), topFavorite.getAlias());
 
         when(databaseRepository.deleteFromFavorites(any(CityUIModel.class))).thenReturn(Completable.complete());
-        when(databaseRepository.getTopFavorite()).thenReturn(Single.error(new DaoException("no value")));
+        when(databaseRepository.getTopFavorite(1)).thenReturn(Single.error(new DaoException("no value")));
         when(storageRepository.putSelectedCity(favorite)).thenReturn(Completable.complete());
 
         TestObserver testObserver = TestObserver.create();
 
-        favoritesInteractor.deleteFromFavorites(selected, isCurrent).subscribe(testObserver);
+        favoritesInteractor.deleteFromFavorites(selected, selected2).subscribe(testObserver);
 
         testObserver.await();
         testObserver.assertComplete();
         verify(databaseRepository, times(1)).deleteFromFavorites(any());
-        verify(databaseRepository, times(0)).getTopFavorite();
+        verify(databaseRepository, times(0)).getTopFavorite(1);
         verify(storageRepository, times(0)).putSelectedCity(favorite);
     }
 
