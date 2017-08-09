@@ -1,6 +1,7 @@
 package com.yamblz.voltek.weather.domain.interactor;
 
-import android.util.Pair;
+
+import android.support.v4.util.Pair;
 
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 import com.yamblz.voltek.weather.data.database.DatabaseRepository;
