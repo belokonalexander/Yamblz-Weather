@@ -124,7 +124,6 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         return drawerItem.withName(title)
                 .withIcon(icon)
                 .withIconTintingEnabled(true)
-                .withSelectable(!singlePane)
                 .withIconColor(ContextCompat.getColor(getBaseContext(), R.color.drawer_secondary_icon))
                 .withSelectedIconColor(ContextCompat.getColor(getBaseContext(), R.color.drawer_secondary_icon_selected));
     }
