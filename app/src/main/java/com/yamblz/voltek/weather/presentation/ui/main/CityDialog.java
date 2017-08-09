@@ -15,13 +15,15 @@ import com.yamblz.voltek.weather.presentation.base.BaseDialogFragment;
 
 public class CityDialog extends BaseDialogFragment {
 
-    CityUIModel model;
+    private CityUIModel model;
 
-    public CityDialog(CityUIModel model, NoticeDialogListener listener) {
-        super(listener);
+    public void initData(CityUIModel model, NoticeDialogListener listener) {
         this.model = model;
+        this.positiveListener = listener;
     }
 
+    public CityDialog() {
+    }
 
     @NonNull
     @Override

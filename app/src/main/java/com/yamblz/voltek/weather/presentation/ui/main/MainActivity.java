@@ -191,7 +191,8 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     @Override
     public void showDialogForCity(CityUIModel selectedCity) {
-        CityDialog cityDialog = new CityDialog(selectedCity, dialog -> weatherPresenter.deleteCityFromFavorite(selectedCity));
+        CityDialog cityDialog = new CityDialog();
+        cityDialog.initData(selectedCity, dialog -> weatherPresenter.deleteCityFromFavorite(selectedCity));
         cityDialog.show(getSupportFragmentManager(), "showDialogForCity");
     }
 

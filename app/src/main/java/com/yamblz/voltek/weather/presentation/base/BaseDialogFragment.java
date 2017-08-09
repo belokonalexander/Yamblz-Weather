@@ -15,10 +15,6 @@ public class BaseDialogFragment extends DialogFragment {
 
     protected NoticeDialogListener positiveListener;
 
-    public BaseDialogFragment(NoticeDialogListener listener) {
-        this.positiveListener = listener;
-    }
-
     public BaseDialogFragment() {
     }
 }

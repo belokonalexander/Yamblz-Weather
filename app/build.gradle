@@ -8,10 +8,6 @@ def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
-def secretPropertiesFile = rootProject.file("secret.properties")
-def secretProperties = new Properties()
-secretProperties.load(new FileInputStream(secretPropertiesFile))
-
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
@@ -52,9 +48,6 @@ android {
 
     buildTypes {
 
-        buildTypes.each {
-            it.buildConfigField 'String', 'ApiKey', secretProperties['ApiKey']
-        }
 
         release {
             minifyEnabled true
@@ -78,7 +71,7 @@ android {
 
 ext {
     supportLibVersion = '26.0.0'
-
+    logginingInterceptorVersion = '3.7.0'
     butterknifeVersion = '8.7.0'
     retrofitVersion = '2.3.0'
     rxJavaVersion = '2.1.1'
@@ -94,6 +87,7 @@ ext {
     daggerVersion = '2.11'
     adapterDelegate='3.0.1'
     fixPreferenceVersion = '26.0.0.0'
+    materialDrawerVersion = '5.9.4@aar'
 }
 
 greendao {
@@ -119,7 +113,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     //navigation drawer
-    compile('com.mikepenz:materialdrawer:5.9.4@aar') {
+    compile("com.mikepenz:materialdrawer:$materialDrawerVersion") {
         transitive = true
     }
 
@@ -146,7 +140,7 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
     compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
-    compile "com.squareup.okhttp3:logging-interceptor:3.7.0"
+    compile "com.squareup.okhttp3:logging-interceptor:$logginingInterceptorVersion"
 
 
     // Rx
