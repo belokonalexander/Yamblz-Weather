@@ -13,6 +13,10 @@ import io.reactivex.observers.TestObserver;
 
 import static junit.framework.Assert.assertEquals;
 
+/**
+ * Created on 09.08.2017.
+ */
+
 public class WeatherUtilsTest {
 
 
@@ -92,5 +96,6 @@ public class WeatherUtilsTest {
         testObserver.assertNoErrors();
         testObserver.assertValueSet(new HashSet<>(Collections.singletonList(R.drawable.ic_clouds)));
     }
+
 
 }

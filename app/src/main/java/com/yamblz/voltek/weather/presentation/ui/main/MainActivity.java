@@ -328,5 +328,10 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     }
 
+    @Override
+    public void deleteWeatherItem(WeatherItem item) {
+        navigation.removeItem(item.getIdentifier());
+    }
+
 
 }

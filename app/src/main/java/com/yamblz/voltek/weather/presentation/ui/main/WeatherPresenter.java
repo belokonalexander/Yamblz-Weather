@@ -83,7 +83,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
         LogUtils.log("Error: " + throwable, throwable);
     }
 
-    public void weatherClick(IDrawerItem drawerItem, boolean longClick) {
+    void weatherClick(IDrawerItem drawerItem, boolean longClick) {
 
         WeatherItem weatherItem = (WeatherItem) drawerItem;
         CityUIModel selectedCity = weatherItem.getModel();
@@ -106,12 +106,12 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
 
     }
 
-    public void navigateToSettings() {
+    void navigateToSettings() {
         getViewState().navigateTo(SettingsFragment.class, false, SettingsFragment.class.getName(), null);
         getViewState().selectStickyItem();
     }
 
-    public void navigateToAbout() {
+    void navigateToAbout() {
         getViewState().navigateTo(AboutFragment.class, false, AboutFragment.class.getName(), null);
         getViewState().selectStickyItem();
     }
@@ -122,24 +122,35 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
         getViewState().scrollToElement(new WeatherItem(cityUIModel));
     }
 
-    public void navigateToAddCity() {
+    void navigateToAddCity() {
+
         Bundle bundle = new Bundle();
-        bundle.putInt(SelectCityFragment.CURRENT_SELECTED_CITY, cities.getSelectedItem().id);
+
+        if (cities.getSelectedItem() != null) {
+            bundle.putInt(SelectCityFragment.CURRENT_SELECTED_CITY, cities.getSelectedItem().id);
+        }
+
         getViewState().navigateTo(SelectCityFragment.class, false, SelectCityFragment.class.getName(), bundle);
         getViewState().selectStickyItem();
     }
 
 
     void deleteCityFromFavorite(CityUIModel selectedCity) {
-        Disposable deleteTask = interactor.deleteFromFavorites(selectedCity, cities.getSelectedItem().equals(selectedCity))
-                .compose(rxSchedulers.getIOToMainTransformerMaybe())
+        Disposable deleteTask = interactor.deleteFromFavorites(selectedCity, cities.getSelectedItem())
+                .compose(rxSchedulers.getIOToMainTransformerSingle())
                 .subscribe(cityUIModel -> {
-                    cities.deleteAndSetSelected(selectedCity, cityUIModel);
-                    inflateSideItemsMenu();
-                }, throwable -> getViewState().showError(new DeleteLastCityException()), () -> {
-                    cities.delete(selectedCity);
-                    inflateSideItemsMenu();
-                });
+                    if (cityUIModel.equals(cities.getSelectedItem())) {
+                        cities.delete(selectedCity);
+                        getViewState().deleteWeatherItem(new WeatherItem(selectedCity));
+                    } else {
+                        cities.deleteAndSetSelected(selectedCity, cityUIModel);
+                        getViewState().deleteWeatherItem(new WeatherItem(selectedCity));
+
+                        WeatherItem newSelectItem = new WeatherItem(cityUIModel);
+                        weatherClick(newSelectItem, false);
+                    }
+                }, throwable -> getViewState().showError(new DeleteLastCityException()));
+
 
         compositeDisposable.addAll(deleteTask);
 

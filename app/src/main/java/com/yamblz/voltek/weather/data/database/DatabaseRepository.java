@@ -29,7 +29,7 @@ public interface DatabaseRepository {
 
     Completable deleteFromFavorites(CityUIModel cityUIModel);
 
-    Single<FavoriteCityModel> getTopFavorite();
+    Single<FavoriteCityModel> getTopFavorite(int exclude);
 
     PublishSubject<FavoriteCityModel> getFavoritesAddedSubject();
 

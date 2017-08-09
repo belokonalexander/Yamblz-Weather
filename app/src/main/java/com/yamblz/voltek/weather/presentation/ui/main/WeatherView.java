@@ -29,6 +29,9 @@ public interface WeatherView extends BaseView {
     void selectStickyItem();
 
     @StateStrategyType(value = SkipStrategy.class)
+    void deleteWeatherItem(WeatherItem item);
+
+    @StateStrategyType(value = SkipStrategy.class)
     void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag, Bundle bundle);
 
     @StateStrategyType(value = SkipStrategy.class)

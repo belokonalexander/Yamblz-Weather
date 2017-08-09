@@ -4,10 +4,10 @@ import com.yamblz.voltek.weather.data.database.DatabaseRepository;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.mappers.RxMapper;
+import com.yamblz.voltek.weather.utils.LogUtils;
 import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 
 import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
@@ -55,20 +55,21 @@ public class FavoritesInteractor {
                 .flatMapCompletable(aBoolean -> storageRepository.fillByDefaultData());
     }
 
-    public Maybe<CityUIModel> deleteFromFavorites(CityUIModel cityUIModel, boolean isCurrentSeleted) {
+    public Single<CityUIModel> deleteFromFavorites(CityUIModel cityUIModel, CityUIModel selected) {
 
-        if (!isCurrentSeleted)
-            return databaseRepository.deleteFromFavorites(cityUIModel).toMaybe();
+        if (!cityUIModel.equals(selected))
+            return databaseRepository.deleteFromFavorites(cityUIModel).toSingleDefault(selected);
         else {
-            return databaseRepository.deleteFromFavorites(cityUIModel)
-                    .andThen(databaseRepository.getTopFavorite()
-                            .map(rxMapper.favoriteCityModelToCityUIModel()))
+            return databaseRepository.getTopFavorite(cityUIModel.id)
+                    .map(rxMapper.favoriteCityModelToCityUIModel())
                     .flatMap(new Function<CityUIModel, SingleSource<CityUIModel>>() {
                         @Override
-                        public SingleSource<CityUIModel> apply(@NonNull CityUIModel cityUIModel) throws Exception {
-                            return storageRepository.putSelectedCity(cityUIModel).toSingleDefault(cityUIModel);
+                        public SingleSource<CityUIModel> apply(@NonNull CityUIModel newSelectedItem) throws Exception {
+                            LogUtils.log("Returns: " + newSelectedItem);
+                            databaseRepository.deleteFromFavorites(cityUIModel).subscribe();
+                            return storageRepository.putSelectedCity(newSelectedItem).toSingleDefault(newSelectedItem);
                         }
-                    }).toMaybe();
+                    });
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.yamblz.voltek.weather.utils.classes;
 
+import android.support.annotation.Nullable;
+
 import java.util.Iterator;
 import java.util.Set;
 
@@ -11,10 +13,13 @@ public class SetWithSelection<T> implements Iterable<T> {
 
     private Set<T> items;
 
+    @Nullable
     private T selectedItem;
 
-    public SetWithSelection(Set<T> items, T selectedItem) {
+    public SetWithSelection(Set<T> items, @Nullable T selectedItem) {
         this.items = items;
+        //selected item should be in this set
+        this.items.add(selectedItem);
         this.selectedItem = selectedItem;
     }
 
@@ -33,6 +38,7 @@ public class SetWithSelection<T> implements Iterable<T> {
         return items;
     }
 
+    @Nullable
     public T getSelectedItem() {
         return selectedItem;
     }

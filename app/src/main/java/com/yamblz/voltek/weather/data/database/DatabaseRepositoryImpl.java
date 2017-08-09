@@ -72,7 +72,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 
     @Override
     public Single<List<FavoriteCityModel>> getFavorite() {
-        return Single.fromCallable(() -> favoriteCitiesModelDao.loadAll());
+        return Single.fromCallable(favoriteCitiesModelDao::loadAll);
     }
 
     @Override
@@ -82,8 +82,8 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
     }
 
     @Override
-    public Single<FavoriteCityModel> getTopFavorite() {
-        return Single.fromCallable(() -> favoriteCitiesModelDao.queryBuilder().limit(1).uniqueOrThrow());
+    public Single<FavoriteCityModel> getTopFavorite(int exclude) {
+        return Single.fromCallable(() -> favoriteCitiesModelDao.queryBuilder().where(FavoriteCityModelDao.Properties.CityId.notEq(exclude)).limit(1).uniqueOrThrow());
     }
 
     @Override
