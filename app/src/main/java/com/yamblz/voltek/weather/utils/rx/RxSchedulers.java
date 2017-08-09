@@ -13,9 +13,9 @@ import io.reactivex.SingleTransformer;
 
 public abstract class RxSchedulers {
 
-    abstract public Scheduler getMainThreadScheduler();
-    abstract public Scheduler getIOScheduler();
-    abstract public Scheduler getComputationScheduler();
+    protected abstract Scheduler getMainThreadScheduler();
+    protected abstract Scheduler getIOScheduler();
+    protected abstract Scheduler getComputationScheduler();
 
     public <T> ObservableTransformer<T, T> getIOToMainTransformer(boolean delayError)  {
         return objectObservable -> objectObservable

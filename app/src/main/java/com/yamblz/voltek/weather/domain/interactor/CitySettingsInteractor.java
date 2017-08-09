@@ -22,9 +22,9 @@ import io.reactivex.functions.Function;
 
 public class CitySettingsInteractor {
 
-    private WeatherAPI api;
-    private DatabaseRepository databaseRepository;
-    private RxMapper rxMapper;
+    private final WeatherAPI api;
+    private final DatabaseRepository databaseRepository;
+    private final RxMapper rxMapper;
 
     public CitySettingsInteractor(WeatherAPI api, DatabaseRepository databaseRepository, RxMapper rxMapper) {
         this.api = api;

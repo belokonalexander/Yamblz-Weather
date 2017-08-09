@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter {
 
-    private AdapterDelegatesManager<List<AdapterItem>> delegatesManager;
+    private final AdapterDelegatesManager<List<AdapterItem>> delegatesManager;
     private List<AdapterItem> items;
 
     public CityAdapter(LayoutInflater inflater, List<AdapterItem> items, OnAdapterItemClickListener clickListener) {
@@ -48,6 +48,7 @@ public class CityAdapter extends RecyclerView.Adapter {
     }
 
 
+    @SuppressWarnings("unchecked")
     public void rewriteItems(List<? extends AdapterItem> items) {
         this.items = (List<AdapterItem>) items;
     }

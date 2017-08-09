@@ -45,8 +45,8 @@ public class FavoriteCityModel {
         this.forecast = forecast;
     }
 
-    @Generated(hash = 398116425)
-    public FavoriteCityModel(Long Id, @NotNull String alias, @NotNull Integer cityId, ForecastResponseModel forecast) {
+    @Keep
+    public FavoriteCityModel(Long Id, @NotNull String alias, @NotNull Integer cityId, @Nullable ForecastResponseModel forecast) {
         this.Id = Id;
         this.alias = alias;
         this.cityId = cityId;

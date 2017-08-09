@@ -17,10 +17,10 @@ import io.reactivex.Single;
 
 public class ForecastInteractor {
 
-    private WeatherAPI api;
-    private StorageRepository storageRepository;
-    private DatabaseRepository databaseRepository;
-    private RxMapper rxMapper;
+    private final WeatherAPI api;
+    private final StorageRepository storageRepository;
+    private final DatabaseRepository databaseRepository;
+    private final RxMapper rxMapper;
 
 
     public ForecastInteractor(WeatherAPI api, StorageRepository storageRepository, DatabaseRepository databaseRepository, RxMapper rxMapper) {

@@ -24,8 +24,8 @@ import butterknife.ButterKnife;
 
 public class CityAdapterDelegate extends AdapterDelegate<List<AdapterItem>> {
 
-    private LayoutInflater inflater;
-    private OnAdapterItemClickListener clickListener;
+    private final LayoutInflater inflater;
+    private final OnAdapterItemClickListener clickListener;
 
     public CityAdapterDelegate(LayoutInflater inflater, OnAdapterItemClickListener clickListener) {
         this.inflater = inflater;

@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 
 public class ForecastAdapterDelegate extends AdapterDelegate<List<? extends AdapterItem>> {
 
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
 
     public ForecastAdapterDelegate(LayoutInflater inflater) {
         this.inflater = inflater;
@@ -67,7 +67,7 @@ public class ForecastAdapterDelegate extends AdapterDelegate<List<? extends Adap
         @BindView(R.id.item_wrapper)
         View wrapper;
 
-        SimpleDateFormat dateFormat;
+        final SimpleDateFormat dateFormat;
 
         public ForecastViewHolder(View itemView) {
             super(itemView);

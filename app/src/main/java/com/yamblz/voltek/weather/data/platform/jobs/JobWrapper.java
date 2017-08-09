@@ -8,8 +8,8 @@ import io.reactivex.Completable;
 
 public class JobWrapper {
 
-    private StorageRepository storageRepository;
-    private JobManager jobManager;
+    private final StorageRepository storageRepository;
+    private final JobManager jobManager;
 
     public JobWrapper(StorageRepository storageRepository, JobManager jobManager) {
         this.storageRepository = storageRepository;

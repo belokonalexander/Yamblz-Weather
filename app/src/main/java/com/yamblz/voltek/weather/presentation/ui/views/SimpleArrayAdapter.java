@@ -10,9 +10,9 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class SimpleArrayAdapter<T> extends ArrayAdapter<T> implements Filterable {
+class SimpleArrayAdapter<T> extends ArrayAdapter<T> implements Filterable {
 
-    private List<T> list;
+    private final List<T> list;
 
     public SimpleArrayAdapter(Context context, int textViewResourceId, List<T> list) {
         super(context, textViewResourceId);

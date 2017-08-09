@@ -10,11 +10,14 @@ import java.util.List;
 
 public class ForecastResponseModel {
 
-
     @SerializedName("city")
-    public City city;
+    public final City city;
 
     @SerializedName("list")
-    public List<ForecastWeather> weather;
+    public final List<ForecastWeather> weather;
 
+    public ForecastResponseModel(City city, List<ForecastWeather> weather) {
+        this.city = city;
+        this.weather = weather;
+    }
 }

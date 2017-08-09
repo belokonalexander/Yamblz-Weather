@@ -7,15 +7,20 @@ import java.util.List;
 public class WeatherResponseModel {
 
     @SerializedName("weather")
-    public List<Weather> weather = null;
+    public final List<Weather> weather = null;
 
     @SerializedName("main")
-    public Main main;
+    public final Main main;
 
     @SerializedName("id")
-    public int id;
+    public final int id;
 
     @SerializedName("name")
-    public String name;
+    public final String name;
 
+    public WeatherResponseModel(Main main, int id, String name) {
+        this.main = main;
+        this.id = id;
+        this.name = name;
+    }
 }

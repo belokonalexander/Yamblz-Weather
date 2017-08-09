@@ -3,15 +3,11 @@
     <string name="app_name">Погода</string>
 
     <!-- Screen titles -->
-    <string name="title_forecast">@string/nav_forecast</string>
     <string name="title_settings">@string/nav_settings</string>
     <string name="title_about">@string/nav_about</string>
     <string name="title_city_select">Выбор города</string>
     <!-- Navigation drawer related -->
-    <string name="nav_open">Открыть боковое меню</string>
-    <string name="nav_close">Закрыть боковое меню</string>
 
-    <string name="nav_forecast">Прогноз</string>
     <string name="nav_settings">Настройки</string>
     <string name="nav_add_city">Добавить город</string>
     <string name="nav_about">О приложении</string>
@@ -21,10 +17,6 @@
     <string name="wthr_humidity">Влажность <xliff:g id="value">%d</xliff:g>%%</string>
 
     <!-- Settings -->
-    <string name="st_interval_prompt">Частота обновления погоды</string>
-    <string name="st_interval_1">1 час</string>
-    <string name="st_interval_2">3 часа</string>
-    <string name="st_interval_3">5 часов</string>
 
     <!-- Error's -->
     <string name="er_unknown">Произошла неизвестная ошибка.</string>
@@ -59,7 +51,6 @@
     <string name="default_city_name">Москва</string>
     <string name="delete_city">Удалить город из избранного?</string>
     <string name="cant_delete_last_city">В списке должен остаться хотя бы один город</string>
-    <string name="saved_as_favorite">Выбранный город был сохранен в избранное</string>
 
     <string name="weather_api_lang">RU</string>
 

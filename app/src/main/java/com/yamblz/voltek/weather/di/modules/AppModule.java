@@ -28,8 +28,8 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
-    private Context appContext;
-    private DaoSession daoSession;
+    private final Context appContext;
+    private final DaoSession daoSession;
 
     public AppModule(@NonNull Context appContext, @NonNull DaoSession daoSession) {
         this.appContext = appContext;

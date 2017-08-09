@@ -7,12 +7,12 @@ import java.util.Date;
 
 public class WeatherUIModel {
 
-    private String condition;
-    private int temperature;
-    private int humidity;
-    private int conditionId;
-    private String cityName;
-    private Date date;
+    private final String condition;
+    private final int temperature;
+    private final int humidity;
+    private final int conditionId;
+    private final String cityName;
+    private final Date date;
 
     public WeatherUIModel(WeatherResponseModel model) {
         condition = model.weather.get(0).description;

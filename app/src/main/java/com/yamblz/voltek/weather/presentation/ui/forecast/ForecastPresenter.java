@@ -17,8 +17,8 @@ import io.reactivex.disposables.Disposable;
 @InjectViewState
 public class ForecastPresenter extends BasePresenter<ForecastView> {
 
-    private ForecastInteractor interactor;
-    private RxSchedulers rxSchedulers;
+    private final ForecastInteractor interactor;
+    private final RxSchedulers rxSchedulers;
     private Disposable loadWeatherTask;
 
     public ForecastPresenter(ForecastInteractor interactor, RxSchedulers rxSchedulers) {

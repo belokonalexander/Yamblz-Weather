@@ -21,11 +21,11 @@ public final class DataProvider {
 
         public interface Weather {
 
-            WeatherUIModel getCurrent(String cityName) throws NoConnectionException, RequestFailedException;
+            WeatherUIModel getCurrent(String cityName);
 
-            WeatherUIModel getCurrentByID(int id) throws NoConnectionException, RequestFailedException;
+            WeatherUIModel getCurrentByID(int id);
 
-            CityUIModel getCity(String name) throws NoConnectionException, RequestFailedException;
+            CityUIModel getCity(String name);
 
 
         }

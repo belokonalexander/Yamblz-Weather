@@ -26,8 +26,8 @@ import io.reactivex.disposables.Disposable;
 @InjectViewState
 public class WeatherPresenter extends BasePresenter<WeatherView> {
 
-    private FavoritesInteractor interactor;
-    private RxSchedulers rxSchedulers;
+    private final FavoritesInteractor interactor;
+    private final RxSchedulers rxSchedulers;
     private SetWithSelection<CityUIModel> cities;
 
     public WeatherPresenter(FavoritesInteractor interactor, RxSchedulers rxSchedulers) {

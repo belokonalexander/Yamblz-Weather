@@ -14,7 +14,7 @@ import java.io.OutputStream;
 
 public class AppDatabaseHelper extends DaoMaster.OpenHelper {
 
-    private Context context;
+    private final Context context;
 
     private SQLiteDatabase sqliteDatabase;
 

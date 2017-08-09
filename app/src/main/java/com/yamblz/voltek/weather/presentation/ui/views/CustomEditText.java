@@ -66,7 +66,7 @@ public class CustomEditText extends android.support.v7.widget.AppCompatEditText 
         return super.dispatchKeyEvent(event);
     }
 
-    OnKeyActionListener onKeyActionListener;
+    private OnKeyActionListener onKeyActionListener;
 
     public void setOnKeyActionListener(OnKeyActionListener onKeyActionListener) {
         this.onKeyActionListener = onKeyActionListener;

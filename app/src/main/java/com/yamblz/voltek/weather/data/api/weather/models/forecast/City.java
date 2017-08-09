@@ -9,12 +9,17 @@ import com.google.gson.annotations.SerializedName;
 public class City {
 
     @SerializedName("id")
-    public int id;
+    public final int id;
 
     @SerializedName("name")
     public String name;
 
     @SerializedName("country")
-    public String country;
+    public final String country;
 
+    public City(int id, String name, String country) {
+        this.id = id;
+        this.name = name;
+        this.country = country;
+    }
 }

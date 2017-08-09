@@ -15,13 +15,13 @@ import io.reactivex.Single;
 
 public class StorageRepositoryImpl implements StorageRepository {
 
-    private SharedPreferences settings;
-    private GsonConverter converter;
+    private final SharedPreferences settings;
+    private final GsonConverter converter;
 
-    private String defaultUnits;
-    private CityUIModel defaultCity;
-    private String defaultUpdateInterval = "15";
-    private boolean defaultUpdateEnabled = false;
+    private final String defaultUnits;
+    private final CityUIModel defaultCity;
+    private final String defaultUpdateInterval = "15";
+    private final boolean defaultUpdateEnabled = false;
 
     public StorageRepositoryImpl(Context context, GsonConverter converter) {
         this.settings = context.getSharedPreferences(CATEGORY_SETTINGS, 0);

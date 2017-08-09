@@ -22,9 +22,9 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
 
     private static final int DEFAULT_SUGGESTIONS_OFFSET = 40;
 
-    private CityToIDModelDao cityToIDModelDao;
-    private FavoriteCityModelDao favoriteCitiesModelDao;
-    private PublishSubject<FavoriteCityModel> favoriteCityModelPublishSubject = PublishSubject.create();
+    private final CityToIDModelDao cityToIDModelDao;
+    private final FavoriteCityModelDao favoriteCitiesModelDao;
+    private final PublishSubject<FavoriteCityModel> favoriteCityModelPublishSubject = PublishSubject.create();
 
     public DatabaseRepositoryImpl(DaoSession session) {
         this.cityToIDModelDao = session.getCityToIDModelDao();

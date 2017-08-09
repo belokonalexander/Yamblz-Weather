@@ -14,14 +14,14 @@ import com.yamblz.voltek.weather.utils.LogUtils;
 import java.util.concurrent.TimeUnit;
 
 
-public class WeatherJob extends Job {
+class WeatherJob extends Job {
 
     static final String TAG = "GET_WEATHER_JOB";
 
 
-    private WeatherAPI api;
-    private DatabaseRepository databaseRepository;
-    private StorageRepository storageRepository;
+    private final WeatherAPI api;
+    private final DatabaseRepository databaseRepository;
+    private final StorageRepository storageRepository;
 
     WeatherJob(WeatherAPI weatherApi, StorageRepository storageRepository, DatabaseRepository databaseRepository) {
         this.api = weatherApi;

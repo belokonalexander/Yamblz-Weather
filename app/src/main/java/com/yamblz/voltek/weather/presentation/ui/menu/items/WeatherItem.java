@@ -9,7 +9,7 @@ import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 
 public class WeatherItem extends SecondaryDrawerItem {
 
-    private CityUIModel model;
+    private final CityUIModel model;
 
     public WeatherItem(CityUIModel model) {
         this.model = model;

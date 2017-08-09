@@ -24,9 +24,9 @@ public abstract class BaseFragment extends MvpAppCompatFragment implements Fragm
     protected Toolbar toolbar;
 
     private Unbinder unbinder;
-    public Navigator navigationManager;
+    private Navigator navigationManager;
     // Holds all disposable with input events subscriptions
-    protected CompositeDisposable compositeDisposable = new CompositeDisposable();
+    protected final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     protected CommonToolbarLoader toolbarLoader;
 

@@ -13,8 +13,8 @@ import java.util.List;
 @InjectViewState
 public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView> {
 
-    private CitySettingsInteractor interactor;
-    private RxSchedulers rxSchedulers;
+    private final CitySettingsInteractor interactor;
+    private final RxSchedulers rxSchedulers;
 
     public SettingsSelectCityPresenter(CitySettingsInteractor interactor, RxSchedulers rxSchedulers) {
         this.interactor = interactor;
@@ -54,7 +54,7 @@ public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView>
                 .subscribe(this::onSuccessCitySaved, this::onError);
     }
 
-    public void onSuccessCitySaved(CityUIModel city) {
+    private void onSuccessCitySaved(CityUIModel city) {
         getViewState().selectCity(city);
     }
 

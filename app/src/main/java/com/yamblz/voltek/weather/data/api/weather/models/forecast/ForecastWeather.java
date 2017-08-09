@@ -14,12 +14,16 @@ import java.util.List;
 public class ForecastWeather {
 
     @SerializedName("main")
-    public Main main;
+    public final Main main;
 
     @SerializedName("weather")
-    public List<Weather> weather = null;
+    public final List<Weather> weather = null;
 
     @SerializedName("dt_txt")
-    public Date date;
+    public final Date date;
 
+    public ForecastWeather(Main main, Date date) {
+        this.main = main;
+        this.date = date;
+    }
 }

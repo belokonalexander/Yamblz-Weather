@@ -20,9 +20,6 @@
         <item>Imperial</item>
     </string-array>
 
-    <integer name="ui_click_delay">100</integer>
     <integer name="default_city_id">524901</integer>
-    <integer name="fade_duration">350</integer>
     <integer name="fade_quick_duration">150</integer>
-    <integer name="slide_duration">550</integer>
 </resources>

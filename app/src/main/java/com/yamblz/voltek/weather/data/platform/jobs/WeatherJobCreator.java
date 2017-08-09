@@ -10,9 +10,9 @@ import com.yamblz.voltek.weather.data.storage.StorageRepository;
 public class WeatherJobCreator implements JobCreator {
 
 
-    private WeatherAPI weatherApi;
-    private StorageRepository storageRepository;
-    private DatabaseRepository databaseRepository;
+    private final WeatherAPI weatherApi;
+    private final StorageRepository storageRepository;
+    private final DatabaseRepository databaseRepository;
 
 
 

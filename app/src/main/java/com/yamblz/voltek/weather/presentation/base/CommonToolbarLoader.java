@@ -15,11 +15,11 @@ import com.yamblz.voltek.weather.R;
 
 public class CommonToolbarLoader implements ToolbarLoader {
 
-    private Navigator navigationManager;
+    private final Navigator navigationManager;
     private Toolbar toolbar;
-    private Context context;
-    private FragmentManager fragmentManager;
-    private ToolbarNavigationListener toolbarNavigationListener;
+    private final Context context;
+    private final FragmentManager fragmentManager;
+    private final ToolbarNavigationListener toolbarNavigationListener;
 
 
     public CommonToolbarLoader(Navigator navigator, FragmentManager fragmentManager, Context context, Toolbar toolbar, ToolbarNavigationListener listener) {

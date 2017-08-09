@@ -15,8 +15,8 @@ import io.reactivex.disposables.Disposable;
 @InjectViewState
 public class SettingsPresenter extends BasePresenter<SettingsView> {
 
-    private SettingsInteractor settingsInteractor;
-    private RxSchedulers rxSchedulers;
+    private final SettingsInteractor settingsInteractor;
+    private final RxSchedulers rxSchedulers;
 
     public SettingsPresenter(SettingsInteractor settingsInteractor, RxSchedulers rxSchedulers) {
         this.settingsInteractor = settingsInteractor;

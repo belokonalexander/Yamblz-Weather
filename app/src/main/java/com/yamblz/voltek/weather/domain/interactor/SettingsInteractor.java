@@ -11,8 +11,8 @@ import io.reactivex.Completable;
 
 public class SettingsInteractor {
 
-    private JobWrapper jobWrapper;
-    private StorageRepository storageRepository;
+    private final JobWrapper jobWrapper;
+    private final StorageRepository storageRepository;
 
     public SettingsInteractor(JobWrapper jobWrapper, StorageRepository storageRepository) {
         this.jobWrapper = jobWrapper;

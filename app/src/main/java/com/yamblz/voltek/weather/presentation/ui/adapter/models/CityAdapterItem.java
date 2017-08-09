@@ -8,7 +8,7 @@ import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 
 public class CityAdapterItem implements AdapterItem {
 
-    private CityUIModel content;
+    private final CityUIModel content;
 
     public CityAdapterItem(CityUIModel content) {
         this.content = content;

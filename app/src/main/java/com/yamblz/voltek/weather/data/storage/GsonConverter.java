@@ -8,7 +8,7 @@ import com.google.gson.GsonBuilder;
 
 public class GsonConverter {
 
-    private GsonBuilder gsonBuilder;
+    private final GsonBuilder gsonBuilder;
 
     public GsonConverter(GsonBuilder gsonBuilder) {
         this.gsonBuilder = gsonBuilder;

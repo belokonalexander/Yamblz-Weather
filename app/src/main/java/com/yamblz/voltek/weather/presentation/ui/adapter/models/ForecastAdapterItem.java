@@ -11,7 +11,7 @@ import org.greenrobot.greendao.annotation.NotNull;
 public class ForecastAdapterItem implements AdapterItem {
 
     @NotNull
-    private WeatherUIModel content;
+    private final WeatherUIModel content;
 
     public ForecastAdapterItem(@NotNull WeatherUIModel content) {
         this.content = content;

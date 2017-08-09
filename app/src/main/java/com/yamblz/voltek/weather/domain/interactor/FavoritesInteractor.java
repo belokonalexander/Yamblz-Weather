@@ -20,9 +20,9 @@ import io.reactivex.functions.Function;
 
 public class FavoritesInteractor {
 
-    private DatabaseRepository databaseRepository;
-    private StorageRepository storageRepository;
-    private RxMapper rxMapper;
+    private final DatabaseRepository databaseRepository;
+    private final StorageRepository storageRepository;
+    private final RxMapper rxMapper;
 
     public FavoritesInteractor(DatabaseRepository databaseRepository, StorageRepository storageRepository, RxMapper rxMapper) {
         this.databaseRepository = databaseRepository;

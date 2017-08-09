@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ForecastAdapter extends RecyclerView.Adapter {
 
-    private AdapterDelegatesManager<List<? extends AdapterItem>> delegatesManager;
+    private final AdapterDelegatesManager<List<? extends AdapterItem>> delegatesManager;
     private List<? extends AdapterItem> items;
 
     public ForecastAdapter(LayoutInflater inflater, List<? extends AdapterItem> items) {

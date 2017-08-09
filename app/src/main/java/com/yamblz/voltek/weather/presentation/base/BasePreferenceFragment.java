@@ -28,8 +28,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
     // Holds all disposable with input events subscriptions
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public Navigator navigationManager;
-    private CommonToolbarLoader toolbarLoader;
+    private Navigator navigationManager;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         navigationManager = (Navigator) getActivity();
-        toolbarLoader = new CommonToolbarLoader(navigationManager, getFragmentManager(), getContext(), toolbar, this);
+        CommonToolbarLoader toolbarLoader = new CommonToolbarLoader(navigationManager, getFragmentManager(), getContext(), toolbar, this);
         toolbarLoader.initToolbar(getString(getTitle()));
     }
 
@@ -141,7 +140,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
     /**
      * @return The {@link MvpDelegate} being used by this Fragment.
      */
-    public MvpDelegate getMvpDelegate() {
+    private MvpDelegate getMvpDelegate() {
         if (mMvpDelegate == null) {
             mMvpDelegate = new MvpDelegate<>(this);
         }
