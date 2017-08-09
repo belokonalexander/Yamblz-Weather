@@ -116,8 +116,8 @@ public class SelectCityFragment extends BaseFragment implements SettingsCityView
 
     @Override
     public void selectCity(CityUIModel city) {
-        if(city.id==getArguments().getInt(CURRENT_SELECTED_CITY)) {
-            if(getFragmentManager().getBackStackEntryCount()>0)
+        if (city.id == getArguments().getInt(CURRENT_SELECTED_CITY)) {
+            if (getFragmentManager().getBackStackEntryCount() > 0)
                 getActivity().onBackPressed();
         }
     }

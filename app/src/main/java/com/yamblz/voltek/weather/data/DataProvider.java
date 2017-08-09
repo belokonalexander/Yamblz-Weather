@@ -13,11 +13,13 @@ import java.util.Collection;
 
 public final class DataProvider {
 
-    private DataProvider() {}
+    private DataProvider() {
+    }
 
     public static class API {
 
-        private API() {}
+        private API() {
+        }
 
         public interface Weather {
 
@@ -33,7 +35,8 @@ public final class DataProvider {
 
     public static class Storage {
 
-        private Storage() {}
+        private Storage() {
+        }
 
         public interface Weather {
 
@@ -52,12 +55,15 @@ public final class DataProvider {
 
     public static class Database {
 
-        private Database() {}
+        private Database() {
+        }
 
         public interface CityRepository {
 
             Collection<CityToIDModel> getCityByPrefix(String prefix);
+
             CityToIDModel getCityByName(String name);
+
             CityToIDModel saveCity(CityToIDModel city);
         }
 

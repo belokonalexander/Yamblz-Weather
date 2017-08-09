@@ -3,8 +3,6 @@
     <string name="app_name">Weather</string>
 
 
-
-
     <!-- Screen titles -->
     <string name="title_settings">@string/nav_settings</string>
     <string name="title_about">@string/nav_about</string>

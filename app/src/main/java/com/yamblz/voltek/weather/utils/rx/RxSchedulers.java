@@ -14,42 +14,44 @@ import io.reactivex.SingleTransformer;
 public abstract class RxSchedulers {
 
     protected abstract Scheduler getMainThreadScheduler();
+
     protected abstract Scheduler getIOScheduler();
+
     protected abstract Scheduler getComputationScheduler();
 
-    public <T> ObservableTransformer<T, T> getIOToMainTransformer(boolean delayError)  {
+    public <T> ObservableTransformer<T, T> getIOToMainTransformer(boolean delayError) {
         return objectObservable -> objectObservable
                 .subscribeOn(getIOScheduler())
                 .observeOn(getMainThreadScheduler(), delayError);
     }
 
 
-    public <T> SingleTransformer<T, T> getIOToMainTransformerSingle()  {
+    public <T> SingleTransformer<T, T> getIOToMainTransformerSingle() {
         return objectObservable -> objectObservable
                 .subscribeOn(getIOScheduler())
                 .observeOn(getMainThreadScheduler());
     }
 
-    public <T> ObservableTransformer<T, T> getComputationToMainTransformer()  {
+    public <T> ObservableTransformer<T, T> getComputationToMainTransformer() {
         return objectObservable -> objectObservable
                 .subscribeOn(getComputationScheduler())
                 .observeOn(getMainThreadScheduler());
     }
 
-    public <T> SingleTransformer<T, T> getComputationToMainTransformerSingle()  {
+    public <T> SingleTransformer<T, T> getComputationToMainTransformerSingle() {
         return objectObservable -> objectObservable
                 .subscribeOn(getComputationScheduler())
                 .observeOn(getMainThreadScheduler());
     }
 
 
-    public CompletableTransformer getIOToMainTransformerCompletable()  {
+    public CompletableTransformer getIOToMainTransformerCompletable() {
         return objectObservable -> objectObservable
                 .subscribeOn(getIOScheduler())
                 .observeOn(getMainThreadScheduler());
     }
 
-    public <T> MaybeTransformer<T, T> getIOToMainTransformerMaybe()  {
+    public <T> MaybeTransformer<T, T> getIOToMainTransformerMaybe() {
         return objectObservable -> objectObservable
                 .subscribeOn(getIOScheduler())
                 .observeOn(getMainThreadScheduler());

@@ -87,7 +87,7 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
         forecastAdapter = new ForecastAdapter(getLayoutInflater(), new ArrayList<>());
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         forecastRecycler.setLayoutManager(llm);
-        forecastRecycler.addItemDecoration(new DividerItemDecoration(getContext(),llm.getOrientation()));
+        forecastRecycler.addItemDecoration(new DividerItemDecoration(getContext(), llm.getOrientation()));
         forecastRecycler.setAdapter(forecastAdapter);
     }
 

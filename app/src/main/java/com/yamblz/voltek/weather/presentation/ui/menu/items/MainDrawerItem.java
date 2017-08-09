@@ -8,7 +8,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
  * Created on 03.08.2017.
  */
 
-public class MainDrawerItem extends PrimaryDrawerItem{
+public class MainDrawerItem extends PrimaryDrawerItem {
 
     @IdRes
     private final int itemId;

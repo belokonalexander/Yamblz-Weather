@@ -53,7 +53,7 @@ public class FavoriteCityModel {
         this.forecast = forecast;
     }
 
-    
+
     public Long getId() {
         return this.Id;
     }

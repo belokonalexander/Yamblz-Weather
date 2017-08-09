@@ -9,7 +9,7 @@ import com.yamblz.voltek.weather.presentation.base.BaseView;
  */
 
 @StateStrategyType(value = SkipStrategy.class)
-public interface SettingsView extends BaseView{
+public interface SettingsView extends BaseView {
 
     void jobStateChanged();
 

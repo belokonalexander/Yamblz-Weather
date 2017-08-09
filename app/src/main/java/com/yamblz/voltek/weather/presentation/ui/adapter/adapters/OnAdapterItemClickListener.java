@@ -7,5 +7,5 @@ import com.yamblz.voltek.weather.presentation.ui.adapter.models.AdapterItem;
  */
 
 public interface OnAdapterItemClickListener {
-     void onClick(AdapterItem item);
+    void onClick(AdapterItem item);
 }

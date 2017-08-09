@@ -44,9 +44,9 @@ class WeatherJob extends Job {
                     forecastResponseModel.city.name = cityUIModel.name;
                     return forecastResponseModel;
                 }).subscribe(forecastResponseModel -> {
-                    flag[0] = true;
-                    databaseRepository.updateFavorite(forecastResponseModel).subscribe();
-                }, throwable -> flag[0] = false);
+            flag[0] = true;
+            databaseRepository.updateFavorite(forecastResponseModel).subscribe();
+        }, throwable -> flag[0] = false);
 
         LogUtils.logJob("Job result: " + flag[0]);
 

@@ -15,7 +15,6 @@ public class WeatherJobCreator implements JobCreator {
     private final DatabaseRepository databaseRepository;
 
 
-
     public WeatherJobCreator(WeatherAPI weatherApi, StorageRepository storageRepository, DatabaseRepository databaseRepository) {
         this.weatherApi = weatherApi;
         this.databaseRepository = databaseRepository;

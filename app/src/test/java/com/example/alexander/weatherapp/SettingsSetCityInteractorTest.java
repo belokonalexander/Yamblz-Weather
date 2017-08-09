@@ -32,7 +32,6 @@ public class SettingsSetCityInteractorTest {
     private InteractorTestHelper<CityUIModel> interactorTestHelper;
 
 
-
     @Before
     public void beforeEachTest() {
         db = mock(DataProvider.Database.CityRepository.class);
@@ -137,7 +136,7 @@ public class SettingsSetCityInteractorTest {
 
         int id = 101;
 
-        CityUIModel parameter = new CityUIModel( id, "Test");
+        CityUIModel parameter = new CityUIModel(id, "Test");
 
         Parameter<CityUIModel> p = new Parameter<>();
         p.setItem(parameter);

@@ -46,7 +46,7 @@ public class CurrentWeatherInteractorTest {
 
         InteractorTestHelper<WeatherUIModel> interactorTestHelper = new InteractorTestHelper<>(TestSubscriber.create());
 
-        currentWeatherInteractor.execute(new Parameter<>(),interactorTestHelper::onNext,interactorTestHelper::onThrowable,interactorTestHelper::onComplete);
+        currentWeatherInteractor.execute(new Parameter<>(), interactorTestHelper::onNext, interactorTestHelper::onThrowable, interactorTestHelper::onComplete);
 
         interactorTestHelper.getListener().await();
         interactorTestHelper.getListener().assertComplete();
@@ -66,11 +66,11 @@ public class CurrentWeatherInteractorTest {
 
         InteractorTestHelper<WeatherUIModel> interactorTestHelper = new InteractorTestHelper<>(TestSubscriber.create());
 
-        currentWeatherInteractor.execute(new Parameter<>(),interactorTestHelper::onNext,interactorTestHelper::onThrowable,interactorTestHelper::onComplete);
+        currentWeatherInteractor.execute(new Parameter<>(), interactorTestHelper::onNext, interactorTestHelper::onThrowable, interactorTestHelper::onComplete);
 
 
         interactorTestHelper.getListener().await();
-        verify(api,times(0)).getCurrentByID(100);
+        verify(api, times(0)).getCurrentByID(100);
         interactorTestHelper.getListener().assertComplete();
         interactorTestHelper.getListener().assertValueCount(1);
         interactorTestHelper.getListener().assertValue(weatherUIModelResult -> weatherUIModelResult.getData().equals(currentWeather));
@@ -88,14 +88,14 @@ public class CurrentWeatherInteractorTest {
         InteractorTestHelper<WeatherUIModel> interactorTestHelper = new InteractorTestHelper<>(TestSubscriber.create());
         Parameter<Void> p = new Parameter<>();
         p.setFlag(ForecastInteractor.REFRESH);
-        currentWeatherInteractor.execute(p,interactorTestHelper::onNext,interactorTestHelper::onThrowable,interactorTestHelper::onComplete);
+        currentWeatherInteractor.execute(p, interactorTestHelper::onNext, interactorTestHelper::onThrowable, interactorTestHelper::onComplete);
 
 
         interactorTestHelper.getListener().await();
-        verify(api,times(1)).getCurrentByID(100);
+        verify(api, times(1)).getCurrentByID(100);
 
         //ERROR we should go directly to api, why we're looking for value in prefs?
-        verify(storage,times(0)).getCurrent();
+        verify(storage, times(0)).getCurrent();
 
         interactorTestHelper.getListener().assertComplete();
         interactorTestHelper.getListener().assertValueCount(1);
@@ -112,7 +112,7 @@ public class CurrentWeatherInteractorTest {
 
         InteractorTestHelperObserver<WeatherUIModel> interactorTestHelper = new InteractorTestHelperObserver<>(TestObserver.create());
 
-        currentWeatherInteractor.execute(new Parameter<>(),interactorTestHelper::onNext,interactorTestHelper::onThrowable,interactorTestHelper::onComplete);
+        currentWeatherInteractor.execute(new Parameter<>(), interactorTestHelper::onNext, interactorTestHelper::onThrowable, interactorTestHelper::onComplete);
 
         interactorTestHelper.getListener().await();
         interactorTestHelper.getListener().assertNotComplete();

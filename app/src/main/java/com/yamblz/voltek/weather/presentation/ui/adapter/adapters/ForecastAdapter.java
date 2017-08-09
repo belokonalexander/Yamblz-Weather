@@ -48,7 +48,7 @@ public class ForecastAdapter extends RecyclerView.Adapter {
     }
 
     public void tryUpdateContent(List<? extends AdapterItem> weather) {
-        if(items.hashCode()!=weather.hashCode()) {
+        if (items.hashCode() != weather.hashCode()) {
             items = weather;
             notifyDataSetChanged();
         }

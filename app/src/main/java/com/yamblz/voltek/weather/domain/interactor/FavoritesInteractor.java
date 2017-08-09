@@ -30,7 +30,7 @@ public class FavoritesInteractor {
         this.rxMapper = rxMapper;
     }
 
-    public Observable<CityUIModel> favoritesDataAdded(){
+    public Observable<CityUIModel> favoritesDataAdded() {
         return databaseRepository.getFavoritesAddedSubject()
                 .map(rxMapper.favoriteCityModelToCityUIModel());
     }
@@ -57,7 +57,7 @@ public class FavoritesInteractor {
 
     public Maybe<CityUIModel> deleteFromFavorites(CityUIModel cityUIModel, boolean isCurrentSeleted) {
 
-        if(!isCurrentSeleted)
+        if (!isCurrentSeleted)
             return databaseRepository.deleteFromFavorites(cityUIModel).toMaybe();
         else {
             return databaseRepository.deleteFromFavorites(cityUIModel)

@@ -29,7 +29,6 @@ public class CityToIDModel {
     }
 
 
-
     @Keep
     public CityToIDModel(Long Id, @NotNull String alias, @NotNull Integer cityId) {
         this.Id = Id;
@@ -38,11 +37,9 @@ public class CityToIDModel {
     }
 
 
-
     @Keep
     public CityToIDModel() {
     }
-
 
 
     public Long getId() {

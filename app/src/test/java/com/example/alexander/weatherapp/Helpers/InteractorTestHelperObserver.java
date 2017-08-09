@@ -11,15 +11,15 @@ public class InteractorTestHelperObserver<T> {
         this.listener = listener;
     }
 
-    public void onNext(Result<T> result){
+    public void onNext(Result<T> result) {
         listener.onNext(result);
     }
 
-    public void onThrowable(Throwable t){
+    public void onThrowable(Throwable t) {
         listener.onError(t);
     }
 
-    public void onComplete(){
+    public void onComplete() {
         listener.onComplete();
     }
 

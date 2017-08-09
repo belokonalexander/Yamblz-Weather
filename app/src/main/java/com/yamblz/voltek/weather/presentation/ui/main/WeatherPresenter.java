@@ -96,7 +96,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
                         getViewState().selectWeatherItem(weatherItem);
                         Bundle bundle = new Bundle();
                         bundle.putString(ForecastFragment.TITLE_ARG, selectedCity.name);
-                        getViewState().navigateTo(ForecastFragment.class, true, ForecastFragment.class.getName()+selectedCity.id, bundle);
+                        getViewState().navigateTo(ForecastFragment.class, true, ForecastFragment.class.getName() + selectedCity.id, bundle);
                     }, throwable -> LogUtils.log("error: ", throwable));
 
             compositeDisposable.addAll(setSelectedCityTask);

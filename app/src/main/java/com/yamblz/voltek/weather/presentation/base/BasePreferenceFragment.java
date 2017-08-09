@@ -56,7 +56,6 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
     }
 
 
-
     private boolean mIsStateSaved;
     private MvpDelegate<? extends BasePreferenceFragment> mMvpDelegate;
 

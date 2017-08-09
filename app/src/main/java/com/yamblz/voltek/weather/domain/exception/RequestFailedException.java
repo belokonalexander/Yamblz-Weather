@@ -1,3 +1,4 @@
 package com.yamblz.voltek.weather.domain.exception;
 
-public class RequestFailedException extends Exception {}
+public class RequestFailedException extends Exception {
+}

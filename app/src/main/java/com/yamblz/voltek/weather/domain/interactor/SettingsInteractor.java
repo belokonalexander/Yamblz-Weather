@@ -22,7 +22,7 @@ public class SettingsInteractor {
     public Completable updateJob() {
         return storageRepository.getUpdateEnabled()
                 .doOnSuccess(enabled -> {
-                    if(enabled) {
+                    if (enabled) {
                         jobWrapper.tryToStartWeatherJob().subscribe();
                     } else {
                         jobWrapper.disableWeatherJob().subscribe();

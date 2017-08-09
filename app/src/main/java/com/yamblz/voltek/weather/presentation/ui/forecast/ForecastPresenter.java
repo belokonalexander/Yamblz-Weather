@@ -59,7 +59,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                         WeatherUIModel current;
                         List<ForecastAdapterItem> forecastAdapterItems = new ArrayList<>();
 
-                        if(!weatherUIModels.isEmpty()) {
+                        if (!weatherUIModels.isEmpty()) {
                             current = weatherUIModels.get(0);
 
                             for (int i = 1; i < weatherUIModels.size(); i++) {

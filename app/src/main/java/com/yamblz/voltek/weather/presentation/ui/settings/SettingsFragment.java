@@ -66,7 +66,7 @@ public class SettingsFragment extends BasePreferenceFragment implements Settings
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         LogUtils.logJob("onSharedPreferenceChanged ---> ");
-        if(key.equals(StorageRepository.ENABLE_UPDATE_KEY) || key.equals(StorageRepository.UPDATE_INTERVAL_KEY)) {
+        if (key.equals(StorageRepository.ENABLE_UPDATE_KEY) || key.equals(StorageRepository.UPDATE_INTERVAL_KEY)) {
             presenter.updateWeatherJob();
         }
     }

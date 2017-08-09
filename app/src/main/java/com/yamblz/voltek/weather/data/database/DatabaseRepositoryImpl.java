@@ -62,7 +62,7 @@ public class DatabaseRepositoryImpl implements DatabaseRepository {
             } catch (SQLiteConstraintException e) {
                 LogUtils.logWarning("warning: ", e);
             } finally {
-                if(notify) {
+                if (notify) {
                     favoriteCityModelPublishSubject.onNext(favoriteCityModel);
                 }
             }

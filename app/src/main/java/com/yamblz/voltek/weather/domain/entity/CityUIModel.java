@@ -5,7 +5,7 @@ import android.os.Parcel;
 import com.yamblz.voltek.weather.data.api.weather.models.WeatherResponseModel;
 
 
-public class CityUIModel{
+public class CityUIModel {
 
     public final int id;
 

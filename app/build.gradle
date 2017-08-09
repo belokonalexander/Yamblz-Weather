@@ -85,7 +85,7 @@ ext {
     mockitoVersion = '2.7.22'
     espressoVersion = '2.2.2'
     daggerVersion = '2.11'
-    adapterDelegate='3.0.1'
+    adapterDelegate = '3.0.1'
     fixPreferenceVersion = '26.0.0.0'
     materialDrawerVersion = '5.9.4@aar'
 }
@@ -142,7 +142,6 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
     compile "com.squareup.okhttp3:logging-interceptor:$logginingInterceptorVersion"
 
-
     // Rx
     compile "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
     compile "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
@@ -150,7 +149,6 @@ dependencies {
     compile "com.jakewharton.rxbinding2:rxbinding-design:${rxbindingVersion}"
     compile "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:${rxbindingVersion}"
     compile "com.jakewharton.rxbinding2:rxbinding-support-v4:${rxbindingVersion}"
-
 
     // Background
     compile "com.evernote:android-job:$androidJobVersion"

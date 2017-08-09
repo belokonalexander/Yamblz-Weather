@@ -49,7 +49,7 @@ public class SetWithSelection<T> implements Iterable<T> {
 
     public void delete(T removedItem) {
         items.remove(removedItem);
-        if(removedItem.equals(selectedItem)) {
+        if (removedItem.equals(selectedItem)) {
             selectedItem = null;
         }
     }
