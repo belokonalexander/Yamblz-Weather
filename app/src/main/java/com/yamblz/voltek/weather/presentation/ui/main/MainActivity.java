@@ -34,6 +34,7 @@ import com.yamblz.voltek.weather.domain.exception.DeleteLastCityException;
 import com.yamblz.voltek.weather.presentation.base.BaseActivity;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.MainDrawerItem;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
+import com.yamblz.voltek.weather.utils.SimpleMap;
 import com.yamblz.voltek.weather.utils.StringUtils;
 import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 
@@ -168,7 +169,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
 
     @Override
-    public void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag, Bundle bundle) {
+    public void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag, SimpleMap bundle) {
 
         //if this item is already selected
         if (getSupportFragmentManager().findFragmentByTag(tag) != null) {
@@ -179,7 +180,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         Fragment fragment = Fragment.instantiate(getBaseContext(), where.getName());
 
         if (bundle != null) {
-            fragment.setArguments(bundle);
+            fragment.setArguments(SimpleMap.toBundle(bundle));
         }
 
         if (!singlePane || asRoot) {

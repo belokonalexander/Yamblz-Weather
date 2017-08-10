@@ -1,6 +1,6 @@
 package com.yamblz.voltek.weather.presentation.ui.main;
 
-import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -14,6 +14,7 @@ import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
 import com.yamblz.voltek.weather.presentation.ui.settings.SelectCityFragment;
 import com.yamblz.voltek.weather.presentation.ui.settings.SettingsFragment;
 import com.yamblz.voltek.weather.utils.LogUtils;
+import com.yamblz.voltek.weather.utils.SimpleMap;
 import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 
@@ -30,10 +31,11 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
     private final RxSchedulers rxSchedulers;
     private SetWithSelection<CityUIModel> cities;
 
-    public WeatherPresenter(FavoritesInteractor interactor, RxSchedulers rxSchedulers) {
+    public WeatherPresenter(FavoritesInteractor interactor, RxSchedulers rxSchedulers, SetWithSelection<CityUIModel> cities) {
         this.interactor = interactor;
         this.rxSchedulers = rxSchedulers;
-        this.cities = new SetWithSelection<>();
+        this.cities = cities;
+
         Disposable favoritesWatcher = interactor.favoritesDataAdded()
                 .compose(rxSchedulers.getIOToMainTransformer(false))
                 .subscribe(this::onCityAdded);
@@ -44,7 +46,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
 
 
     @Override
-    protected void onFirstViewAttach() {
+    public void onFirstViewAttach() {
         super.onFirstViewAttach();
         initDefaultsSettings();
         initFavorites();
@@ -52,10 +54,10 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
     }
 
     private void initDefaultsSettings() {
-        Disposable initTAsk = interactor.initDefaultsSettings()
+        Disposable initTask = interactor.initDefaultsSettings()
                 .compose(rxSchedulers.getIOToMainTransformerCompletable())
                 .subscribe();
-        compositeDisposable.addAll(initTAsk);
+        compositeDisposable.addAll(initTask);
     }
 
     private void initFavorites() {
@@ -83,7 +85,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
         LogUtils.log("Error: " + throwable, throwable);
     }
 
-    void weatherClick(IDrawerItem drawerItem, boolean longClick) {
+    public void weatherClick(IDrawerItem drawerItem, boolean longClick) {
 
         WeatherItem weatherItem = (WeatherItem) drawerItem;
         CityUIModel selectedCity = weatherItem.getModel();
@@ -94,7 +96,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
                     .subscribe(() -> {
                         cities.addAsSelected(selectedCity);
                         getViewState().selectWeatherItem(weatherItem);
-                        Bundle bundle = new Bundle();
+                        SimpleMap bundle = new SimpleMap();
                         bundle.putString(ForecastFragment.TITLE_ARG, selectedCity.name);
                         getViewState().navigateTo(ForecastFragment.class, true, ForecastFragment.class.getName() + selectedCity.id, bundle);
                     }, throwable -> LogUtils.log("error: ", throwable));
@@ -106,25 +108,26 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
 
     }
 
-    void navigateToSettings() {
+    public void navigateToSettings() {
         getViewState().navigateTo(SettingsFragment.class, false, SettingsFragment.class.getName(), null);
         getViewState().selectStickyItem();
     }
 
-    void navigateToAbout() {
+    public void navigateToAbout() {
         getViewState().navigateTo(AboutFragment.class, false, AboutFragment.class.getName(), null);
         getViewState().selectStickyItem();
     }
 
+    @VisibleForTesting
     private void onCityAdded(CityUIModel cityUIModel) {
         cities.addAsSelected(cityUIModel);
         inflateSideItemsMenu();
         getViewState().scrollToElement(new WeatherItem(cityUIModel));
     }
 
-    void navigateToAddCity() {
+    public void navigateToAddCity() {
 
-        Bundle bundle = new Bundle();
+        SimpleMap bundle = new SimpleMap();
 
         if (cities.getSelectedItem() != null) {
             bundle.putInt(SelectCityFragment.CURRENT_SELECTED_CITY, cities.getSelectedItem().id);
@@ -135,7 +138,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
     }
 
 
-    void deleteCityFromFavorite(CityUIModel selectedCity) {
+    public void deleteCityFromFavorite(CityUIModel selectedCity) {
         Disposable deleteTask = interactor.deleteFromFavorites(selectedCity, cities.getSelectedItem())
                 .compose(rxSchedulers.getIOToMainTransformerSingle())
                 .subscribe(cityUIModel -> {

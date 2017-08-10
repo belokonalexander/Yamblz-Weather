@@ -23,7 +23,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
         this.rxSchedulers = rxSchedulers;
     }
 
-    void updateWeatherJob() {
+    public void updateWeatherJob() {
         Disposable d = settingsInteractor.updateJob()
                 .compose(rxSchedulers.getIOToMainTransformerCompletable())
                 .subscribe(this::handleSuccessJobStart, this::handleFailureJobStart);

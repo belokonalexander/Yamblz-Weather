@@ -26,25 +26,16 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         this.rxSchedulers = rxSchedulers;
     }
 
-
     @Override
-    protected void onFirstViewAttach() {
+    public void onFirstViewAttach() {
         super.onFirstViewAttach();
         loadWeather(false);
         getViewState().initTitle();
     }
 
- /*   private void loadTitle() {
-        Disposable d = interactor.getSelectedCityName().compose(rxSchedulers.getIOToMainTransformerSingle())
-                .subscribe(s -> getViewState().setTitle(s));
-        compositeDisposable.addAll(d);
-    }*/
-
-    // View callbacks
     public void notifyRefresh() {
         loadWeather(true);
     }
-
 
     private void loadWeather(boolean refresh) {
 

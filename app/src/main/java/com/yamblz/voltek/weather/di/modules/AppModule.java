@@ -13,6 +13,7 @@ import com.yamblz.voltek.weather.data.storage.StorageRepositoryImpl;
 import com.yamblz.voltek.weather.domain.interactor.FavoritesInteractor;
 import com.yamblz.voltek.weather.domain.mappers.RxMapper;
 import com.yamblz.voltek.weather.presentation.ui.main.WeatherPresenter;
+import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulersImpl;
 
@@ -76,7 +77,7 @@ public class AppModule {
     @Provides
     @Singleton
     WeatherPresenter provideFavoritesPresenter(FavoritesInteractor favoritesInteractor, RxSchedulers rxSchedulers) {
-        return new WeatherPresenter(favoritesInteractor, rxSchedulers);
+        return new WeatherPresenter(favoritesInteractor, rxSchedulers, new SetWithSelection<>());
     }
 
     @Provides
@@ -90,6 +91,5 @@ public class AppModule {
     RxMapper provideRxMapper() {
         return new RxMapper();
     }
-
 
 }

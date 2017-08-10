@@ -1,5 +1,7 @@
 package com.yamblz.voltek.weather.presentation.ui.settings;
 
+import android.support.annotation.NonNull;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.interactor.CitySettingsInteractor;
@@ -48,7 +50,7 @@ public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView>
      *
      * @param city the chosen city
      */
-    public void selectCity(CityUIModel city) {
+    public void selectCity(@NonNull CityUIModel city) {
         interactor.saveCity(city)
                 .compose(rxSchedulers.getIOToMainTransformerSingle())
                 .subscribe(this::onSuccessCitySaved, this::onError);
@@ -63,7 +65,7 @@ public class SettingsSelectCityPresenter extends BasePresenter<SettingsCityView>
      *
      * @param cityName the city name we want to select
      */
-    public void selectCity(String cityName) {
+    public void selectCity(@NonNull String cityName) {
 
         if (cityName.trim().length() > 0) {
             interactor.saveCity(new CityUIModel(cityName))

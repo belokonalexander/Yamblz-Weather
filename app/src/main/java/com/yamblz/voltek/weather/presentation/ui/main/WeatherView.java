@@ -1,6 +1,5 @@
 package com.yamblz.voltek.weather.presentation.ui.main;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
@@ -11,6 +10,7 @@ import com.yamblz.voltek.weather.domain.exception.DeleteLastCityException;
 import com.yamblz.voltek.weather.presentation.base.BaseView;
 import com.yamblz.voltek.weather.presentation.base.strategy.AddToEndSingleStrategyByTag;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
+import com.yamblz.voltek.weather.utils.SimpleMap;
 import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 
 /**
@@ -32,7 +32,7 @@ public interface WeatherView extends BaseView {
     void deleteWeatherItem(WeatherItem item);
 
     @StateStrategyType(value = SkipStrategy.class)
-    void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag, Bundle bundle);
+    void navigateTo(Class<? extends Fragment> where, boolean asRoot, String tag, SimpleMap bundle);
 
     @StateStrategyType(value = SkipStrategy.class)
     void showDialogForCity(CityUIModel selectedCity);
