@@ -84,9 +84,7 @@ public class NetworkModule {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-        /*httpClient.connectTimeout(1000, TimeUnit.MILLISECONDS);
-        httpClient.readTimeout(1000, TimeUnit.MILLISECONDS);
-        */
+
 
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
@@ -119,6 +117,7 @@ public class NetworkModule {
             Request request = chain.request();
 
             if (!utils.isNetworkAvailable()) {
+                //todo for caching maybe
                 throw new UnknownHostException("Unable to resolve host \"" + request.url().host() + "\"");
             }
 

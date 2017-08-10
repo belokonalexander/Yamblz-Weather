@@ -33,19 +33,6 @@ android {
         }
     }
 
-    sourceSets {
-        test {
-            java {
-                exclude 'old/*'
-            }
-        }
-        androidTest {
-            java {
-                exclude '*'
-            }
-        }
-    }
-
     buildTypes {
 
 
@@ -87,11 +74,12 @@ ext {
     greendaoVersion = '3.2.2'
     stethoVersion = '1.5.0'
     mockitoVersion = '2.7.22'
-    espressoVersion = '2.2.2'
+    espressoVersion = '3.0.0'
     daggerVersion = '2.11'
     adapterDelegate = '3.0.1'
     fixPreferenceVersion = '26.0.0.0'
     materialDrawerVersion = '5.9.4@aar'
+    espressoSupportVersion = '1.0.0'
 }
 
 greendao {
@@ -113,6 +101,18 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'design'
     }
+
+    androidTestCompile ("com.android.support.test:runner:${espressoSupportVersion}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    androidTestCompile ("com.android.support.test:rules:${espressoSupportVersion}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    androidTestCompile ("com.android.support.test.espresso:espresso-intents:${espressoVersion}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 
     testCompile 'junit:junit:4.12'
 
