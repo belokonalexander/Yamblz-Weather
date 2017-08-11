@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'org.greenrobot.greendao'
-apply plugin: 'jacoco-android'
+apply from: '../jacoco.gradle'
+
 
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -90,10 +91,6 @@ ext {
     espressoSupportVersion = '1.0.0'
 }
 
-jacoco {
-    toolVersion = "0.7.9"
-    reportsDir = file("$buildDir/jacocoReports")
-}
 
 greendao {
     schemaVersion 11
