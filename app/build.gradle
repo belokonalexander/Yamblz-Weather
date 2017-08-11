@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'org.greenrobot.greendao'
-
+apply plugin: 'jacoco-android'
 
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -37,6 +37,8 @@ android {
         }
     }
 
+
+
     buildTypes {
 
 
@@ -52,6 +54,7 @@ android {
         debug {
             debuggable true
             minifyEnabled false
+            testCoverageEnabled = true
         }
     }
 
@@ -85,6 +88,11 @@ ext {
     fixPreferenceVersion = '26.0.0.0'
     materialDrawerVersion = '5.9.4@aar'
     espressoSupportVersion = '1.0.0'
+}
+
+jacoco {
+    toolVersion = "0.7.9"
+    reportsDir = file("$buildDir/jacocoReports")
 }
 
 greendao {
