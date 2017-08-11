@@ -12,6 +12,10 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         applicationId "com.yamblz.voltek.weather"
         minSdkVersion 19
@@ -37,6 +41,7 @@ android {
 
 
         release {
+            debuggable false
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
