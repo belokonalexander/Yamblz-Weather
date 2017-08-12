@@ -15,19 +15,33 @@ public class WeatherUIModel {
     private final Date date;
 
     public WeatherUIModel(WeatherResponseModel model) {
-        condition = model.weather.get(0).description;
+        if (model.weather != null && model.weather.size() > 0)
+            condition = model.weather.get(0).description;
+        else condition = "";
+
         temperature = (int) model.main.temp;
         humidity = (int) model.main.humidity;
-        conditionId = model.weather.get(0).id;
+
+        if (model.weather != null && model.weather.size() > 0)
+            conditionId = model.weather.get(0).id;
+        else conditionId = 200;
+
         cityName = model.name;
         date = new Date();
     }
 
     public WeatherUIModel(ForecastWeather model, String city) {
-        condition = model.weather.get(0).description;
+        if (model.weather != null && model.weather.size() > 0) {
+            condition = model.weather.get(0).description;
+        } else condition = "";
+
         temperature = (int) model.main.temp;
         humidity = (int) model.main.humidity;
-        conditionId = model.weather.get(0).id;
+
+        if (model.weather != null) {
+            conditionId = model.weather.get(0).id;
+        } else conditionId = 200;
+
         date = model.date;
         cityName = city;
 

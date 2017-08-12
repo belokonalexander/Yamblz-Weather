@@ -32,10 +32,8 @@ public class CommonToolbarLoader implements ToolbarLoader {
 
     @Override
     public void initToolbar(String title) {
-        boolean globalToolbar = false;
-        //has no own toolbar - get activity toolbar
+
         if (toolbar == null) {
-            globalToolbar = true;
             toolbar = navigationManager.getCommonToolbar();
         }
 

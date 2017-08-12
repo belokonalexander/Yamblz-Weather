@@ -8,7 +8,6 @@ import com.yamblz.voltek.weather.data.database.DatabaseRepository;
 import com.yamblz.voltek.weather.data.platform.jobs.JobWrapper;
 import com.yamblz.voltek.weather.data.platform.jobs.WeatherJobCreator;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
-import com.yamblz.voltek.weather.domain.mappers.RxMapper;
 
 import dagger.Module;
 import dagger.Provides;

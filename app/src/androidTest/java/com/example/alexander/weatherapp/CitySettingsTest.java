@@ -35,7 +35,7 @@ import static org.hamcrest.core.IsNot.not;
 
 //тесты некорректно работают при совместном запуске всех тестов в классе, подробнее:
 //https://issuetracker.google.com/issues/37082857
-//активити следующего теста запускается с уже неактуальными данными
+//активити следующего теста запускается на непустых данных предыдущего теста
 //по отдельности каждый тест работает корректно
 @RunWith(AndroidJUnit4.class)
 public class CitySettingsTest {
@@ -44,15 +44,14 @@ public class CitySettingsTest {
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(
             MainActivity.class);
 
-    private DaoSession session;
-
 
     @After
     public void afterEachTest() throws InterruptedException {
         activityTestRule.getActivity().getBaseContext().getSharedPreferences(StorageRepository.CATEGORY_SETTINGS, 0).edit().clear().apply();
-        DaoMaster.OpenHelper helper = new AppDatabaseHelper(activityTestRule.getActivity().getBaseContext(), "weather.db", null);
+        DaoMaster.OpenHelper helper = new AppDatabaseHelper(activityTestRule.getActivity().getBaseContext(),
+                activityTestRule.getActivity().getResources().getString(R.string.database_name), null);
         Database db = helper.getWritableDb();
-        session = new DaoMaster(db).newSession();
+        DaoSession session = new DaoMaster(db).newSession();
         session.getFavoriteCityModelDao().deleteAll();
     }
 

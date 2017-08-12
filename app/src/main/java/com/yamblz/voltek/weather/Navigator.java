@@ -10,8 +10,6 @@ import android.support.v7.widget.Toolbar;
 
 public interface Navigator {
 
-    void showNavigationDrawer();
-
     void setNavigationDrawerState(boolean enabled);
 
     void openNavigationDrawer();

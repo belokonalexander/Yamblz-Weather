@@ -7,7 +7,7 @@ import java.util.List;
 public class WeatherResponseModel {
 
     @SerializedName("weather")
-    public final List<Weather> weather = null;
+    public List<Weather> weather = null;
 
     @SerializedName("main")
     public final Main main;

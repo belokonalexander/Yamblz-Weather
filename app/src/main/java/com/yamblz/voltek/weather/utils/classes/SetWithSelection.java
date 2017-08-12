@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class SetWithSelection<T> implements Iterable<T> {
 
-    private Set<T> items = new HashSet<T>();
+    private Set<T> items = new HashSet<>();
 
     @Nullable
     private T selectedItem;

@@ -84,8 +84,6 @@ public class NetworkModule {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-
-
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             HttpUrl originalHttpUrl = original.url();

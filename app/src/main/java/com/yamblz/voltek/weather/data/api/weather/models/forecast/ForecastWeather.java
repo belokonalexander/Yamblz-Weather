@@ -17,7 +17,7 @@ public class ForecastWeather {
     public final Main main;
 
     @SerializedName("weather")
-    public final List<Weather> weather = null;
+    public List<Weather> weather = null;
 
     @SerializedName("dt_txt")
     public final Date date;

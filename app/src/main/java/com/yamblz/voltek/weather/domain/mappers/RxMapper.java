@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
 
 /**
@@ -42,7 +40,7 @@ public class RxMapper {
 
     private <T, S> Function<List<T>, Set<S>> mapSet(SingleItemMapper<T, S> singleItemMapper) {
         return list -> {
-            Set<S> dest = new HashSet<S>();
+            Set<S> dest = new HashSet<>();
             for (T sourceItem : list) {
                 dest.add(singleItemMapper.getItem(sourceItem));
             }

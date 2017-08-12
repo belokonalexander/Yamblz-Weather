@@ -220,11 +220,6 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
 
     @Override
-    public void showNavigationDrawer() {
-        navigation.openDrawer();
-    }
-
-    @Override
     public void setNavigationDrawerState(boolean enabled) {
 
         if (singlePane) {

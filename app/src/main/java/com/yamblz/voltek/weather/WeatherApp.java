@@ -36,7 +36,7 @@ public class WeatherApp extends Application {
         }
         LeakCanary.install(this);
 
-        DaoMaster.OpenHelper helper = new AppDatabaseHelper(this, "weather.db", null);
+        DaoMaster.OpenHelper helper = new AppDatabaseHelper(this, getString(R.string.database_name), null);
         Database db = helper.getWritableDb();
         DaoSession session = new DaoMaster(db).newSession();
 
