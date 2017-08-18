@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_padding"
+        android:background="@drawable/edit_field_background"
+        android:layout_marginStart="@dimen/medium_padding"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingBottom="@dimen/small_padding"
+        android:paddingStart="@dimen/balance_small_large_padding"
+        android:paddingEnd="@dimen/balance_small_large_padding"
+        android:layout_marginEnd="@dimen/medium_padding">
+
+        <ImageView
+            android:id="@+id/clear_button"
+            android:background="?attr/selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_clear_black_24dp"
+            android:contentDescription="@null" />
+
+        <com.yamblz.voltek.weather.presentation.ui.views.CustomEditText
+            android:id="@+id/filter_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/clear_button"
+            android:background="@drawable/edit_text_fake_background"
+            android:hint="@string/city_name_hint"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:imeOptions="flagNoExtractUi|actionDone"
+            android:inputType="textNoSuggestions" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cities_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

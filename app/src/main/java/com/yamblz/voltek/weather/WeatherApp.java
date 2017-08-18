@@ -1,21 +1,33 @@
 package com.yamblz.voltek.weather;
 
 import android.app.Application;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.evernote.android.job.JobManager;
-import com.orhanobut.hawk.Hawk;
+import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
-import com.yamblz.voltek.weather.data.platform.UpdateCurrentWeatherJob;
-import com.yamblz.voltek.weather.data.platform.WeatherJobCreator;
-import com.yamblz.voltek.weather.presentation.ui.settings.SettingsFragment;
+import com.yamblz.voltek.weather.data.database.AppDatabaseHelper;
+import com.yamblz.voltek.weather.data.database.models.DaoMaster;
+import com.yamblz.voltek.weather.data.database.models.DaoSession;
+import com.yamblz.voltek.weather.data.platform.jobs.WeatherJobCreator;
+import com.yamblz.voltek.weather.di.components.AppComponent;
+import com.yamblz.voltek.weather.di.components.DaggerAppComponent;
+import com.yamblz.voltek.weather.di.modules.AppModule;
 
-import timber.log.Timber;
+import org.greenrobot.greendao.database.Database;
+
+import javax.inject.Inject;
 
 public class WeatherApp extends Application {
 
-    @Override public void onCreate() {
+    private AppComponent appComponent;
+
+    @Inject
+    WeatherJobCreator weatherJobCreator;
+
+    @Override
+    public void onCreate() {
         super.onCreate();
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -24,14 +36,26 @@ public class WeatherApp extends Application {
         }
         LeakCanary.install(this);
 
-        Hawk.init(this).build();
-        Timber.plant(new Timber.DebugTree());
+        DaoMaster.OpenHelper helper = new AppDatabaseHelper(this, getString(R.string.database_name), null);
+        Database db = helper.getWritableDb();
+        DaoSession session = new DaoMaster(db).newSession();
 
-        Injector.init(this);
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this, session)).build();
+        appComponent.inject(this);
 
-        JobManager.create(this).addJobCreator(new WeatherJobCreator());
+        Stetho.initializeWithDefaults(this);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        UpdateCurrentWeatherJob.schedulePeriodic(prefs.getInt(SettingsFragment.INTERVAL_KEY, 1));
+        JobManager.create(this).addJobCreator(weatherJobCreator);
+
     }
+
+    @NonNull
+    public static WeatherApp get(@NonNull Context context) {
+        return (WeatherApp) context.getApplicationContext();
+    }
+
+    public AppComponent getAppComponent() {
+        return appComponent;
+    }
+
 }

@@ -1,0 +1,29 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pr_cat_common_prefs">
+
+        <ListPreference
+            android:entries="@array/units_types"
+            android:entryValues="@array/units_types_values"
+            android:key="UNITS_KEY"
+            android:persistent="true"
+            android:summary="%s"
+            android:title="@string/pr_units" />
+
+        <SwitchPreference
+            android:key="ENABLE_UPDATE_KEY"
+            android:title="@string/pr_auto_refresh" />
+
+        <ListPreference
+            android:dependency="ENABLE_UPDATE_KEY"
+            android:entries="@array/update_intervals"
+            android:entryValues="@array/update_intervals_values"
+            android:key="UPDATE_INTERVAL_KEY"
+            android:persistent="true"
+            android:summary="%s"
+            android:title="@string/pr_refresh_interval" />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

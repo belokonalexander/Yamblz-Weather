@@ -1,22 +1,26 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'org.greenrobot.greendao'
+apply from: '../jacoco.gradle'
+
+
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
-def secretPropertiesFile = rootProject.file("secret.properties")
-def secretProperties = new Properties()
-secretProperties.load(new FileInputStream(secretPropertiesFile))
-
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+
+    lintOptions {
+        abortOnError false
+    }
 
     defaultConfig {
         applicationId "com.yamblz.voltek.weather"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -34,13 +38,13 @@ android {
         }
     }
 
+
+
     buildTypes {
 
-        buildTypes.each {
-            it.buildConfigField 'String', 'ApiKey', secretProperties['ApiKey']
-        }
 
         release {
+            debuggable false
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -51,6 +55,7 @@ android {
         debug {
             debuggable true
             minifyEnabled false
+            testCoverageEnabled = true
         }
     }
 
@@ -58,33 +63,76 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 ext {
-    supportLibVersion = '25.3.1'
-
+    supportLibVersion = '26.0.0'
+    logginingInterceptorVersion = '3.7.0'
     butterknifeVersion = '8.7.0'
     retrofitVersion = '2.3.0'
     rxJavaVersion = '2.1.1'
     rxAndroidVersion = '2.0.1'
     rxbindingVersion = '2.0.0'
-    hawkVersion = '2.0.1'
-    timberVersion = '4.5.1'
     androidJobVersion = '1.1.11'
-    moxyVersion = '1.5.1'
-
+    moxyVersion = '1.5.3'
     leakCanaryVersion = '1.5.1'
+    greendaoVersion = '3.2.2'
+    stethoVersion = '1.5.0'
+    mockitoVersion = '2.7.22'
+    espressoVersion = '3.0.0'
+    daggerVersion = '2.11'
+    adapterDelegate = '3.0.1'
+    fixPreferenceVersion = '26.0.0.0'
+    materialDrawerVersion = '5.9.4@aar'
+    espressoSupportVersion = '1.0.0'
+}
+
+
+greendao {
+    schemaVersion 11
 }
 
 dependencies {
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile("com.android.support.test.espresso:espresso-core:${espressoVersion}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    androidTestCompile("com.android.support.test.espresso:espresso-contrib:${espressoVersion}") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design'
+    }
+
+    androidTestCompile ("com.android.support.test:runner:${espressoSupportVersion}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    androidTestCompile ("com.android.support.test:rules:${espressoSupportVersion}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    androidTestCompile ("com.android.support.test.espresso:espresso-intents:${espressoVersion}", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
     testCompile 'junit:junit:4.12'
+
+    //navigation drawer
+    compile("com.mikepenz:materialdrawer:$materialDrawerVersion") {
+        transitive = true
+    }
+
+    //adapter delegate
+    compile "com.hannesdorfmann:adapterdelegates3:$adapterDelegate"
 
     // Leak Canary
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
@@ -95,6 +143,8 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-v4:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
+    compile "com.android.support:cardview-v7:$supportLibVersion"
+    compile "com.takisoft.fix:preference-v7:$fixPreferenceVersion"
 
     // Butterknife
     compile "com.jakewharton:butterknife:$butterknifeVersion"
@@ -102,8 +152,9 @@ dependencies {
 
     // Networking
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    compile "com.squareup.retrofit2:converter-moshi:${retrofitVersion}"
-    compile "com.squareup.okhttp3:logging-interceptor:3.7.0"
+    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+    compile "com.squareup.okhttp3:logging-interceptor:$logginingInterceptorVersion"
 
     // Rx
     compile "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
@@ -113,12 +164,6 @@ dependencies {
     compile "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:${rxbindingVersion}"
     compile "com.jakewharton.rxbinding2:rxbinding-support-v4:${rxbindingVersion}"
 
-    // Storage
-    compile "com.orhanobut:hawk:${hawkVersion}"
-
-    // Logging
-    compile "com.jakewharton.timber:timber:${timberVersion}"
-
     // Background
     compile "com.evernote:android-job:$androidJobVersion"
 
@@ -126,4 +171,18 @@ dependencies {
     compile "com.arello-mobile:moxy:${moxyVersion}"
     compile "com.arello-mobile:moxy-app-compat:${moxyVersion}"
     annotationProcessor "com.arello-mobile:moxy-compiler:${moxyVersion}"
+
+    //greendao
+    compile "org.greenrobot:greendao:${greendaoVersion}"
+
+    //stetho
+    compile "com.facebook.stetho:stetho:${stethoVersion}"
+
+    //mockito for unit tests
+    testCompile "org.mockito:mockito-core:${mockitoVersion}"
+
+    //dagger 2
+    compile "com.google.dagger:dagger:${daggerVersion}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+
 }
