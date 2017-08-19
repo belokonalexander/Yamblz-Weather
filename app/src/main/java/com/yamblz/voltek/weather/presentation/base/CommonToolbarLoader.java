@@ -33,12 +33,7 @@ public class CommonToolbarLoader implements ToolbarLoader {
     @Override
     public void initToolbar(String title) {
 
-        if (toolbar == null) {
-            toolbar = navigationManager.getCommonToolbar();
-        }
-
         toolbar.setTitle(title);
-
 
         int backstackCount = fragmentManager.getBackStackEntryCount();
         boolean isRoot = backstackCount == 0;

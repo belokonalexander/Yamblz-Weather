@@ -20,7 +20,7 @@ import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.presentation.base.BaseFragment;
 import com.yamblz.voltek.weather.presentation.ui.adapter.adapters.ForecastAdapter;
 import com.yamblz.voltek.weather.presentation.ui.adapter.models.ForecastAdapterItem;
-import com.yamblz.voltek.weather.utils.StringUtils;
+import com.yamblz.voltek.weather.utils.ResourceUtils;
 import com.yamblz.voltek.weather.utils.WeatherUtils;
 
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class ForecastFragment extends BaseFragment implements ForecastView {
         if (error == null) {
             emptyStateTv.setVisibility(INVISIBLE);
         } else {
-            String message = getString(StringUtils.fromError(error));
+            String message = getString(ResourceUtils.fromError(error));
 
             if (contentContainer.getVisibility() == VISIBLE) {
                 toast(message);

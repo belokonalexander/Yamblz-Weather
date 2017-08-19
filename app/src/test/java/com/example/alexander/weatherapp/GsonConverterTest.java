@@ -15,11 +15,11 @@ import static junit.framework.Assert.assertEquals;
 
 public class GsonConverterTest {
 
-    GsonConverter gsonConverter;
+    private GsonConverter gsonConverter;
 
     @Before
     public void beforeEachTest() {
-        gsonConverter = new GsonConverter(new GsonBuilder());
+        gsonConverter = new GsonConverter(new GsonBuilder().create());
     }
 
     @Test
@@ -35,6 +35,35 @@ public class GsonConverterTest {
 
         assertEquals(cityUIModel, out);
 
+    }
+
+    @Test
+    public void reusableJsonTwoSide() {
+        int id = 15;
+        String name = "Name";
+
+        CityUIModel cityUIModel = new CityUIModel(id, name);
+
+        String s = gsonConverter.toJsonString(cityUIModel);
+
+        CityUIModel out = gsonConverter.toJsonObject(CityUIModel.class, s);
+
+        CityUIModel cityUIModelTwo = new CityUIModel(id + 5, name + "5");
+        String sTwo = gsonConverter.toJsonString(cityUIModelTwo);
+        CityUIModel outTwo = gsonConverter.toJsonObject(CityUIModel.class, sTwo);
+
+        assertEquals(outTwo,cityUIModelTwo);
+        assertEquals(cityUIModel, out);
+
+    }
+
+    @Test
+    public void timeOfConverter() {
+        CityUIModel cityUIModel = new CityUIModel(15, "Name");
+
+        long time = System.currentTimeMillis();
+        String s = gsonConverter.toJsonString(cityUIModel);
+        System.out.println("time: " + (System.currentTimeMillis() - time) + " ms \nstring: " + s);
     }
 
 }

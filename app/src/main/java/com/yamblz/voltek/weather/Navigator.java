@@ -18,7 +18,5 @@ public interface Navigator {
 
     void openAsRoot(Fragment fragment, String tag);
 
-    Toolbar getCommonToolbar();
-
     void initToolbarNavigationView(Toolbar toolbar, Drawable toolbarNavigationIcon);
 }

@@ -5,7 +5,9 @@ import com.yamblz.voltek.weather.di.modules.AppModule;
 import com.yamblz.voltek.weather.di.modules.ForecastModule;
 import com.yamblz.voltek.weather.di.modules.JobsModule;
 import com.yamblz.voltek.weather.di.modules.NetworkModule;
+import com.yamblz.voltek.weather.di.modules.RepositoriesModule;
 import com.yamblz.voltek.weather.di.modules.SettingsModule;
+import com.yamblz.voltek.weather.di.modules.WeatherModule;
 import com.yamblz.voltek.weather.presentation.ui.main.WeatherPresenter;
 
 import javax.inject.Singleton;
@@ -15,7 +17,7 @@ import dagger.Component;
 /**
  * Created on 31.07.2017.
  */
-@Component(modules = {AppModule.class, NetworkModule.class, JobsModule.class})
+@Component(modules = {AppModule.class, NetworkModule.class, JobsModule.class, RepositoriesModule.class, WeatherModule.class})
 @Singleton
 public interface AppComponent {
 

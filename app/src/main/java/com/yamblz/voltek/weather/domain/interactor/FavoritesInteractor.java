@@ -10,9 +10,6 @@ import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 
 /**
  * Created on 03.08.2017.
@@ -50,6 +47,7 @@ public class FavoritesInteractor {
     }
 
     public Completable initDefaultsSettings() {
+
         return storageRepository.getApplicationStartFirst()
                 .filter(aBoolean -> aBoolean)
                 .flatMapCompletable(aBoolean -> storageRepository.fillByDefaultData());
@@ -62,13 +60,10 @@ public class FavoritesInteractor {
         else {
             return databaseRepository.getTopFavorite(cityUIModel.id)
                     .map(rxMapper.favoriteCityModelToCityUIModel())
-                    .flatMap(new Function<CityUIModel, SingleSource<CityUIModel>>() {
-                        @Override
-                        public SingleSource<CityUIModel> apply(@NonNull CityUIModel newSelectedItem) throws Exception {
-                            LogUtils.log("Returns: " + newSelectedItem);
-                            databaseRepository.deleteFromFavorites(cityUIModel).subscribe();
-                            return storageRepository.putSelectedCity(newSelectedItem).toSingleDefault(newSelectedItem);
-                        }
+                    .flatMap(newSelectedItem -> {
+                        LogUtils.log("Returns: " + newSelectedItem);
+                        databaseRepository.deleteFromFavorites(cityUIModel).subscribe();
+                        return storageRepository.putSelectedCity(newSelectedItem).toSingleDefault(newSelectedItem);
                     });
         }
     }
