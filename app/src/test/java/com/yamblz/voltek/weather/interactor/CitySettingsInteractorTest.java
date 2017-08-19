@@ -1,9 +1,8 @@
-package com.example.alexander.weatherapp.interactor;
+package com.yamblz.voltek.weather.interactor;
 
-import com.example.alexander.weatherapp.helper.ApiDataHelper;
+import com.yamblz.voltek.weather.helper.ApiDataHelper;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
 import com.yamblz.voltek.weather.data.api.weather.models.WeatherResponseModel;
-import com.yamblz.voltek.weather.data.api.weather.models.forecast.City;
 import com.yamblz.voltek.weather.data.database.DatabaseRepository;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
@@ -16,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -24,9 +22,6 @@ import io.reactivex.observers.TestObserver;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

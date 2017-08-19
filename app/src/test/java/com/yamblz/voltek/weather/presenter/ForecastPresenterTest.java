@@ -1,6 +1,6 @@
-package com.example.alexander.weatherapp.presenter;
+package com.yamblz.voltek.weather.presenter;
 
-import com.example.alexander.weatherapp.helper.ApiDataHelper;
+import com.yamblz.voltek.weather.helper.ApiDataHelper;
 import com.yamblz.voltek.weather.data.api.weather.models.WeatherResponseModel;
 import com.yamblz.voltek.weather.domain.entity.WeatherUIModel;
 import com.yamblz.voltek.weather.domain.exception.NoConnectionException;

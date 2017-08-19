@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp.presenter;
+package com.yamblz.voltek.weather.presenter;
 
 import com.yamblz.voltek.weather.domain.interactor.SettingsInteractor;
 import com.yamblz.voltek.weather.presentation.ui.settings.SettingsPresenter;

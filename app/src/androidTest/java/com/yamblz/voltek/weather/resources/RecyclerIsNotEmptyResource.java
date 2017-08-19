@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp.resources;
+package com.yamblz.voltek.weather.resources;
 
 import android.support.v7.widget.RecyclerView;
 

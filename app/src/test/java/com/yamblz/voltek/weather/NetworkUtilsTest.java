@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp;
+package com.yamblz.voltek.weather;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

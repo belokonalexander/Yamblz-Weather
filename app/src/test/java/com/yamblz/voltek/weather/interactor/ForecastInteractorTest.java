@@ -1,13 +1,11 @@
-package com.example.alexander.weatherapp.interactor;
+package com.yamblz.voltek.weather.interactor;
 
-import com.example.alexander.weatherapp.helper.ApiDataHelper;
+import com.yamblz.voltek.weather.helper.ApiDataHelper;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
-import com.yamblz.voltek.weather.data.api.weather.models.Weather;
 import com.yamblz.voltek.weather.data.api.weather.models.forecast.ForecastResponseModel;
 import com.yamblz.voltek.weather.data.database.DatabaseRepository;
 import com.yamblz.voltek.weather.data.database.models.CityToIDModel;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
-import com.yamblz.voltek.weather.data.storage.StorageRepositoryImpl;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
 import com.yamblz.voltek.weather.domain.exception.NoConnectionException;
 import com.yamblz.voltek.weather.domain.interactor.ForecastInteractor;

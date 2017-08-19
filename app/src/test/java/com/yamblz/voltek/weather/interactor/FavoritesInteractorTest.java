@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp.interactor;
+package com.yamblz.voltek.weather.interactor;
 
 import com.yamblz.voltek.weather.data.database.DatabaseRepository;
 import com.yamblz.voltek.weather.data.database.models.FavoriteCityModel;

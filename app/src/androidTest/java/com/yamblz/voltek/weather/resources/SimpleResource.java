@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp.resources;
+package com.yamblz.voltek.weather.resources;
 
 import android.support.test.espresso.IdlingResource;
 import android.view.View;

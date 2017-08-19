@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp.helper;
+package com.yamblz.voltek.weather.helper;
 
 
 import com.google.gson.Gson;
