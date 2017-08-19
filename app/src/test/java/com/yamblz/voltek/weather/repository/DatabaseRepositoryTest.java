@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp.repository;
+package com.yamblz.voltek.weather.repository;
 
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteTableLockedException;

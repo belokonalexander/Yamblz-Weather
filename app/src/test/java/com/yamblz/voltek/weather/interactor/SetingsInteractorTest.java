@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp.interactor;
+package com.yamblz.voltek.weather.interactor;
 
 import com.yamblz.voltek.weather.data.platform.jobs.JobWrapper;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
  */
 
 public class SetingsInteractorTest {
-
 
     SettingsInteractor settingsInteractor;
     JobWrapper jobWrapper;

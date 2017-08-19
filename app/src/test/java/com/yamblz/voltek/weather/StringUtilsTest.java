@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp;
+package com.yamblz.voltek.weather;
 
 
 import com.yamblz.voltek.weather.R;

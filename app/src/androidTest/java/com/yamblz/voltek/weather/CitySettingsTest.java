@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp;
+package com.yamblz.voltek.weather;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,13 +12,12 @@ import android.support.v7.view.menu.MenuBuilder;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.example.alexander.weatherapp.resources.RecyclerIsNotEmptyResource;
-import com.yamblz.voltek.weather.R;
 import com.yamblz.voltek.weather.data.database.AppDatabaseHelper;
 import com.yamblz.voltek.weather.data.database.models.DaoMaster;
 import com.yamblz.voltek.weather.data.database.models.DaoSession;
 import com.yamblz.voltek.weather.data.storage.StorageRepository;
 import com.yamblz.voltek.weather.presentation.ui.main.MainActivity;
+import com.yamblz.voltek.weather.resources.RecyclerIsNotEmptyResource;
 
 import org.greenrobot.greendao.database.Database;
 import org.junit.After;

@@ -1,6 +1,6 @@
-package com.example.alexander.weatherapp;
+package com.yamblz.voltek.weather;
 
-import com.example.alexander.weatherapp.helper.ApiDataHelper;
+import com.yamblz.voltek.weather.helper.ApiDataHelper;
 import com.yamblz.voltek.weather.data.api.weather.models.forecast.ForecastResponseModel;
 import com.yamblz.voltek.weather.data.database.converters.ForecastConverter;
 

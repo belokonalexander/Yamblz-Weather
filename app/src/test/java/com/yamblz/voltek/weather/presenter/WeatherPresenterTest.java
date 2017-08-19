@@ -1,4 +1,4 @@
-package com.example.alexander.weatherapp.presenter;
+package com.yamblz.voltek.weather.presenter;
 
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;

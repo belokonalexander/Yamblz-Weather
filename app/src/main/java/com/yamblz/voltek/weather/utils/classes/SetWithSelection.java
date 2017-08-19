@@ -1,5 +1,6 @@
 package com.yamblz.voltek.weather.utils.classes;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.HashSet;
@@ -49,6 +50,7 @@ public class SetWithSelection<T> implements Iterable<T> {
         this.selectedItem = selectedItem;
     }
 
+    @NonNull
     @Override
     public Iterator<T> iterator() {
         return items.iterator();
