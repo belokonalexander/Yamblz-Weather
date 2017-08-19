@@ -3,17 +3,11 @@ package com.yamblz.voltek.weather.di.modules;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.yamblz.voltek.weather.data.database.DatabaseRepository;
-import com.yamblz.voltek.weather.data.database.DatabaseRepositoryImpl;
 import com.yamblz.voltek.weather.data.database.models.DaoSession;
 import com.yamblz.voltek.weather.data.storage.GsonConverter;
-import com.yamblz.voltek.weather.data.storage.StorageRepository;
-import com.yamblz.voltek.weather.data.storage.StorageRepositoryImpl;
-import com.yamblz.voltek.weather.domain.interactor.FavoritesInteractor;
 import com.yamblz.voltek.weather.domain.mappers.RxMapper;
-import com.yamblz.voltek.weather.presentation.ui.main.WeatherPresenter;
-import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulers;
 import com.yamblz.voltek.weather.utils.rx.RxSchedulersImpl;
 
@@ -46,21 +40,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    StorageRepository provideStorageRepository(Context context, GsonConverter gsonConverter) {
-        return new StorageRepositoryImpl(context, gsonConverter);
-    }
-
-    @Provides
-    @Singleton
     DaoSession provideDaoSession() {
         return daoSession;
-    }
-
-
-    @Provides
-    @Singleton
-    DatabaseRepository provideDatabaseRepository(DaoSession daoSession) {
-        return new DatabaseRepositoryImpl(daoSession);
     }
 
     @Provides
@@ -70,20 +51,15 @@ public class AppModule {
     }
 
     @Provides
-    GsonConverter gsonConverter() {
-        return new GsonConverter(new GsonBuilder());
+    @Singleton
+    GsonConverter provideGsonConverter(Gson gson) {
+        return new GsonConverter(gson);
     }
 
     @Provides
     @Singleton
-    WeatherPresenter provideFavoritesPresenter(FavoritesInteractor favoritesInteractor, RxSchedulers rxSchedulers) {
-        return new WeatherPresenter(favoritesInteractor, rxSchedulers, new SetWithSelection<>());
-    }
-
-    @Provides
-    @Singleton
-    FavoritesInteractor provideFavoritesInteractor(DatabaseRepository databaseRepository, StorageRepository storageRepository, RxMapper rxMapper) {
-        return new FavoritesInteractor(databaseRepository, storageRepository, rxMapper);
+    Gson provideGson() {
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     }
 
     @Provides

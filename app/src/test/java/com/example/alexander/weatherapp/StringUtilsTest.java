@@ -3,7 +3,7 @@ package com.example.alexander.weatherapp;
 
 import com.yamblz.voltek.weather.R;
 import com.yamblz.voltek.weather.domain.exception.RequestFailedException;
-import com.yamblz.voltek.weather.utils.StringUtils;
+import com.yamblz.voltek.weather.utils.ResourceUtils;
 
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class StringUtilsTest {
     @Test
     public void unknownThrowablePresentation() {
         Throwable throwable = new NullPointerException();
-        assertEquals(StringUtils.fromError(throwable), R.string.er_unknown);
+        assertEquals(ResourceUtils.fromError(throwable), R.string.er_unknown);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class StringUtilsTest {
         int[] expected = {R.string.er_request_failed, R.string.er_no_connection};
         int[] actual = new int[throwable.length];
         for (int i = 0; i < throwable.length; i++) {
-            actual[i] = StringUtils.fromError(throwable[i]);
+            actual[i] = ResourceUtils.fromError(throwable[i]);
         }
 
         Arrays.sort(expected);

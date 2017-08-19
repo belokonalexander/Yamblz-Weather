@@ -30,6 +30,10 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
 
     private Navigator navigationManager;
 
+    private boolean isStateSaved;
+    private MvpDelegate<? extends BasePreferenceFragment> mvpDelegate;
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -55,10 +59,6 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
         navigationManager.openNavigationDrawer();
     }
 
-
-    private boolean mIsStateSaved;
-    private MvpDelegate<? extends BasePreferenceFragment> mMvpDelegate;
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -69,7 +69,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
     public void onStart() {
         super.onStart();
 
-        mIsStateSaved = false;
+        isStateSaved = false;
 
         getMvpDelegate().onAttach();
     }
@@ -77,7 +77,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
     public void onResume() {
         super.onResume();
 
-        mIsStateSaved = false;
+        isStateSaved = false;
 
         getMvpDelegate().onAttach();
     }
@@ -85,7 +85,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        mIsStateSaved = true;
+        isStateSaved = true;
 
         getMvpDelegate().onSaveInstanceState(outState);
         getMvpDelegate().onDetach();
@@ -118,8 +118,8 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
 
         // When we rotate device isRemoving() return true for fragment placed in backstack
         // http://stackoverflow.com/questions/34649126/fragment-back-stack-and-isremoving
-        if (mIsStateSaved) {
-            mIsStateSaved = false;
+        if (isStateSaved) {
+            isStateSaved = false;
             return;
         }
 
@@ -140,11 +140,11 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat im
      * @return The {@link MvpDelegate} being used by this Fragment.
      */
     private MvpDelegate getMvpDelegate() {
-        if (mMvpDelegate == null) {
-            mMvpDelegate = new MvpDelegate<>(this);
+        if (mvpDelegate == null) {
+            mvpDelegate = new MvpDelegate<>(this);
         }
 
-        return mMvpDelegate;
+        return mvpDelegate;
     }
 
     protected void toast(String message) {

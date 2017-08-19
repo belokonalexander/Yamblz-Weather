@@ -1,7 +1,5 @@
 package com.yamblz.voltek.weather.presentation.ui.main;
 
-import android.support.annotation.VisibleForTesting;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.yamblz.voltek.weather.domain.entity.CityUIModel;
@@ -117,8 +115,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
         getViewState().navigateTo(AboutFragment.class, false, AboutFragment.class.getName(), null);
         getViewState().selectStickyItem();
     }
-
-    @VisibleForTesting
+    
     private void onCityAdded(CityUIModel cityUIModel) {
         cities.addAsSelected(cityUIModel);
         inflateSideItemsMenu();

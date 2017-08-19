@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.yamblz.voltek.weather.R;
 import com.yamblz.voltek.weather.data.api.NetworkUtils;
 import com.yamblz.voltek.weather.data.api.weather.WeatherAPI;
@@ -51,12 +50,6 @@ public class NetworkModule {
                 new Pair<>(langAlias, selectedLang));
 
         return getService(WeatherAPI.class, utils, context.getString(R.string.base_weather_url), gson, params);
-    }
-
-    @Provides
-    @Singleton
-    Gson provideGsonConverter() {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     }
 
     @Provides

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import com.yamblz.voltek.weather.data.database.models.DaoMaster;
+import com.yamblz.voltek.weather.utils.LogUtils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,15 +19,15 @@ public class AppDatabaseHelper extends DaoMaster.OpenHelper {
 
     private SQLiteDatabase sqliteDatabase;
 
-    private static String DB_PATH;
+    private String dbPath;
 
-    private static String DB_NAME;
+    private String dbName;
 
     public AppDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory);
         this.context = context;
-        DB_NAME = name;
-        DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
+        dbName = name;
+        dbPath = context.getApplicationInfo().dataDir + "/databases/";
         try {
             createDataBase();
         } catch (Exception ioe) {
@@ -44,7 +45,7 @@ public class AppDatabaseHelper extends DaoMaster.OpenHelper {
      * Open Database for Use
      */
     public void openDatabase() {
-        String databasePath = DB_PATH + DB_NAME;
+        String databasePath = dbPath + dbName;
         sqliteDatabase = SQLiteDatabase.openDatabase(databasePath, null,
                 (SQLiteDatabase.OPEN_READWRITE));
     }
@@ -73,14 +74,10 @@ public class AppDatabaseHelper extends DaoMaster.OpenHelper {
     private void createDataBase() {
         SQLiteDatabase sqliteDatabase;
 
-        if (databaseExists()) {
-            //todo something
-
-        } else {
+        if (!databaseExists()) {
             /* Database does not exists create blank database */
             sqliteDatabase = this.getReadableDatabase();
             sqliteDatabase.close();
-
             copyDataBase();
         }
 
@@ -93,7 +90,7 @@ public class AppDatabaseHelper extends DaoMaster.OpenHelper {
     private boolean databaseExists() {
         SQLiteDatabase sqliteDatabase = null;
         try {
-            String databasePath = DB_PATH + DB_NAME;
+            String databasePath = dbPath + dbName;
             sqliteDatabase = SQLiteDatabase.openDatabase(databasePath, null,
                     SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException e) {
@@ -113,11 +110,11 @@ public class AppDatabaseHelper extends DaoMaster.OpenHelper {
 
         int length;
         byte[] buffer = new byte[1024];
-        String databasePath = DB_PATH + DB_NAME;
+        String databasePath = dbPath + dbName;
 
         try {
 
-            InputStream databaseInputFile = this.context.getAssets().open(DB_NAME);
+            InputStream databaseInputFile = this.context.getAssets().open(dbName);
             OutputStream databaseOutputFile = new FileOutputStream(databasePath);
 
             while ((length = databaseInputFile.read(buffer)) > 0) {
@@ -128,7 +125,7 @@ public class AppDatabaseHelper extends DaoMaster.OpenHelper {
             databaseOutputFile.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtils.log("error", e);
         }
 
     }

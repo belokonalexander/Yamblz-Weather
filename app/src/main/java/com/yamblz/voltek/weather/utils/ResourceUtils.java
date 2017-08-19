@@ -6,9 +6,9 @@ import com.yamblz.voltek.weather.domain.exception.RequestFailedException;
 
 import java.net.UnknownHostException;
 
-public final class StringUtils {
+public final class ResourceUtils {
 
-    private StringUtils() {
+    private ResourceUtils() {
     }
 
     public static int fromError(Throwable e) {

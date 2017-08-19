@@ -23,7 +23,8 @@
         android:layout_marginEnd="@dimen/default_layout_margin"
         android:layout_marginTop="@dimen/default_layout_margin"
         app:cardBackgroundColor="@color/border_color_light"
-        app:cardElevation="@dimen/layout_card_elevation">
+        app:cardElevation="@dimen/layout_card_elevation"
+        android:layout_marginRight="@dimen/default_layout_margin">
 
         <FrameLayout
             android:id="@+id/main_content"

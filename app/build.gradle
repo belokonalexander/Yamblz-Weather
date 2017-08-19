@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'org.greenrobot.greendao'
 apply from: '../jacoco.gradle'
-
 
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -19,17 +17,15 @@ android {
 
     defaultConfig {
         applicationId "com.yamblz.voltek.weather"
-        minSdkVersion 19
+        minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
         vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
-
         release {
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
@@ -39,9 +35,7 @@ android {
     }
 
 
-
     buildTypes {
-
 
         release {
             debuggable false
@@ -66,11 +60,12 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        execution 'ANDROID_TEST_ORCHESTRATOR'
     }
 }
 
 ext {
-    supportLibVersion = '26.0.0'
+    supportLibVersion = '26.0.1'
     logginingInterceptorVersion = '3.7.0'
     butterknifeVersion = '8.7.0'
     retrofitVersion = '2.3.0'
@@ -86,11 +81,10 @@ ext {
     espressoVersion = '3.0.0'
     daggerVersion = '2.11'
     adapterDelegate = '3.0.1'
-    fixPreferenceVersion = '26.0.0.0'
+    fixPreferenceVersion = '26.0.1.0'
     materialDrawerVersion = '5.9.4@aar'
     espressoSupportVersion = '1.0.0'
 }
-
 
 greendao {
     schemaVersion 11
@@ -112,17 +106,11 @@ dependencies {
         exclude group: 'com.android.support', module: 'design'
     }
 
-    androidTestCompile ("com.android.support.test:runner:${espressoSupportVersion}", {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    // Espresso dependencies
 
-    androidTestCompile ("com.android.support.test:rules:${espressoSupportVersion}", {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
-    androidTestCompile ("com.android.support.test.espresso:espresso-intents:${espressoVersion}", {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:3.0.0'
+    androidTestUtil "com.android.support.test:orchestrator:${espressoSupportVersion}"
+    androidTestImplementation "com.android.support.test:runner:${espressoSupportVersion}"
 
     testCompile 'junit:junit:4.12'
 

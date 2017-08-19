@@ -1,6 +1,7 @@
 package com.yamblz.voltek.weather.presentation.ui.main;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -34,8 +34,8 @@ import com.yamblz.voltek.weather.domain.exception.DeleteLastCityException;
 import com.yamblz.voltek.weather.presentation.base.BaseActivity;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.MainDrawerItem;
 import com.yamblz.voltek.weather.presentation.ui.menu.items.WeatherItem;
+import com.yamblz.voltek.weather.utils.ResourceUtils;
 import com.yamblz.voltek.weather.utils.SimpleMap;
-import com.yamblz.voltek.weather.utils.StringUtils;
 import com.yamblz.voltek.weather.utils.classes.SetWithSelection;
 
 import java.util.ArrayList;
@@ -103,10 +103,10 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
         }
     }
 
-
+    @SuppressLint("RestrictedApi")
     private List<IDrawerItem> customInflateMenu(@MenuRes int menuId) {
 
-        MenuInflater menuInflater = new SupportMenuInflater(this);
+        SupportMenuInflater menuInflater = new SupportMenuInflater(this);
         MenuBuilder menu = new MenuBuilder(this);
         menuInflater.inflate(menuId, menu);
         List<IDrawerItem> result = new ArrayList<>();
@@ -199,7 +199,7 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
 
     @Override
     public void showError(DeleteLastCityException e) {
-        Toast.makeText(this, StringUtils.fromError(e), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, ResourceUtils.fromError(e), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -255,12 +255,6 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
                 .setCustomAnimations(R.animator.fade_in, R.animator.fade_out)
                 .replace(R.id.main_content, fragment, tag)
                 .commit();
-    }
-
-    @Nullable
-    @Override
-    public Toolbar getCommonToolbar() {
-        return toolbar;
     }
 
     @Override
@@ -328,6 +322,5 @@ public class MainActivity extends BaseActivity implements Navigator, WeatherView
     public void deleteWeatherItem(WeatherItem item) {
         navigation.removeItem(item.getIdentifier());
     }
-
 
 }
