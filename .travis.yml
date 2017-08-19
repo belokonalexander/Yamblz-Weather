@@ -30,5 +30,5 @@ before_script:
 script:
 - ./gradlew assembleDebug --stacktrace
 - ./gradlew test --info
-- ./gradlew connectedAndroidTest
+- ./gradlew connectedCheck
  
