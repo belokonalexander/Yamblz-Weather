@@ -92,7 +92,7 @@ public class CitySettingsTest {
 
 
         IdlingRegistry.getInstance().register(resource);
-        String expectedSuggest = "Magnitogorsk1";
+        String expectedSuggest = "Magnitogorsk";
 
         onView(withId(R.id.cities_recycler))
                 .perform(RecyclerViewActions.actionOnItem(
